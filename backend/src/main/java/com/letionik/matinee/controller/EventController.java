@@ -1,5 +1,6 @@
 package com.letionik.matinee.controller;
 
+import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.TaskProgressDto;
 import com.letionik.matinee.service.EventService;
@@ -28,8 +29,8 @@ public class EventController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public EventDto createEvent(@RequestBody EventDto eventDto) {
-        return eventService.createEvent(eventDto);
+    public EventDto createEvent(@RequestBody CreateEventRequestDto createEventRequest, HttpSession session) {
+        return eventService.createEvent(createEventRequest, (Long) session.getAttribute("user"));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/enroll/{code}")
