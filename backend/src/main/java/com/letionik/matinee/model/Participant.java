@@ -18,7 +18,6 @@ public class Participant {
     @NotNull
     @OneToOne
     private User user;
-    @NotNull
     @OneToOne
     private Role role;
     @OneToMany(mappedBy = "participant")

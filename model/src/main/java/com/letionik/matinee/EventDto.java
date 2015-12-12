@@ -56,4 +56,28 @@ public class EventDto {
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public EventStatus getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(EventStatus eventStatus) {
+        this.eventStatus = eventStatus;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public UUID getCode() {
+        return code;
+    }
+
+    public void setCode(UUID code) {
+        this.code = code;
+    }
 }

@@ -1,5 +1,7 @@
 package com.letionik.matinee.model;
 
+import com.letionik.matinee.EventStatus;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -31,6 +33,8 @@ public class Event {
     private List<Participant> participants = new ArrayList<>();
     @Column(name = "event_code")
     private UUID code;
+    @Column(name = "event_status")
+    private EventStatus status;
 
     public void addParticipant(Participant p) {
         participants.add(p);
@@ -86,5 +90,13 @@ public class Event {
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EventStatus status) {
+        this.status = status;
     }
 }

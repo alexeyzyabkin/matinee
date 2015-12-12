@@ -1,6 +1,7 @@
 package com.letionik.matinee.service;
 
 import com.letionik.matinee.EventDto;
+import com.letionik.matinee.converter.EventDtoConverter;
 import com.letionik.matinee.model.Event;
 import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.model.User;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -28,6 +30,8 @@ public class EventService {
     private ParticipantRepository participantRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private EventDtoConverter eventDtoConverter;
 
     @Transactional
     public EventDto getCurrentEvent(Long id) {
@@ -40,20 +44,21 @@ public class EventService {
     public EventDto createEvent(EventDto eventDto) {
         Event event = new Event();
         event.setName(eventDto.getName());
-        event.setCreationDate(eventDto.getStartDate());
+//        event.setCreationDate(new LocalDateTime(eventDto.getStartDate()));
+
+        UUID code = UUID.randomUUID();
+        event.setCode(code);
+        eventRepository.save(event);
 
         User user = userRepository.getOne(eventDto.getAdmin().getId());
         Participant admin = new Participant();
         admin.setUser(user);
         admin.setEvent(event);
+        event.setAdmin(user);
         participantRepository.save(admin);
 
         event.addParticipant(admin);
-        UUID code = UUID.randomUUID();
-        event.setCode(code);
-        eventRepository.save(event);
-
-        return modelMapper.map(event, EventDto.class);
+        return eventDtoConverter.convertTo(event);
     }
 
     @Transactional
