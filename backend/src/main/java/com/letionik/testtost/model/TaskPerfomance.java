@@ -1,5 +1,7 @@
 package com.letionik.testtost.model;
 
+import com.letionik.testtost.TaskStatus;
+
 import java.time.LocalDateTime;
 
 /**
@@ -10,5 +12,5 @@ public class TaskPerfomance {
     private Task task;
     private LocalDateTime executiveTime;
     private Participant participant;
-    private Status status = Status.NEW;
+    private TaskStatus status = TaskStatus.NEW;
 }

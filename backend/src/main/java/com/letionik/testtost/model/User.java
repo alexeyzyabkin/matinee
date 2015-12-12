@@ -1,5 +1,7 @@
 package com.letionik.testtost.model;
 
+import com.letionik.testtost.Sex;
+
 /**
  * Created by Iryna Guzenko on 12.12.2015.
  */
