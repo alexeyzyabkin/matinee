@@ -1,4 +1,4 @@
-rootProject.name = 'testtost'
+rootProject.name = 'matinee'
 
 include 'model'
 include 'backend'
