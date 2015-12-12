@@ -2,8 +2,12 @@ package com.letionik.matinee.service;
 
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
+<<<<<<< HEAD
 import com.letionik.matinee.TaskProgressDto;
 import com.letionik.matinee.TaskStatus;
+=======
+import com.letionik.matinee.EventStatus;
+>>>>>>> origin/master
 import com.letionik.matinee.model.Event;
 import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.model.TaskProgress;
@@ -58,6 +62,7 @@ public class EventService {
 
         String code = UUID.randomUUID().toString().substring(0, 5);
         event.setCode(code);
+        event.setStatus(EventStatus.NEW);
         event.setCreationDate(LocalDateTime.now());
         eventRepository.save(event);
 
