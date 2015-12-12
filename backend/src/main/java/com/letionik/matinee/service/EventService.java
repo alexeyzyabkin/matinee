@@ -29,11 +29,15 @@ public class EventService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Transactional
     public EventDto getCurrentEvent(Long id) {
+        //TODO : search event by userId?
+        //TODO : you should write your own method
         Event event = eventRepository.getOne(id);
         return modelMapper.map(event, EventDto.class);
     }
 
+    @Transactional
     public EventDto createEvent(EventDto eventDto) {
         Event event = new Event();
         event.setName(eventDto.getName());
@@ -55,18 +59,12 @@ public class EventService {
 
     @Transactional
     public EventDto enroll(UUID code, Long id) {
+        //TODO: there is no participant! you should create it.
         Participant participant = participantRepository.findOne(id);
+        //TODO: it can be wrong code
         Event event = eventRepository.getEventByCode(code);
         event.addParticipant(participant);
         participant.setEvent(event);
         return modelMapper.map(event, EventDto.class);
     }
-
-//    public EventDto revealTasks(Long eventId) {
-//        Event event =
-//    }
-
-//    revealRoles()
-//
-//    getHistory
 }

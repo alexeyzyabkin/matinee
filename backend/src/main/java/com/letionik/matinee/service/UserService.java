@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * Created by Bohdan Pohotilyi on 12.12.2015.
  */
@@ -18,20 +16,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Transactional
-    public UserDto autorize(UserDto userDto){
-        if(!userRepository.exists(userDto.getId())){
-            createUser(userDto);
+    public UserDto authorize(UserDto userDto) {
+        final boolean userExists = userRepository.exists(userDto.getId());
+        if (!userExists) {
+            userRepository.save(modelMapper.map(userDto, User.class));
         }
-        return userDto;
-    }
-
-    @Transactional
-    private UserDto createUser(UserDto userDto){
-        modelMapper = new ModelMapper();
-        userRepository.save(modelMapper.map(userDto, User.class));
         return userDto;
     }
 }

@@ -17,5 +17,4 @@ public class TaskController {
     public TaskProgressDto markAsDone(@PathVariable String taskId) {
         return new TaskProgressDto();
     }
-
 }

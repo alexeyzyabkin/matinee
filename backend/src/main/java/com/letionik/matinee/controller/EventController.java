@@ -38,6 +38,7 @@ public class EventController {
 
     @RequestMapping(value = "/reveal/tasks/{eventId}", method = RequestMethod.POST)
     public EventDto revealTasks(@PathVariable Long eventId) {
+        //TODO: user should be an admin, you should check it
         return eventService.revealTasks(eventId);
     }
 
