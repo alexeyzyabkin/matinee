@@ -32,6 +32,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-mobile')
     compile("org.modelmapper:modelmapper:0.7.5")
     compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
