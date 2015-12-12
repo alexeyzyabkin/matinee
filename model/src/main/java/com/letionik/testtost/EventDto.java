@@ -7,13 +7,13 @@ import java.util.List;
  * Created by Alexey Zyabkin on 12.12.2015.
  */
 public class EventDto {
-    private String id;
+    private Long id;
     private String name;
     private UserDto admin;
     private List<ParticipantDto> participants;
     private LocalDateTime startDate;
-
     private LocalDateTime creationDate;
+    private String code;
 
     public String getName() {
         return name;
