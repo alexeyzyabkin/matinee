@@ -7,8 +7,9 @@ import java.util.List;
  * Created by Iryna Guzenko on 12.12.2015.
  */
 public class Participant {
-    private long id;
+    private Long id;
     private User user;
     private Role role;
     private List<Task> tasks = new ArrayList<>();
+    private Event event;
 }
