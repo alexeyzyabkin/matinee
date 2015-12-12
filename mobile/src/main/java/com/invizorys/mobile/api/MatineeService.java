@@ -1,5 +1,6 @@
 package com.invizorys.mobile.api;
 
+import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.UserDto;
 
@@ -16,5 +17,6 @@ public interface MatineeService {
     void register(@Body UserDto userDto, RetrofitCallback<UserDto> userDtoRetrofitCallback);
 
     @POST("/event")
-    void  createEvent(@Body EventDto eventDto, RetrofitCallback<EventDto> eventDtoRetrofitCallback);
+    void  createEvent(@Body CreateEventRequestDto createEventRequestDto,
+                      RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 }

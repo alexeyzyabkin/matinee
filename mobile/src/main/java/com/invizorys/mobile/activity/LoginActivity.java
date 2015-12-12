@@ -12,6 +12,7 @@ import com.invizorys.mobile.api.RetrofitCallback;
 import com.invizorys.mobile.api.ServiceGenerator;
 import com.invizorys.mobile.callback.SocialNetworkCallback;
 import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.util.Settings;
 import com.invizorys.mobile.util.social.VkSocialNetwork;
 import com.letionik.matinee.Sex;
 import com.letionik.matinee.UserDto;
@@ -77,6 +78,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onUserReceive(User user) {
+        Settings.saveUser(this, user);
+
         matineeService.register(new UserDto(user.getFirstName(), user.getLastName(), Sex.parseSex(user.getSex()),
                 user.getAvatarUrl()), new RetrofitCallback<UserDto>(LoginActivity.this) {
             @Override

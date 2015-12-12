@@ -1,11 +1,12 @@
 package com.invizorys.mobile.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import retrofit.converter.GsonConverter;
 
 /**
  * Created by Paryshkura Roman on 12.12.2015.
