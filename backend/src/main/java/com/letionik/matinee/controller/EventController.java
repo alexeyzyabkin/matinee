@@ -2,10 +2,7 @@ package com.letionik.matinee.controller;
 
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.TaskProgressDto;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +11,10 @@ import java.util.List;
  * Created by Alexey Zyabkin on 12.12.2015.
  */
 @RestController
-@RequestMapping(value = "/event")
+@RequestMapping(value = "event")
 public class EventController {
-    @RequestMapping(method = RequestMethod.GET, name = "/current")
+
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
     public EventDto getCurrentEvent() {
         return new EventDto();
     }
@@ -36,8 +34,8 @@ public class EventController {
         return new EventDto();
     }
 
-    @RequestMapping(value = "/history/{eventId}", method = RequestMethod.GET)
-    public List<TaskProgressDto> getHistory() {
+    @RequestMapping(value = "history/{eventId}", method = RequestMethod.GET)
+    public List<TaskProgressDto> getHistory(@PathVariable String eventId) {
         return new ArrayList<>();
     }
 }
