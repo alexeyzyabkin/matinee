@@ -64,13 +64,13 @@ public class EventService {
 
     @Transactional
     public EventDto enroll(UUID code, Long id) {
-        Participant participant = new Participant();
         Event event = eventRepository.getEventByCode(code);
-
+        if(event == null) return null;
+        Participant participant = new Participant();
         participant.setUser(userRepository.findOne(id));
         participant.setEvent(event);
         event.addParticipant(participant);
         participant.setEvent(event);
-        return modelMapper.map(event, EventDto.class);
+        return eventDtoConverter.convertTo(event);
     }
 }
