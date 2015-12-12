@@ -16,10 +16,10 @@ public class Participant {
     @Column(name = "participant_id")
     private Long id;
     @NotNull
-    @OneToOne(mappedBy = "participant")
+    @OneToOne
     private User user;
     @NotNull
-    @OneToOne(mappedBy = "participant")
+    @OneToOne
     private Role role;
     @OneToMany(mappedBy = "participant")
     private List<TaskProgress> progressTasks = new ArrayList<>();

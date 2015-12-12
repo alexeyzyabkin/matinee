@@ -15,7 +15,7 @@ public class TaskProgress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_progress_id")
     private Long id;
-    @OneToOne(mappedBy = "task_progress")
+    @OneToOne
     private Task task;
     @Column(name = "task_progress_executive_time")
     private LocalDateTime executiveTime;
