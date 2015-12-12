@@ -49,7 +49,7 @@ public class EventService {
             event.setStartDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
         }
 
-        UUID code = UUID.randomUUID();
+        String code = UUID.randomUUID().toString().substring(0, 5);
         event.setCode(code);
         event.setCreationDate(LocalDateTime.now());
         eventRepository.save(event);

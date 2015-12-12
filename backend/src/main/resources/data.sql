@@ -1,20 +1,20 @@
 insert into matinee.task(task_description, task_name, task_type)
-values ("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ:)", "пїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ!", "IN_TASK");
+values ("Стань на стул, заставь всех замолчать и расскажи любимый стишок:)", "Петька-поэт!", "IN_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("'пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅСЁ', - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "IN_TASK");
+values ("'Я готов на ВСЁ', - отвечай в течении получаса", "Безотказный", "IN_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ", "PRE_TASK");
+values ("Притащи ведро оливьехи и накорми банду", "Щедрая душа", "PRE_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "IN_TASK");
+values ("Лицом в оливье! Прям как в фильмах", "Ненасытный", "IN_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ)", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ", "IN_TASK");
+values ("Построй пирамиду из людей! Тот, кто на вершине, пьёт конечно же)", "Повелитель горы", "IN_TASK");
 
-insert into role (costume_description, role_name) values ('РєРѕР¶СѓС…','Р”РµРґ РњРѕСЂРѕР·Р·Р·');
-insert into role (costume_description, role_name) values ('РїР»СЏС‚С‚СЏ','РЎРЅР«РіСѓСЂРѕС‡РєР°');
-insert into role (costume_description, role_name) values ('СЂРѕРіР°','РђР»РµРЅСЊ');
-insert into role (costume_description, role_name) values ('РіРѕСЂРѕС…, РєР°СЂС‚РѕС…Р°, РјР°СЏРЅРµР·, РјР°СЂРєРѕС„РєР° Рё С‚Рґ. РІСЃРµ РїРµСЂРµРјРµС€Р°С‚СЊ','РћР»РёРІСЊРµ');
-insert into role (costume_description, role_name) values ('РєРѕР¶СѓСЂР°','РњР°РЅРґР°СЂРёРЅРєР°');СЂРѕР·Р·Р·');
+insert into role (costume_description, role_name) values ('кожух','Дед Мороззз');
+insert into role (costume_description, role_name) values ('пляття','СнЫгурочка');
+insert into role (costume_description, role_name) values ('рога','Алень');
+insert into role (costume_description, role_name) values ('горох, картоха, маянез, маркофка и тд. все перемешать','Оливье');
+insert into role (costume_description, role_name) values ('кожура','Мандаринка');

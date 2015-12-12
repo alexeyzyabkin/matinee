@@ -2,7 +2,6 @@ package com.letionik.matinee;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Alexey Zyabkin on 12.12.2015.
@@ -15,7 +14,7 @@ public class EventDto {
     private Date startDate;
     private EventStatus eventStatus;
     private Date creationDate;
-    private UUID code;
+    private String code;
 
     public String getName() {
         return name;
@@ -73,11 +72,11 @@ public class EventDto {
         this.creationDate = creationDate;
     }
 
-    public UUID getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(UUID code) {
+    public void setCode(String code) {
         this.code = code;
     }
 }
