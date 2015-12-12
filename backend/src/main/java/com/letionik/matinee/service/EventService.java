@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -44,7 +46,8 @@ public class EventService {
     public EventDto createEvent(EventDto eventDto) {
         Event event = new Event();
         event.setName(eventDto.getName());
-//        event.setCreationDate(new LocalDateTime(eventDto.getStartDate()));
+        Date date = eventDto.getStartDate();
+        event.setCreationDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 
         UUID code = UUID.randomUUID();
         event.setCode(code);
