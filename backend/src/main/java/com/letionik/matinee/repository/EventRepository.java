@@ -11,6 +11,9 @@ import java.util.UUID;
  * Created by Iryna Guzenko on 12.12.2015.
  */
 public interface EventRepository extends JpaRepository<Event, Long> {
-    @Query("SELECT e.code from Event e WHERE e.code = :code")
+    @Query("SELECT e FROM Event e WHERE e.code = :code")
     Event getEventByCode(@Param(value = "code") UUID code);
+
+    @Query("SELECT p.event FROM Participant p WHERE p.id = :id")
+    Event getEventByParticipantID(@Param(value = "id") Long id);
 }
