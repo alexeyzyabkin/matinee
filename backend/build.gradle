@@ -30,10 +30,19 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     compile('org.springframework.boot:spring-boot-starter-mobile')
+    compile("org.modelmapper:modelmapper:0.7.5")
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.9'
+}
+
+test {
+    systemProperties['stand'] = System.getProperty('stand')
+}
+
+bootRun {
+    systemProperties['stand'] = System.getProperty('stand')
 }
