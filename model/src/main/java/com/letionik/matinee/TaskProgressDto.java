@@ -1,6 +1,6 @@
 package com.letionik.matinee;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by Alexey Zyabkin on 12.12.2015.
@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class TaskProgressDto {
     private TaskDto task;
     private TaskStatus status;
-    private LocalDateTime receivedDate;
-    private LocalDateTime doneDate;
+    private Date receivedDate;
+    private Date doneDate;
 
     public TaskDto getTask() {
         return task;
@@ -27,19 +27,19 @@ public class TaskProgressDto {
         this.status = status;
     }
 
-    public LocalDateTime getReceivedDate() {
+    public Date getReceivedDate() {
         return receivedDate;
     }
 
-    public void setReceivedDate(LocalDateTime receivedDate) {
+    public void setReceivedDate(Date receivedDate) {
         this.receivedDate = receivedDate;
     }
 
-    public LocalDateTime getDoneDate() {
+    public Date getDoneDate() {
         return doneDate;
     }
 
-    public void setDoneDate(LocalDateTime doneDate) {
+    public void setDoneDate(Date doneDate) {
         this.doneDate = doneDate;
     }
 }

@@ -85,7 +85,7 @@ public class VkSocialNetwork {
             socialUser.setLastName(jsonResponse.getString("last_name"));
         }
         if (jsonResponse.has(FIELD_PHOTO_NAME)) {
-            socialUser.setPhotoUrl(jsonResponse.getString(FIELD_PHOTO_NAME));
+            socialUser.setAvatarUrl(jsonResponse.getString(FIELD_PHOTO_NAME));
         }
         if (jsonResponse.has("sex")) {
             socialUser.setSex(jsonResponse.getString("sex"));

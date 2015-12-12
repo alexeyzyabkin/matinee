@@ -7,13 +7,26 @@ import android.util.Log;
 import android.view.View;
 
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.api.MatineeService;
+import com.invizorys.mobile.api.RetrofitCallback;
+import com.invizorys.mobile.api.ServiceGenerator;
+import com.invizorys.mobile.callback.SocialNetworkCallback;
+import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.util.social.VkSocialNetwork;
+import com.letionik.matinee.Sex;
+import com.letionik.matinee.UserDto;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, SocialNetworkCallback {
+    private MatineeService matineeService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,6 +34,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         findViewById(R.id.button_login_vk).setOnClickListener(this);
+
+        matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
 
 //        String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
 //        Log.e("Vk", fingerprints[0]);
@@ -38,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResult(VKAccessToken res) {
                 // User passed Authorization
+                new VkSocialNetwork(LoginActivity.this).getUserData(LoginActivity.this);
             }
 
             @Override
@@ -57,6 +73,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 vkLogin();
                 break;
         }
+    }
+
+    @Override
+    public void onUserReceive(User user) {
+        matineeService.register(new UserDto(user.getFirstName(), user.getLastName(), Sex.parseSex(user.getSex()),
+                user.getAvatarUrl()), new RetrofitCallback<UserDto>(LoginActivity.this) {
+            @Override
+            public void success(UserDto userDto, Response response) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                super.failure(error);
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onFriendsReceive(ArrayList<User> friends) {
+
     }
 }
 

@@ -1,6 +1,6 @@
 package com.letionik.matinee;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,7 +9,7 @@ import java.util.List;
 public class ParticipantDto {
     private Long id;
     private UserDto userDto;
-    private LocalDateTime comeInDate;
+    private Date comeInDate;
     private RoleDto role;
     private List<TaskProgressDto> tasks;
 
@@ -25,11 +25,11 @@ public class ParticipantDto {
         this.userDto = userDto;
     }
 
-    public LocalDateTime getComeInDate() {
+    public Date getComeInDate() {
         return comeInDate;
     }
 
-    public void setComeInDate(LocalDateTime comeInDate) {
+    public void setComeInDate(Date comeInDate) {
         this.comeInDate = comeInDate;
     }
 

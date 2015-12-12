@@ -8,7 +8,7 @@ public class User {
     private String firstName;
     private String lastName;
     private int age;
-    private String photoUrl;
+    private String avatarUrl;
     private String sex;
     private String birthDate;
 
@@ -44,12 +44,12 @@ public class User {
         this.age = age;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getSex() {
