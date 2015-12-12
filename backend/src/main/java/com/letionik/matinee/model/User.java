@@ -1,9 +1,9 @@
-package com.letionik.testtost.model;
+package com.letionik.matinee.model;
 
-import com.letionik.testtost.Sex;
+import com.letionik.matinee.Sex;
 import org.hibernate.validator.constraints.URL;
-
 import javax.persistence.*;
+
 import javax.validation.constraints.NotNull;
 
 /**

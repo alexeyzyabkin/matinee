@@ -1,4 +1,4 @@
-package com.letionik.testtost.model;
+package com.letionik.matinee.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

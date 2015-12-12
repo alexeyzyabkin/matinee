@@ -1,8 +1,8 @@
-package com.letionik.testtost.model;
-
-import com.letionik.testtost.TaskType;
+package com.letionik.matinee.model;
 
 import javax.persistence.*;
+import com.letionik.matinee.TaskType;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -23,6 +23,7 @@ public class Task {
     @NotNull
     @Column(name = "task_description")
     private String description;
+    private TaskType type;
 
     @NotNull
     @Column(name = "task_type")

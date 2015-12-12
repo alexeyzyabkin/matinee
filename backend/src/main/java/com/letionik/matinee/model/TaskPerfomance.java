@@ -1,7 +1,6 @@
-package com.letionik.testtost.model;
+package com.letionik.matinee.model;
 
-import com.letionik.testtost.TaskStatus;
-
+import com.letionik.matinee.TaskStatus;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
