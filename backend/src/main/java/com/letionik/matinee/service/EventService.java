@@ -2,6 +2,7 @@ package com.letionik.matinee.service;
 
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
+import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.model.Event;
 import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.model.User;
@@ -51,6 +52,7 @@ public class EventService {
 
         String code = UUID.randomUUID().toString().substring(0, 5);
         event.setCode(code);
+        event.setStatus(EventStatus.NEW);
         event.setCreationDate(LocalDateTime.now());
         eventRepository.save(event);
 
