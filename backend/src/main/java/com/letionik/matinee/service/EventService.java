@@ -1,5 +1,6 @@
 package com.letionik.matinee.service;
 
+import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.converter.EventDtoConverter;
 import com.letionik.matinee.model.Event;
@@ -43,7 +44,7 @@ public class EventService {
     }
 
     @Transactional
-    public EventDto createEvent(EventDto eventDto) {
+    public EventDto createEvent(CreateEventRequestDto eventDto, Long userId) {
         Event event = new Event();
         event.setName(eventDto.getName());
         Date date = eventDto.getStartDate();
@@ -53,7 +54,7 @@ public class EventService {
         event.setCode(code);
         eventRepository.save(event);
 
-        User user = userRepository.getOne(eventDto.getAdmin().getId());
+        User user = userRepository.getOne(userId);
         Participant admin = new Participant();
         admin.setUser(user);
         admin.setEvent(event);
@@ -66,13 +67,13 @@ public class EventService {
 
     @Transactional
     public EventDto enroll(UUID code, Long id) {
-        Participant participant = new Participant();
         Event event = eventRepository.getEventByCode(code);
-
+        if(event == null) return null;
+        Participant participant = new Participant();
         participant.setUser(userRepository.findOne(id));
         participant.setEvent(event);
         event.addParticipant(participant);
         participant.setEvent(event);
-        return modelMapper.map(event, EventDto.class);
+        return eventDtoConverter.convertTo(event);
     }
 }
