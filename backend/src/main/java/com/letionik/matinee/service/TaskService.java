@@ -23,6 +23,7 @@ public class TaskService {
     public TaskProgressDto markAsDone(Long taskId){
         //TODO: check that this task is marked by its owner participant
         TaskProgress taskProgress = taskProgressRepository.getOne(taskId);
+
         taskProgress.setStatus(TaskStatus.DONE);
         return modelMapper.map(taskProgress, TaskProgressDto.class);
     }
