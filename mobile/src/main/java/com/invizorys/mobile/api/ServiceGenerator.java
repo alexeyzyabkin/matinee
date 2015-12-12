@@ -18,6 +18,11 @@ public class ServiceGenerator {
     public static <T> T createService(Class<T> serviceClass, String baseUrl) {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                        return new Date(json.getAsJsonPrimitive().getAsLong());
+                    }
+                })
                 .create();
 
         RestAdapter.Builder builder = new RestAdapter.Builder()

@@ -5,12 +5,10 @@ import com.letionik.matinee.EventDto;
 import com.letionik.matinee.TaskProgressDto;
 import com.letionik.matinee.TaskStatus;
 import com.letionik.matinee.EventStatus;
-import com.letionik.matinee.model.Event;
-import com.letionik.matinee.model.Participant;
-import com.letionik.matinee.model.TaskProgress;
-import com.letionik.matinee.model.User;
+import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.EventRepository;
 import com.letionik.matinee.repository.ParticipantRepository;
+import com.letionik.matinee.repository.RoleRepository;
 import com.letionik.matinee.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -21,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Iryna Guzenko on 12.12.2015.
@@ -38,6 +33,8 @@ public class EventService {
     private UserRepository userRepository;
     @Autowired
     private ParticipantRepository participantRepository;
+    @Autowired
+    RoleRepository roleRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -99,5 +96,17 @@ public class EventService {
         }
         Type listType =  new TypeToken<List<TaskProgress>>() {}.getType();
         return modelMapper.map(taskProgresses, listType);
+    }
+
+    @Transactional
+    public EventDto revealRoles(Long eventId){
+        Event event = eventRepository.getOne(eventId);
+        List<Participant> participants = event.getParticipants();
+        Collections.shuffle(participants);
+        for (Integer i = 0; i < participants.size(); i++) {
+            participants.get(i).setRole(roleRepository.getOne(i.longValue()));
+        }
+        EventDto eventDto = modelMapper.map(event, EventDto.class);
+        return eventDto;
     }
 }
