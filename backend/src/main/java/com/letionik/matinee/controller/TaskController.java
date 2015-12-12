@@ -15,6 +15,7 @@ public class TaskController {
 
     @RequestMapping(value = "/done/{taskId}", method = RequestMethod.POST)
     public TaskProgressDto markAsDone(@PathVariable String taskId) {
+
         return new TaskProgressDto();
     }
 }
