@@ -1,6 +1,5 @@
 package com.letionik.matinee.config;
 
-import com.letionik.matinee.mapper.UserMap;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -88,9 +87,7 @@ public class DataConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        final ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new UserMap());
-        return modelMapper;
+        return new ModelMapper();
     }
 
     private Properties getHibernateProperties() {
