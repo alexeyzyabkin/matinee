@@ -4,10 +4,7 @@ import com.letionik.matinee.EventDto;
 import com.letionik.matinee.TaskProgressDto;
 import com.letionik.matinee.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -28,6 +25,11 @@ public class EventController {
     public EventDto getCurrentEvent(HttpSession session) {
         Long userID = (Long) session.getAttribute("user");
         return eventService.getCurrentEvent(userID);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public EventDto createEvent(@RequestBody EventDto eventDto) {
+        return eventService.createEvent(eventDto);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/enroll/{code}")
