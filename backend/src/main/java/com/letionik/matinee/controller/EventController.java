@@ -49,7 +49,7 @@ public class EventController {
     }
 
     @RequestMapping(value = "history/{eventId}", method = RequestMethod.GET)
-    public List<TaskProgressDto> getHistory(@PathVariable String eventId) {
-        return new ArrayList<>();
+    public List<TaskProgressDto> getHistory(@PathVariable Long eventId) {
+        return eventService.getHistory(eventId);
     }
 }
