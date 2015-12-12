@@ -22,7 +22,7 @@ public class Participant {
     @OneToOne(mappedBy = "participant")
     private Role role;
     @OneToMany(mappedBy = "participant")
-    private List<Task> tasks = new ArrayList<>();
+    private List<TaskProgress> progressTasks = new ArrayList<>();
     @NotNull
     @ManyToOne
     @JoinColumn(name = "participant_event_id")
@@ -44,12 +44,12 @@ public class Participant {
         this.role = role;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public List<TaskProgress> getTasks() {
+        return progressTasks;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTasks(List<TaskProgress> tasks) {
+        this.progressTasks = tasks;
     }
 
     public Event getEvent() {
