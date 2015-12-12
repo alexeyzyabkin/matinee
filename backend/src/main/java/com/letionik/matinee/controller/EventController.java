@@ -18,7 +18,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "event")
 public class EventController {
-
     @Autowired
     private EventService eventService;
 
