@@ -45,11 +45,13 @@ public class EventService {
         Event event = new Event();
         event.setName(eventDto.getName());
         Date date = eventDto.getStartDate();
-        if (date != null)
-            event.setCreationDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+        if (date != null) {
+            event.setStartDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+        }
 
         UUID code = UUID.randomUUID();
         event.setCode(code);
+        event.setCreationDate(LocalDateTime.now());
         eventRepository.save(event);
 
         User user = userRepository.getOne(userId);

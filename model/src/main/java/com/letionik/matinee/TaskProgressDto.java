@@ -6,10 +6,19 @@ import java.util.Date;
  * Created by Alexey Zyabkin on 12.12.2015.
  */
 public class TaskProgressDto {
+    private Long id;
     private TaskDto task;
     private TaskStatus status;
     private Date receivedDate;
     private Date doneDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public TaskDto getTask() {
         return task;

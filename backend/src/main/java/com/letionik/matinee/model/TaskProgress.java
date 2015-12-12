@@ -26,6 +26,10 @@ public class TaskProgress {
     @Enumerated
     @Column(name = "task_progress_task_status")
     private TaskStatus status = TaskStatus.NEW;
+    @Column(name = "task_done_date")
+    private LocalDateTime doneDate;
+    @Column(name = "task_recieved_date")
+    private LocalDateTime receivedDate;
 
     public Long getId() {
         return id;
