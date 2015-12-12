@@ -1,6 +1,6 @@
 package com.letionik.matinee;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,9 +12,9 @@ public class EventDto {
     private String name;
     private UserDto admin;
     private List<ParticipantDto> participants;
-    private LocalDateTime startDate;
+    private Date startDate;
     private EventStatus eventStatus;
-    private LocalDateTime creationDate;
+    private Date creationDate;
     private UUID code;
 
     public String getName() {
@@ -25,7 +25,7 @@ public class EventDto {
         this.name = name;
     }
 
-    public LocalDateTime getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
@@ -49,11 +49,11 @@ public class EventDto {
         this.participants = participants;
     }
 
-    public LocalDateTime getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 }

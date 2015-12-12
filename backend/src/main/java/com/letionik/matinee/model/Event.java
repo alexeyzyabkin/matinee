@@ -20,8 +20,13 @@ public class Event {
     @NotNull
     @Column(name = "event_name")
     private String name;
-    @Column(name = "event_date_time")
-    private LocalDateTime dateTime;
+    @Column(name = "event_creation_date_time")
+    private LocalDateTime creationDate;
+    @Column(name = "event_start_date_time")
+    private LocalDateTime startDate;
+    @ManyToOne
+    @JoinColumn(name = "event_admin_user_id")
+    private User admin;
     @OneToMany(mappedBy = "event")
     private List<Participant> participants = new ArrayList<>();
     @Column(name = "event_code")
@@ -39,12 +44,12 @@ public class Event {
         this.name = name;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     public List<Participant> getParticipants() {
@@ -65,5 +70,21 @@ public class Event {
 
     public void setCode(UUID code) {
         this.code = code;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 }

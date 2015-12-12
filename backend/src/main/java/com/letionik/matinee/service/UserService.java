@@ -20,8 +20,7 @@ public class UserService {
 
     @Transactional
     public UserDto authorize(UserDto userDto) {
-        final boolean userExists = userRepository.exists(userDto.getId());
-        if (!userExists) {
+        if (userDto.getId() == null || !userRepository.exists(userDto.getId())) {
             userRepository.save(modelMapper.map(userDto, User.class));
         }
         return userDto;

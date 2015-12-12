@@ -25,6 +25,9 @@ public class Role {
     @OneToOne(mappedBy = "role")
     private Participant participant;
 
+    @Column(name = "role_priority")
+    private int priority;
+
     public Long getId() {
         return id;
     }
@@ -51,5 +54,13 @@ public class Role {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }
