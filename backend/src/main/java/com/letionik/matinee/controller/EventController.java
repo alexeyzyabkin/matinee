@@ -33,7 +33,7 @@ public class EventController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/enroll/{code}")
-    public EventDto enroll(@PathVariable UUID code, HttpSession session) {
+    public EventDto enroll(@PathVariable String code, HttpSession session) {
         eventService.enroll(code, (Long) session.getAttribute("user"));
         return new EventDto();
     }
