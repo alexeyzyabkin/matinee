@@ -16,13 +16,13 @@ public class Participant {
     @Column(name = "participant_id")
     private Long id;
     @NotNull
-    @OneToOne(mappedBy = "participant")
+    @OneToOne
     private User user;
     @NotNull
-    @OneToOne(mappedBy = "participant")
+    @OneToOne
     private Role role;
     @OneToMany(mappedBy = "participant")
-    private List<Task> tasks = new ArrayList<>();
+    private List<TaskProgress> progressTasks = new ArrayList<>();
     @NotNull
     @ManyToOne
     @JoinColumn(name = "participant_event_id")
@@ -44,12 +44,12 @@ public class Participant {
         this.role = role;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public List<TaskProgress> getProgressTasks() {
+        return progressTasks;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setProgressTasks(List<TaskProgress> progressTasks) {
+        this.progressTasks = progressTasks;
     }
 
     public Event getEvent() {
