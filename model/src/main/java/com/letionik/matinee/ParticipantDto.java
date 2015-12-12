@@ -1,4 +1,4 @@
-package com.letionik.testtost;
+package com.letionik.matinee;
 
 import java.time.LocalDateTime;
 import java.util.List;

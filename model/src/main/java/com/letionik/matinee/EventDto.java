@@ -1,4 +1,4 @@
-package com.letionik.testtost;
+package com.letionik.matinee;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +12,7 @@ public class EventDto {
     private UserDto admin;
     private List<ParticipantDto> participants;
     private LocalDateTime startDate;
+    private EventStatus eventStatus;
     private LocalDateTime creationDate;
     private String code;
 
