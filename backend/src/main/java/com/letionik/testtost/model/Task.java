@@ -7,7 +7,5 @@ public class Task {
     private Long id;
     private String name;
     private String description;
-
     private Type type;
-    private Status status = Status.NEW;
 }
