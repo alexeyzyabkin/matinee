@@ -19,7 +19,8 @@ public class TaskProgress {
     private Task task;
     @Column(name = "task_progress_executive_time")
     private LocalDateTime executiveTime;
-    @OneToOne(mappedBy = "task_progress")
+    @ManyToOne
+    @JoinColumn(name = "task_progress_participant_id")
     private Participant participant;
     @NotNull
     @Enumerated
