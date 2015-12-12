@@ -75,7 +75,7 @@ public class EventService {
     }
 
     @Transactional
-    public EventDto enroll(UUID code, Long id) {
+    public EventDto enroll(String code, Long id) {
         Event event = eventRepository.getEventByCode(code);
         if(event == null) return null;
         Participant participant = new Participant();

@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e FROM Event e WHERE e.code = :code")
-    Event getEventByCode(@Param(value = "code") UUID code);
+    Event getEventByCode(@Param(value = "code") String code);
 
     @Query("SELECT p.event FROM Participant p WHERE p.id = :id")
     Event getEventByParticipantID(@Param(value = "id") Long id);
