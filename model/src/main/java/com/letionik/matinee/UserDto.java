@@ -10,16 +10,6 @@ public class UserDto {
     private Sex sex;
     private String avatarUrl;
 
-    public UserDto() {
-    }
-
-    public UserDto(String name, String surname, Sex sex, String avatarUrl) {
-        this.name = name;
-        this.surname = surname;
-        this.sex = sex;
-        this.avatarUrl = avatarUrl;
-    }
-
     public Long getId() {
         return id;
     }

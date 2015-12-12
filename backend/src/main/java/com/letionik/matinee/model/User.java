@@ -29,6 +29,10 @@ public class User {
     @Column(name = "user_sex")
     private Sex sex;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

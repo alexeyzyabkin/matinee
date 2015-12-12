@@ -2,7 +2,6 @@ package com.letionik.matinee.service;
 
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
-import com.letionik.matinee.converter.EventDtoConverter;
 import com.letionik.matinee.model.Event;
 import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.model.User;
@@ -33,8 +32,6 @@ public class EventService {
     private ParticipantRepository participantRepository;
     @Autowired
     private ModelMapper modelMapper;
-    @Autowired
-    private EventDtoConverter eventDtoConverter;
 
     @Transactional
     public EventDto getCurrentEvent(Long id) {
@@ -48,7 +45,8 @@ public class EventService {
         Event event = new Event();
         event.setName(eventDto.getName());
         Date date = eventDto.getStartDate();
-        event.setCreationDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+        if (date != null)
+            event.setCreationDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 
         UUID code = UUID.randomUUID();
         event.setCode(code);
@@ -62,18 +60,18 @@ public class EventService {
         participantRepository.save(admin);
 
         event.addParticipant(admin);
-        return eventDtoConverter.convertTo(event);
+        return modelMapper.map(event, EventDto.class);
     }
 
     @Transactional
     public EventDto enroll(UUID code, Long id) {
         Event event = eventRepository.getEventByCode(code);
-        if(event == null) return null;
+        if (event == null) return null;
         Participant participant = new Participant();
         participant.setUser(userRepository.findOne(id));
         participant.setEvent(event);
         event.addParticipant(participant);
         participant.setEvent(event);
-        return eventDtoConverter.convertTo(event);
+        return modelMapper.map(event, EventDto.class);
     }
 }

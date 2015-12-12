@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class ParticipantDto {
     private Long id;
-    private UserDto userDto;
+    private UserDto user;
     private Date comeInDate;
     private RoleDto role;
     private List<TaskProgressDto> tasks;
@@ -21,12 +21,12 @@ public class ParticipantDto {
         this.id = id;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
     public Date getComeInDate() {
