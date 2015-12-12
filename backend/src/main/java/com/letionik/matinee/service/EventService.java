@@ -2,12 +2,9 @@ package com.letionik.matinee.service;
 
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
-<<<<<<< HEAD
 import com.letionik.matinee.TaskProgressDto;
 import com.letionik.matinee.TaskStatus;
-=======
 import com.letionik.matinee.EventStatus;
->>>>>>> origin/master
 import com.letionik.matinee.model.Event;
 import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.model.TaskProgress;
