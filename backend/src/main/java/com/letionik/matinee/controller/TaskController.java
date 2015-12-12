@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/task")
 public class TaskController {
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
 
     @RequestMapping(value = "/done/{taskId}", method = RequestMethod.POST)
     public TaskProgressDto markAsDone(@PathVariable Long taskId) {

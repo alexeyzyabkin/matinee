@@ -40,7 +40,7 @@ public class EventService {
     public EventDto createEvent(EventDto eventDto) {
         Event event = new Event();
         event.setName(eventDto.getName());
-        event.setDateTime(eventDto.getStartDate());
+        event.setCreationDate(eventDto.getStartDate());
 
         User user = userRepository.getOne(eventDto.getAdmin().getId());
         Participant admin = new Participant();
@@ -63,12 +63,8 @@ public class EventService {
 
         participant.setUser(userRepository.findOne(id));
         participant.setEvent(event);
-        //TODO: it can be wrong code
-
         event.addParticipant(participant);
         participant.setEvent(event);
         return modelMapper.map(event, EventDto.class);
     }
-
-//    getHistory
 }

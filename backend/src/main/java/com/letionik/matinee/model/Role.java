@@ -18,15 +18,15 @@ public class Role {
     @Column(name = "role_name")
     private String name;
 
-    @Column(name = "role_costume")
-    private String costume;
-
     @NotNull
-    @Column(name = "role_description")
-    private String description;
+    @Column(name = "costume_description")
+    private String costumeDescription;
 
     @OneToOne(mappedBy = "role")
     private Participant participant;
+
+    @Column(name = "role_priority")
+    private int priority;
 
     public Long getId() {
         return id;
@@ -40,20 +40,12 @@ public class Role {
         this.name = name;
     }
 
-    public String getCostume() {
-        return costume;
+    public String getCostumeDescription() {
+        return costumeDescription;
     }
 
-    public void setCostume(String costume) {
-        this.costume = costume;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCostumeDescription(String costumeDescription) {
+        this.costumeDescription = costumeDescription;
     }
 
     public Participant getParticipant() {
@@ -62,5 +54,13 @@ public class Role {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }
