@@ -1,6 +1,7 @@
 package com.letionik.matinee.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -87,7 +91,20 @@ public class DataConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addConverter(new AbstractConverter<Date, LocalDateTime>() {
+            @Override
+            protected LocalDateTime convert(Date source) {
+                return LocalDateTime.ofInstant(source.toInstant(), ZoneId.systemDefault());
+            }
+        });
+        modelMapper.addConverter(new AbstractConverter<LocalDateTime, Date>() {
+            @Override
+            protected Date convert(LocalDateTime source) {
+                return Date.from(source.atZone(ZoneId.systemDefault()).toInstant());
+            }
+        });
+        return modelMapper;
     }
 
     private Properties getHibernateProperties() {
