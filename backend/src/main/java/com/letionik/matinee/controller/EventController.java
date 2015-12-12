@@ -44,8 +44,8 @@ public class EventController {
     }
 
     @RequestMapping(value = "/reveal/roles/{eventId}", method = RequestMethod.POST)
-    public EventDto revealRoles() {
-        return new EventDto();
+    public EventDto revealRoles(Long id) {
+        return eventService.revealRoles(id);
     }
 
     @RequestMapping(value = "history/{eventId}", method = RequestMethod.GET)
