@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Iryna Guzenko on 12.12.2015.
@@ -23,6 +24,12 @@ public class Event {
     private LocalDateTime dateTime;
     @OneToMany(mappedBy = "event")
     private List<Participant> participants = new ArrayList<>();
+    @Column(name = "event_code")
+    private UUID code;
+
+    public void addParticipant(Participant p) {
+        participants.add(p);
+    }
 
     public String getName() {
         return name;
@@ -50,5 +57,13 @@ public class Event {
 
     public Long getId() {
         return id;
+    }
+
+    public UUID getCode() {
+        return code;
+    }
+
+    public void setCode(UUID code) {
+        this.code = code;
     }
 }
