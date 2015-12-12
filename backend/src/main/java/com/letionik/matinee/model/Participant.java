@@ -44,12 +44,12 @@ public class Participant {
         this.role = role;
     }
 
-    public List<TaskProgress> getTasks() {
+    public List<TaskProgress> getProgressTasks() {
         return progressTasks;
     }
 
-    public void setTasks(List<TaskProgress> tasks) {
-        this.progressTasks = tasks;
+    public void setProgressTasks(List<TaskProgress> progressTasks) {
+        this.progressTasks = progressTasks;
     }
 
     public Event getEvent() {
