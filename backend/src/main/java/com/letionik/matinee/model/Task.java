@@ -1,8 +1,8 @@
 package com.letionik.matinee.model;
 
-import javax.persistence.*;
 import com.letionik.matinee.TaskType;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -23,17 +23,11 @@ public class Task {
     @NotNull
     @Column(name = "task_description")
     private String description;
-    private TaskType type;
 
     @NotNull
     @Column(name = "task_type")
     @Enumerated(EnumType.STRING)
     private TaskType taskType;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "task_participant_id")
-    private Participant participant;
 
     public Long getId() {
         return id;
