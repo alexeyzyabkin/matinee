@@ -3,6 +3,15 @@ package com.letionik.matinee.service;
 import com.letionik.matinee.*;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
+import com.letionik.matinee.*;
+import com.letionik.matinee.model.Event;
+import com.letionik.matinee.model.Participant;
+import com.letionik.matinee.model.TaskProgress;
+import com.letionik.matinee.model.User;
+import com.letionik.matinee.repository.EventRepository;
+import com.letionik.matinee.repository.ParticipantRepository;
+import com.letionik.matinee.repository.RoleRepository;
+import com.letionik.matinee.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +47,8 @@ public class EventService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public EventDto getCurrentEvent(Long id) {
-        Participant participant = participantRepository.getParticipantByUserID(id);
-        Event event = eventRepository.getEventByParticipantID(participant.getId());
+    public EventDto getEventInfo(Long id) {
+        Event event = eventRepository.findOne(id);
         return modelMapper.map(event, EventDto.class);
     }
 
@@ -85,7 +93,9 @@ public class EventService {
     public EventDto revealTasks(Long eventID) {
         List<Task> tasks = taskRepository.findAll();
         Collections.shuffle(tasks);
-        eventRepository.getOne(eventID).getParticipants().stream().forEachOrdered(p -> {
+        Event event = eventRepository.getOne(eventID);
+        event.setStatus(EventStatus.TASKS_REVEALED);
+        event.getParticipants().stream().forEachOrdered(p -> {
             for (int i = 0; i < 3; i++) {
                 TaskProgress taskProgress = new TaskProgress();
                 taskProgress.setTask(tasks.get(0));
@@ -95,36 +105,27 @@ public class EventService {
                 tasks.remove(0);
             }
         });
-        return modelMapper.map(eventRepository.getOne(eventID), EventDto.class);
+        return modelMapper.map(event, EventDto.class);
     }
 
     @Transactional
-    public EventDto revealRoles(Long eventId){
+    public EventDto revealRoles(Long eventId) {
         Event event = eventRepository.getOne(eventId);
+        event.setStatus(EventStatus.ROLES_REVEALED);
         List<Participant> participants = event.getParticipants();
         Collections.shuffle(participants);
-        Pageable topParticipant = new PageRequest(0,participants.size());
-        List<Role> roles = roleRepository.findAllByOrderByPriority(topParticipant);
-        for(int i = 0; i < participants.size(); i++){
-            participants.get(i).setRole(roles.get(0));
+        List<Role> roles = roleRepository.findAllByOrderByPriority();
+        for (Participant participant : participants) {
+            participant.setRole(roles.get(0));
             roles.remove(0);
         }
-        EventDto eventDto = modelMapper.map(event, EventDto.class);
-        return eventDto;
+        return modelMapper.map(event, EventDto.class);
     }
 
     @Transactional
-        public List<TaskProgressDto> getHistory(Long id){
-                Event event = eventRepository.getOne(id);
-               List<TaskProgress> taskProgresses = new ArrayList<>();
-                for(Participant participant: event.getParticipants()){
-                        for (TaskProgress taskProgress : participant.getProgressTasks()) {
-                                if(taskProgress.getStatus().equals(TaskStatus.DONE)){
-                                        taskProgresses.add(taskProgress);
-                                }
-                        }
-                }
-        Type listType =  new TypeToken<List<TaskProgress>>() {}.getType();
-        return modelMapper.map(taskProgresses, listType);
+    public List<TaskProgressDto> getHistory(Long id) {
+        List<TaskProgress> tasks = taskProgressRepository.findTasksByEventId(id);
+        Type listType = new TypeToken<List<TaskProgressDto>>() {}.getType();
+        return modelMapper.map(tasks, listType);
     }
 }

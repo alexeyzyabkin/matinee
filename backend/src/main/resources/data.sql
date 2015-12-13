@@ -1,20 +1,20 @@
 insert into matinee.task(task_description, task_name, task_type)
-values ("Стань на стул, заставь всех замолчать и расскажи любимый стишок:)", "Петька-поэт!", "IN_TASK");
+values ("РЎС‚Р°РЅСЊ РЅР° СЃС‚СѓР», Р·Р°СЃС‚Р°РІСЊ РІСЃРµС… Р·Р°РјРѕР»С‡Р°С‚СЊ Рё СЂР°СЃСЃРєР°Р¶Рё Р»СЋР±РёРјС‹Р№ СЃС‚РёС€РѕРє:)", "РџРµС‚СЊРєР°-РїРѕСЌС‚!", "IN_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("'Я готов на ВСЁ', - отвечай в течении получаса", "Безотказный", "IN_TASK");
+values ("'РЇ РіРѕС‚РѕРІ РЅР° Р’РЎРЃ', - РѕС‚РІРµС‡Р°Р№ РІ С‚РµС‡РµРЅРёРё РїРѕР»СѓС‡Р°СЃР°", "Р‘РµР·РѕС‚РєР°Р·РЅС‹Р№", "IN_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("Притащи ведро оливьехи и накорми банду", "Щедрая душа", "PRE_TASK");
+values ("РџСЂРёС‚Р°С‰Рё РІРµРґСЂРѕ РѕР»РёРІСЊРµС…Рё Рё РЅР°РєРѕСЂРјРё Р±Р°РЅРґСѓ", "Р©РµРґСЂР°СЏ РґСѓС€Р°", "PRE_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("Лицом в оливье! Прям как в фильмах", "Ненасытный", "IN_TASK");
+values ("Р›РёС†РѕРј РІ РѕР»РёРІСЊРµ! РџСЂСЏРј РєР°Рє РІ С„РёР»СЊРјР°С…", "РќРµРЅР°СЃС‹С‚РЅС‹Р№", "IN_TASK");
 
 insert into matinee.task(task_description, task_name, task_type)
-values ("Построй пирамиду из людей! Тот, кто на вершине, пьёт конечно же)", "Повелитель горы", "IN_TASK");
+values ("РџРѕСЃС‚СЂРѕР№ РїРёСЂР°РјРёРґСѓ РёР· Р»СЋРґРµР№! РўРѕС‚, РєС‚Рѕ РЅР° РІРµСЂС€РёРЅРµ, РїСЊС‘С‚ РєРѕРЅРµС‡РЅРѕ Р¶Рµ)", "РџРѕРІРµР»РёС‚РµР»СЊ РіРѕСЂС‹", "IN_TASK");
 
-insert into role (costume_description, role_name) values ('кожух','Дед Мороззз');
-insert into role (costume_description, role_name) values ('пляття','СнЫгурочка');
-insert into role (costume_description, role_name) values ('рога','Алень');
-insert into role (costume_description, role_name) values ('горох, картоха, маянез, маркофка и тд. все перемешать','Оливье');
-insert into role (costume_description, role_name) values ('кожура','Мандаринка');
+insert into role (costume_description, role_name, role_priority) values ('РєРѕР¶СѓС…','Р”РµРґ РњРѕСЂРѕР·Р·Р·', 1);
+insert into role (costume_description, role_name, role_priority) values ('РїР»СЏС‚С‚СЏ','РЎРЅР«РіСѓСЂРѕС‡РєР°', 2);
+insert into role (costume_description, role_name, role_priority) values ('СЂРѕРіР°','РђР»РµРЅСЊ', 3);
+insert into role (costume_description, role_name, role_priority) values ('РіРѕСЂРѕС…, РєР°СЂС‚РѕС…Р°, РјР°СЏРЅРµР·, РјР°СЂРєРѕС„РєР° Рё С‚Рґ. РІСЃРµ РїРµСЂРµРјРµС€Р°С‚СЊ','РћР»РёРІСЊРµ', 4);
+insert into role (costume_description, role_name, role_priority) values ('РєРѕР¶СѓСЂР°','РњР°РЅРґР°СЂРёРЅРєР°',5);

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by Bohdan Pohotilyi on 12.12.2015.
  */
@@ -20,11 +22,11 @@ public class TaskService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public TaskProgressDto markAsDone(Long taskId){
+    public TaskProgressDto markAsDone(Long taskId) {
         //TODO: check that this task is marked by its owner participant
-        TaskProgress taskProgress = taskProgressRepository.getOne(taskId);
-
+        TaskProgress taskProgress = taskProgressRepository.getTaskFromProcess(taskId);
         taskProgress.setStatus(TaskStatus.DONE);
+        taskProgress.setDoneDate(LocalDateTime.now());
         return modelMapper.map(taskProgress, TaskProgressDto.class);
     }
 }
