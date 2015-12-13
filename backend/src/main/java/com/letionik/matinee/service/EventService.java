@@ -1,22 +1,20 @@
 package com.letionik.matinee.service;
 
-import com.letionik.matinee.CreateEventRequestDto;
-import com.letionik.matinee.EventDto;
-import com.letionik.matinee.EventStatus;
-import com.letionik.matinee.TaskStatus;
+import com.letionik.matinee.*;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Iryna Guzenko on 12.12.2015.
@@ -34,6 +32,8 @@ public class EventService {
     private TaskRepository taskRepository;
     @Autowired
     private TaskProgressRepository taskProgressRepository;
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -96,5 +96,35 @@ public class EventService {
             }
         });
         return modelMapper.map(eventRepository.getOne(eventID), EventDto.class);
+    }
+
+    @Transactional
+    public EventDto revealRoles(Long eventId){
+        Event event = eventRepository.getOne(eventId);
+        List<Participant> participants = event.getParticipants();
+        Collections.shuffle(participants);
+        Pageable topParticipant = new PageRequest(0,participants.size());
+        List<Role> roles = roleRepository.findAllByOrderByPriority(topParticipant);
+        for(int i = 0; i < participants.size(); i++){
+            participants.get(i).setRole(roles.get(0));
+            roles.remove(0);
+        }
+        EventDto eventDto = modelMapper.map(event, EventDto.class);
+        return eventDto;
+    }
+
+    @Transactional
+        public List<TaskProgressDto> getHistory(Long id){
+                Event event = eventRepository.getOne(id);
+               List<TaskProgress> taskProgresses = new ArrayList<>();
+                for(Participant participant: event.getParticipants()){
+                        for (TaskProgress taskProgress : participant.getProgressTasks()) {
+                                if(taskProgress.getStatus().equals(TaskStatus.DONE)){
+                                        taskProgresses.add(taskProgress);
+                                }
+                        }
+                }
+        Type listType =  new TypeToken<List<TaskProgress>>() {}.getType();
+        return modelMapper.map(taskProgresses, listType);
     }
 }
