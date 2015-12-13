@@ -64,6 +64,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/enroll_code_text"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -75,6 +76,7 @@
                 android:textSize="22sp" />
 
             <ImageView
+                android:id="@+id/button_enroll_event"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:src="@drawable/button_arrow" />
