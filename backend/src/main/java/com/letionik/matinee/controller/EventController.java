@@ -43,12 +43,12 @@ public class EventController {
     }
 
     @RequestMapping(value = "/reveal/roles/{eventId}", method = RequestMethod.POST)
-    public EventDto revealRoles() {
-        return new EventDto();
+    public EventDto revealRoles(Long id) {
+        return eventService.revealRoles(id);
     }
 
     @RequestMapping(value = "history/{eventId}", method = RequestMethod.GET)
-    public List<TaskProgressDto> getHistory(@PathVariable String eventId) {
-        return new ArrayList<>();
+    public List<TaskProgressDto> getHistory(@PathVariable Long eventId) {
+        return eventService.getHistory(eventId);
     }
 }

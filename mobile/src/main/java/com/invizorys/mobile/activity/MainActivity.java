@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.fragment.FragmentCreateEvent;
+import com.invizorys.mobile.fragment.FragmentCreateFindEvent;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CREATE_EVENT = "Create event";
     private Drawer drawerResult;
     private Toolbar toolbar;
-    private FragmentCreateEvent fragmentCreateEvent;
+    private FragmentCreateFindEvent fragmentCreateEvent;
     private FragmentManager fragmentManager = getFragmentManager();
 
     @Override
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragmentCreateEvent = FragmentCreateEvent.newInstance();
+        fragmentCreateEvent = FragmentCreateFindEvent.newInstance();
         FragmentHelper.add(fragmentManager, fragmentCreateEvent, FRAME_CONTAINER);
         toolbar.setTitle(CREATE_EVENT);
 

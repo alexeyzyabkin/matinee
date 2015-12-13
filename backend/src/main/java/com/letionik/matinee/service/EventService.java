@@ -3,20 +3,25 @@ package com.letionik.matinee.service;
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.EventStatus;
-import com.letionik.matinee.TaskStatus;
-import com.letionik.matinee.model.*;
-import com.letionik.matinee.repository.*;
+import com.letionik.matinee.model.Event;
+import com.letionik.matinee.model.Participant;
+import com.letionik.matinee.model.User;
+import com.letionik.matinee.repository.EventRepository;
+import com.letionik.matinee.repository.ParticipantRepository;
+import com.letionik.matinee.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Iryna Guzenko on 12.12.2015.
@@ -34,6 +39,8 @@ public class EventService {
     private TaskRepository taskRepository;
     @Autowired
     private TaskProgressRepository taskProgressRepository;
+    @Autowired
+    RoleRepository roleRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -77,24 +84,8 @@ public class EventService {
         Participant participant = new Participant();
         participant.setUser(userRepository.findOne(id));
         participant.setEvent(event);
-        participantRepository.save(participant);
+        event.addParticipant(participant);
+        participant.setEvent(event);
         return modelMapper.map(event, EventDto.class);
-    }
-
-    @Transactional
-    public EventDto revealTasks(Long eventID) {
-        List<Task> tasks = taskRepository.findAll();
-        Collections.shuffle(tasks);
-        eventRepository.getOne(eventID).getParticipants().stream().forEachOrdered(p -> {
-            for (int i = 0; i < 3; i++) {
-                TaskProgress taskProgress = new TaskProgress();
-                taskProgress.setTask(tasks.get(0));
-                taskProgress.setStatus(TaskStatus.SENT);
-                taskProgress.setParticipant(p);
-                taskProgressRepository.save(taskProgress);
-                tasks.remove(0);
-            }
-        });
-        return modelMapper.map(eventRepository.getOne(eventID), EventDto.class);
     }
 }

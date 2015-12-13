@@ -7,8 +7,19 @@ public class UserDto {
     private Long id;
     private String name;
     private String surname;
+    private String login;
     private Sex sex;
     private String avatarUrl;
+
+    public UserDto() {
+    }
+
+    public UserDto(String name, String surname, Sex sex, String avatarUrl) {
+        this.name = name;
+        this.surname = surname;
+        this.sex = sex;
+        this.avatarUrl = avatarUrl;
+    }
 
     public Long getId() {
         return id;
@@ -16,6 +27,14 @@ public class UserDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getName() {

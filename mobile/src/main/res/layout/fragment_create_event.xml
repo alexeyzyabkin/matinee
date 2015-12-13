@@ -1,79 +1,53 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="2"
     tools:context="com.invizorys.mobile.fragment.FragmentCreateEvent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/santa_claus" />
-
-        <LinearLayout
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/button_create_event"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#32CD32"
-                android:text="@string/create_event" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="100dp"
+        <EditText
+            android:id="@+id/edittext_event_name"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/beasts" />
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/edittext_bg"
+            android:hint="@string/event_name"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:textSize="22sp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/textview_date"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="@string/find_event"
-            android:textColor="#cb3f33" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edittext_bg"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/event_date"
+            android:textSize="22sp" />
 
-        <LinearLayout
-            android:layout_width="190dp"
+        <Button
+            android:id="@+id/button_create_event"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_bg" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/button_arrow"
-                android:text="join to event" />
-
-        </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_create_bg"
+            android:text="@string/create"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
     </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

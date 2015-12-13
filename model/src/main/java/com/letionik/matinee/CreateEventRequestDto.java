@@ -9,6 +9,14 @@ public class CreateEventRequestDto {
     private String name;
     private Date startDate;
 
+    public CreateEventRequestDto() {
+    }
+
+    public CreateEventRequestDto(String name, Date startDate) {
+        this.name = name;
+        this.startDate = startDate;
+    }
+
     public String getName() {
         return name;
     }
