@@ -99,32 +99,32 @@ public class EventService {
     }
 
     @Transactional
-    public EventDto revealRoles(Long eventId){
+    public EventDto revealRoles(Long eventId) {
         Event event = eventRepository.getOne(eventId);
         List<Participant> participants = event.getParticipants();
         Collections.shuffle(participants);
-        Pageable topParticipant = new PageRequest(0,participants.size());
+        Pageable topParticipant = new PageRequest(0, participants.size());
         List<Role> roles = roleRepository.findAllByOrderByPriority(topParticipant);
-        for(int i = 0; i < participants.size(); i++){
-            participants.get(i).setRole(roles.get(0));
+        for (Participant participant : participants) {
+            participant.setRole(roles.get(0));
             roles.remove(0);
         }
-        EventDto eventDto = modelMapper.map(event, EventDto.class);
-        return eventDto;
+        return modelMapper.map(event, EventDto.class);
     }
 
     @Transactional
-        public List<TaskProgressDto> getHistory(Long id){
-                Event event = eventRepository.getOne(id);
-               List<TaskProgress> taskProgresses = new ArrayList<>();
-                for(Participant participant: event.getParticipants()){
-                        for (TaskProgress taskProgress : participant.getProgressTasks()) {
-                                if(taskProgress.getStatus().equals(TaskStatus.DONE)){
-                                        taskProgresses.add(taskProgress);
-                                }
-                        }
+    public List<TaskProgressDto> getHistory(Long id) {
+        Event event = eventRepository.getOne(id);
+        List<TaskProgress> taskProgresses = new ArrayList<>();
+        for (Participant participant : event.getParticipants()) {
+            for (TaskProgress taskProgress : participant.getProgressTasks()) {
+                if (taskProgress.getStatus().equals(TaskStatus.DONE)) {
+                    taskProgresses.add(taskProgress);
                 }
-        Type listType =  new TypeToken<List<TaskProgress>>() {}.getType();
+            }
+        }
+        Type listType = new TypeToken<List<TaskProgress>>() {
+        }.getType();
         return modelMapper.map(taskProgresses, listType);
     }
 }

@@ -1,12 +1,14 @@
 package com.letionik.matinee.repository;
 
-import com.letionik.matinee.model.Task;
 import com.letionik.matinee.model.TaskProgress;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Created by Bohdan Pohotilyi on 12.12.2015.
  */
-public interface TaskProgressRepository extends JpaRepository<TaskProgress, Long>{
+public interface TaskProgressRepository extends JpaRepository<TaskProgress, Long> {
+    @Query("SELECT pr FROM TaskProgress pr WHERE pr.task.id =:id")
+    TaskProgress getTaskFromProcess(@Param(value = "id") Long taskID);
 }
