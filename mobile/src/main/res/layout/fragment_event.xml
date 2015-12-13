@@ -5,6 +5,7 @@
     tools:context="com.invizorys.mobile.fragment.FragmentEvent">
 
     <Button
+        android:id="@+id/button_show_roles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/show_roles" />
@@ -12,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/button_show_roles"
         android:orientation="horizontal">
 
         <ImageView
@@ -31,5 +33,10 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

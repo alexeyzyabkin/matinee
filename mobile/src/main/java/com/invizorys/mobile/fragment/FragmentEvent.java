@@ -2,6 +2,8 @@ package com.invizorys.mobile.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,10 @@ public class FragmentEvent extends Fragment {
         textViewName = (TextView) view.findViewById(R.id.textview_name);
         String name = currentUser.getFirstName() + " " + currentUser.getLastName();
         textViewName.setText(name);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(llm);
 
         return view;
     }
