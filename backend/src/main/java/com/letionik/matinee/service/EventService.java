@@ -111,8 +111,7 @@ public class EventService {
         Event event = eventRepository.getOne(eventId);
         List<Participant> participants = event.getParticipants();
         Collections.shuffle(participants);
-        Pageable topParticipant = new PageRequest(0, participants.size());
-        List<Role> roles = roleRepository.findAllByOrderByPriority(topParticipant);
+        List<Role> roles = roleRepository.findAllByOrderByPriority();
         for (Participant participant : participants) {
             participant.setRole(roles.get(0));
             roles.remove(0);
