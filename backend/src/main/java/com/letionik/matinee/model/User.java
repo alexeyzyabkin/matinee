@@ -17,6 +17,9 @@ public class User {
     @Column(name = "user_id")
     private Long id;
     @NotNull
+    @Column(name = "user_login")
+    private String login;
+    @NotNull
     @Column(name = "user_name")
     private String name;
     @NotNull
@@ -35,6 +38,14 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public void setName(String name) {

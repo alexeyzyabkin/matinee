@@ -43,6 +43,7 @@ public class FragmentCreateFindEvent extends Fragment implements View.OnClickLis
 
         View view = inflater.inflate(R.layout.fragment_create_find_event, container, false);
         view.findViewById(R.id.button_create_event).setOnClickListener(this);
+        view.findViewById(R.id.button_enroll_event).setOnClickListener(this);
 
         fragmentManager = getActivity().getFragmentManager();
 
