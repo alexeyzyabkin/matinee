@@ -122,17 +122,8 @@ public class EventService {
 
     @Transactional
     public List<TaskProgressDto> getHistory(Long id) {
-        Event event = eventRepository.getOne(id);
-        List<TaskProgress> taskProgresses = new ArrayList<>();
-        for (Participant participant : event.getParticipants()) {
-            for (TaskProgress taskProgress : participant.getProgressTasks()) {
-                if (taskProgress.getStatus().equals(TaskStatus.DONE)) {
-                    taskProgresses.add(taskProgress);
-                }
-            }
-        }
-        Type listType = new TypeToken<List<TaskProgress>>() {
-        }.getType();
-        return modelMapper.map(taskProgresses, listType);
+        List<TaskProgress> tasks = taskProgressRepository.findTasksByEventId(id);
+        Type listType = new TypeToken<List<TaskProgressDto>>() {}.getType();
+        return modelMapper.map(tasks, listType);
     }
 }
