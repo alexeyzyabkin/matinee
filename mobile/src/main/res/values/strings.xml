@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Matinee</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
     <integer name="com_vk_sdk_AppId">5185514</integer>
     <string name="create_event">Создать событие</string>
     <string name="find_event">Найти встречу</string>
@@ -11,5 +12,8 @@
     <string name="event_date">Дата встречи</string>
     <string name="create">Создать</string>
     <string name="show_roles">Показать роли</string>
+    <string name="event_code">Код события:</string>
+    <string name="send_tasks">Разослать задания</string>
+    <string name="show_tasks">Посмотреть задания</string>
 
 </resources>

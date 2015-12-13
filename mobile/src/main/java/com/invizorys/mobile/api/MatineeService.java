@@ -16,7 +16,8 @@ import retrofit.http.Path;
  * Created by Paryshkura Roman on 12.12.2015.
  */
 public interface MatineeService {
-    String BASE_URL = "http://192.168.1.109:8080";
+        String BASE_URL = "http://192.168.1.109:8080";
+//    String BASE_URL = "http://192.168.1.103:8080";
 
     @POST("/user")
     void register(@Body UserDto userDto, RetrofitCallback<UserDto> userDtoRetrofitCallback);
@@ -29,7 +30,7 @@ public interface MatineeService {
     void enroll(@Path("code") String code, RetrofitCallback<EventDto> userDtoRetrofitCallback);
 
     @POST("/event/reveal/tasks/{eventId}")
-    void revealTasks(@Path("eventId") String eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
+    void revealTasks(@Path("eventId") Long eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
 
     @POST("/event/reveal/roles/{eventId}")
     void revealRoles(@Path("eventId") Long eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);

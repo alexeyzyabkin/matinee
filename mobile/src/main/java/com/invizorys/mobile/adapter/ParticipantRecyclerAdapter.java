@@ -38,6 +38,15 @@ public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<Participant
         Picasso.with(context).load(participant.getAvatarUrl()).into(holder.imageViewAvatar);
         String name = participant.getFirstName() + " " + participant.getLastName();
         holder.textViewName.setText(name);
+
+        if (participant.getRole() == null) {
+            holder.imageViewArrow.setVisibility(View.VISIBLE);
+            holder.textViewRole.setVisibility(View.GONE);
+        } else {
+            holder.imageViewArrow.setVisibility(View.INVISIBLE);
+            holder.textViewRole.setVisibility(View.VISIBLE);
+            holder.textViewRole.setText(participant.getRole());
+        }
     }
 
     @Override
@@ -49,14 +58,23 @@ public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<Participant
         return participants.get(position);
     }
 
+    public void updateParticipants(ArrayList<User> participants) {
+        this.participants = participants;
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageViewAvatar;
         public TextView textViewName;
+        public TextView textViewRole;
+        public ImageView imageViewArrow;
 
         public ViewHolder(View view) {
             super(view);
             imageViewAvatar = (ImageView) view.findViewById(R.id.imageview_avatar);
             textViewName = (TextView) view.findViewById(R.id.textview_name);
+            textViewRole = (TextView) view.findViewById(R.id.textview_role);
+            imageViewArrow = (ImageView) view.findViewById(R.id.imageview_arrow);
         }
     }
 

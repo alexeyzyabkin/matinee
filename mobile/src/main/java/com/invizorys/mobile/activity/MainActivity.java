@@ -12,7 +12,10 @@ import android.view.View;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.fragment.FragmentCreateFindEvent;
+import com.invizorys.mobile.fragment.FragmentEvent;
+import com.invizorys.mobile.model.UpdateParticipants;
 import com.invizorys.mobile.util.FragmentHelper;
+import com.invizorys.mobile.util.Settings;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -24,13 +27,14 @@ import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
+import de.greenrobot.event.EventBus;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final int FRAME_CONTAINER = R.id.activity_main_container;
     public static final String CREATE_EVENT = "Create event";
     private Drawer drawerResult;
     private Toolbar toolbar;
-    private FragmentCreateFindEvent fragmentCreateEvent;
     private FragmentManager fragmentManager = getFragmentManager();
 
     @Override
@@ -40,8 +44,12 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragmentCreateEvent = FragmentCreateFindEvent.newInstance();
-        FragmentHelper.add(fragmentManager, fragmentCreateEvent, FRAME_CONTAINER);
+        Long currentEventId = Settings.fetchCurrentEventId(this);
+        if (currentEventId > -1) {
+            FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(currentEventId), FRAME_CONTAINER);
+        } else {
+            FragmentHelper.add(fragmentManager, FragmentCreateFindEvent.newInstance(), FRAME_CONTAINER);
+        }
         toolbar.setTitle(CREATE_EVENT);
 
         drawerInit();
@@ -67,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_refresh) {
+            EventBus.getDefault().post(new UpdateParticipants());
         }
 
         return super.onOptionsItemSelected(item);
@@ -93,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         if (drawerItem instanceof Nameable) {
                             switch (((Nameable) drawerItem).getName().toString()) {
                                 case CREATE_EVENT:
-                                    FragmentHelper.add(fragmentManager, fragmentCreateEvent, FRAME_CONTAINER);
+                                    FragmentHelper.add(fragmentManager, FragmentCreateFindEvent.newInstance(), FRAME_CONTAINER);
                                     toolbar.setTitle(CREATE_EVENT);
                                     break;
                             }
@@ -122,12 +130,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
-        if(drawerResult.isDrawerOpen()){
+    public void onBackPressed() {
+        if (drawerResult.isDrawerOpen()) {
             drawerResult.closeDrawer();
-        }
-        else{
+        } else {
             super.onBackPressed();
         }
+    }
+
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
     }
 }

@@ -15,6 +15,7 @@ import com.invizorys.mobile.api.MatineeService;
 import com.invizorys.mobile.api.RetrofitCallback;
 import com.invizorys.mobile.api.ServiceGenerator;
 import com.invizorys.mobile.util.FragmentHelper;
+import com.invizorys.mobile.util.Utils;
 import com.letionik.matinee.EventDto;
 
 import retrofit.RetrofitError;
@@ -62,6 +63,7 @@ public class FragmentCreateFindEvent extends Fragment implements View.OnClickLis
                         MainActivity.FRAME_CONTAINER);
                 break;
             case R.id.button_enroll_event:
+                Utils.hideKeyBoard(getActivity());
                 String code = enrollCodeText.getText().toString();
                 matineeService.enroll(code, new RetrofitCallback<EventDto>(getActivity()) {
                     @Override

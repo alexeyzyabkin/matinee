@@ -11,6 +11,7 @@ public class User {
     private String avatarUrl;
     private String sex;
     private String birthDate;
+    private String role;
 
     public User() {
     }
@@ -75,5 +76,13 @@ public class User {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

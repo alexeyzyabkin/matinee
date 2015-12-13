@@ -14,6 +14,7 @@ public class Settings {
 
     public static final String USER = "user";
     public static final String APP_NAME = "Matinee";
+    public static final String EVENT_ID = "eventId";
 
     public static void saveUser(Activity activity, User user) {
         SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
@@ -29,6 +30,18 @@ public class Settings {
         SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
         String json = mPrefs.getString(USER, "");
         return gson.fromJson(json, User.class);
+    }
+
+    public static void saveCurrentEventId(Activity activity, Long currentEventId) {
+        SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        prefsEditor.putLong(EVENT_ID, currentEventId);
+        prefsEditor.apply();
+    }
+
+    public static Long fetchCurrentEventId(Activity activity) {
+        SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
+        return mPrefs.getLong(EVENT_ID, -1);
     }
 
 }
