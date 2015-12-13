@@ -20,7 +20,10 @@ public class UserService {
 
     @Transactional
     public UserDto authorize(UserDto userDto) {
-        User user = userDto.getId() == null ? userRepository.save(modelMapper.map(userDto, User.class)) : userRepository.findOne(userDto.getId());
+        User user = userRepository.findOneByLogin(userDto.getLogin());
+        if (user == null) {
+            user = userRepository.save(modelMapper.map(userDto, User.class));
+        }
         userDto.setId(user.getId());
         return userDto;
     }

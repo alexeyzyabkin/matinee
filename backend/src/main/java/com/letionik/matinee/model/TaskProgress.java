@@ -4,6 +4,7 @@ import com.letionik.matinee.TaskStatus;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by Iryna Guzenko on 12.12.2015.
@@ -28,8 +29,6 @@ public class TaskProgress {
     private TaskStatus status = TaskStatus.NEW;
     @Column(name = "task_done_date")
     private LocalDateTime doneDate;
-    @Column(name = "task_recieved_date")
-    private LocalDateTime receivedDate;
 
     public Long getId() {
         return id;
@@ -65,5 +64,13 @@ public class TaskProgress {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getDoneDate() {
+        return doneDate;
+    }
+
+    public void setDoneDate(LocalDateTime doneDate) {
+        this.doneDate = doneDate;
     }
 }

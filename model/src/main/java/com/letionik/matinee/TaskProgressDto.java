@@ -9,7 +9,6 @@ public class TaskProgressDto {
     private Long id;
     private TaskDto task;
     private TaskStatus status;
-    private Date receivedDate;
     private Date doneDate;
 
     public Long getId() {
@@ -34,14 +33,6 @@ public class TaskProgressDto {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
-    }
-
-    public Date getReceivedDate() {
-        return receivedDate;
-    }
-
-    public void setReceivedDate(Date receivedDate) {
-        this.receivedDate = receivedDate;
     }
 
     public Date getDoneDate() {

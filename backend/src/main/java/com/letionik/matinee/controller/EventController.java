@@ -34,18 +34,17 @@ public class EventController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/enroll/{code}")
     public EventDto enroll(@PathVariable String code, HttpSession session) {
-        eventService.enroll(code, (Long) session.getAttribute("user"));
-        return new EventDto();
+        return eventService.enroll(code, (Long) session.getAttribute("user"));
     }
 
     @RequestMapping(value = "/reveal/tasks/{eventId}", method = RequestMethod.POST)
     public EventDto revealTasks(@PathVariable Long eventId) {
-        return new EventDto();
+        return eventService.revealTasks(eventId);
     }
 
     @RequestMapping(value = "/reveal/roles/{eventId}", method = RequestMethod.POST)
-    public EventDto revealRoles(Long id) {
-        return eventService.revealRoles(id);
+    public EventDto revealRoles(@PathVariable Long eventId) {
+        return eventService.revealRoles(eventId);
     }
 
     @RequestMapping(value = "history/{eventId}", method = RequestMethod.GET)
