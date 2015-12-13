@@ -80,7 +80,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onUserReceive(User user) {
         Settings.saveUser(this, user);
 
-        matineeService.register(new UserDto(user.getFirstName(), user.getLastName(), Sex.parseSex(user.getSex()),
+        matineeService.register(new UserDto(user.getSocialId(), user.getFirstName(),
+                user.getLastName(), Sex.parseSex(user.getSex()),
                 user.getAvatarUrl()), new RetrofitCallback<UserDto>(LoginActivity.this) {
             @Override
             public void success(UserDto userDto, Response response) {

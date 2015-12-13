@@ -12,6 +12,15 @@ public class User {
     private String sex;
     private String birthDate;
 
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String avatarUrl) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.avatarUrl = avatarUrl;
+    }
+
     public String getSocialId() {
         return socialId;
     }

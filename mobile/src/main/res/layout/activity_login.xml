@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_screen_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.invizorys.mobile.activity.LoginActivity">
@@ -9,8 +10,8 @@
     <Button
         android:id="@+id/button_login_vk"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:text="Log in with VK" />
+        android:background="@null" />
 
 </RelativeLayout>

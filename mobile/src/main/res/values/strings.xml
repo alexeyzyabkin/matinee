@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mobile</string>
+    <string name="app_name">Matinee</string>
     <string name="action_settings">Settings</string>
     <integer name="com_vk_sdk_AppId">5185514</integer>
     <string name="create_event">Создать событие</string>

@@ -32,11 +32,11 @@ public interface MatineeService {
     void revealTasks(@Path("eventId") String eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
 
     @POST("/event/reveal/roles/{eventId}")
-    void revealRoles(@Path("eventId") String eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
+    void revealRoles(@Path("eventId") Long eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
 
     @POST("/event/history/{eventId}")
     void getHistory(@Path("eventId") String eventId, RetrofitCallback<List<TaskProgressDto>> userDtoRetrofitCallback);
 
     @GET("/event/{eventId}")
-    void getCurrentEvent(@Path("eventId") String eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
+    void getCurrentEvent(@Path("eventId") Long eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
 }

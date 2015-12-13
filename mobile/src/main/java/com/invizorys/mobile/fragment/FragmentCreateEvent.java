@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bruce.pickerview.popwindow.DatePickerPopWin;
 import com.invizorys.mobile.R;
@@ -77,8 +78,11 @@ public class FragmentCreateEvent extends Fragment implements View.OnClickListene
         matineeService.createEvent(new CreateEventRequestDto(name, startDate), new RetrofitCallback<EventDto>(getActivity()) {
             @Override
             public void success(EventDto eventDto, Response response) {
-                String ff = "";
-                FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(),
+                if (eventDto.getId() == null) {
+                    Toast.makeText(getActivity(), "eventDto null", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(eventDto.getId()),
                         MainActivity.FRAME_CONTAINER);
             }
 
