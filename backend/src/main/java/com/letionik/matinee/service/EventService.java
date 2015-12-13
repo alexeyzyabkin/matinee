@@ -93,7 +93,9 @@ public class EventService {
     public EventDto revealTasks(Long eventID) {
         List<Task> tasks = taskRepository.findAll();
         Collections.shuffle(tasks);
-        eventRepository.getOne(eventID).getParticipants().stream().forEachOrdered(p -> {
+        Event event = eventRepository.getOne(eventID);
+        event.setStatus(EventStatus.TASKS_REVEALED);
+        event.getParticipants().stream().forEachOrdered(p -> {
             for (int i = 0; i < 3; i++) {
                 TaskProgress taskProgress = new TaskProgress();
                 taskProgress.setTask(tasks.get(0));
@@ -103,12 +105,13 @@ public class EventService {
                 tasks.remove(0);
             }
         });
-        return modelMapper.map(eventRepository.getOne(eventID), EventDto.class);
+        return modelMapper.map(event, EventDto.class);
     }
 
     @Transactional
     public EventDto revealRoles(Long eventId) {
         Event event = eventRepository.getOne(eventId);
+        event.setStatus(EventStatus.ROLES_REVEALED);
         List<Participant> participants = event.getParticipants();
         Collections.shuffle(participants);
         List<Role> roles = roleRepository.findAllByOrderByPriority();
