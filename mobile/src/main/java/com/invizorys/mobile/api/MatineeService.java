@@ -16,8 +16,7 @@ import retrofit.http.Path;
  * Created by Paryshkura Roman on 12.12.2015.
  */
 public interface MatineeService {
-        String BASE_URL = "http://192.168.1.109:8080";
-//    String BASE_URL = "http://192.168.1.103:8080";
+    String BASE_URL = "http://192.168.11.179:8080";
 
     @POST("/user")
     void register(@Body UserDto userDto, RetrofitCallback<UserDto> userDtoRetrofitCallback);

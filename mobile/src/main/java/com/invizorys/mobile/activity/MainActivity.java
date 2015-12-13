@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             EventBus.getDefault().post(new UpdateParticipants());
+        } else if (id == R.id.action_logout) {
+            Settings.saveCurrentEventId(this, (long) -1);
         }
 
         return super.onOptionsItemSelected(item);
