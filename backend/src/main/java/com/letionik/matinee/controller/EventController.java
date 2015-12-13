@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Alexey Zyabkin on 12.12.2015.
@@ -21,10 +19,9 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public EventDto getCurrentEvent(HttpSession session) {
-        Long userID = (Long) session.getAttribute("user");
-        return eventService.getCurrentEvent(userID);
+    @RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
+    public EventDto getCurrentEvent(@PathVariable Long eventId) {
+        return eventService.getEventInfo(eventId);
     }
 
     @RequestMapping(method = RequestMethod.POST)

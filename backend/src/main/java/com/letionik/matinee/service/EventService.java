@@ -3,6 +3,15 @@ package com.letionik.matinee.service;
 import com.letionik.matinee.*;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
+import com.letionik.matinee.*;
+import com.letionik.matinee.model.Event;
+import com.letionik.matinee.model.Participant;
+import com.letionik.matinee.model.TaskProgress;
+import com.letionik.matinee.model.User;
+import com.letionik.matinee.repository.EventRepository;
+import com.letionik.matinee.repository.ParticipantRepository;
+import com.letionik.matinee.repository.RoleRepository;
+import com.letionik.matinee.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +47,8 @@ public class EventService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public EventDto getCurrentEvent(Long id) {
-        Participant participant = participantRepository.getParticipantByUserID(id);
-        Event event = eventRepository.getEventByParticipantID(participant.getId());
+    public EventDto getEventInfo(Long id) {
+        Event event = eventRepository.findOne(id);
         return modelMapper.map(event, EventDto.class);
     }
 
