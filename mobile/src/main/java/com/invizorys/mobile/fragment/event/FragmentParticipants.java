@@ -1,4 +1,4 @@
-package com.invizorys.mobile.fragment;
+package com.invizorys.mobile.fragment.event;
 
 import android.app.Dialog;
 import android.app.Fragment;
@@ -37,7 +37,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class FragmentEvent extends Fragment implements View.OnClickListener {
+public class FragmentParticipants extends Fragment implements View.OnClickListener {
     private User currentUser;
     private Button buttonShowRoles;
     private ImageView imageViewAvatar;
@@ -50,15 +50,15 @@ public class FragmentEvent extends Fragment implements View.OnClickListener {
 
     private static final String EVENT_ID = "event_id";
 
-    public static FragmentEvent newInstance(Long eventId) {
-        FragmentEvent fragment = new FragmentEvent();
+    public static FragmentParticipants newInstance(Long eventId) {
+        FragmentParticipants fragment = new FragmentParticipants();
         Bundle args = new Bundle();
         args.putLong(EVENT_ID, eventId);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public FragmentEvent() {
+    public FragmentParticipants() {
         // Required empty public constructor
     }
 
@@ -89,7 +89,7 @@ public class FragmentEvent extends Fragment implements View.OnClickListener {
             eventId = getArguments().getLong(EVENT_ID);
         }
 
-        View view = inflater.inflate(R.layout.fragment_event, container, false);
+        View view = inflater.inflate(R.layout.fragment_participants, container, false);
         matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
         textViewEventCode = (TextView) view.findViewById(R.id.textview_event_code);
         buttonShowRoles = (Button) view.findViewById(R.id.button_show_roles);

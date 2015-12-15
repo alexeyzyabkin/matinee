@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.fragment.FragmentCreateFindEvent;
-import com.invizorys.mobile.fragment.FragmentEvent;
+import com.invizorys.mobile.fragment.event.FragmentEvent;
 import com.invizorys.mobile.model.UpdateParticipants;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.invizorys.mobile.util.Settings;
@@ -44,13 +44,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Long currentEventId = Settings.fetchCurrentEventId(this);
-        if (currentEventId > -1) {
-            FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(currentEventId), FRAME_CONTAINER);
-        } else {
-            FragmentHelper.add(fragmentManager, FragmentCreateFindEvent.newInstance(), FRAME_CONTAINER);
-        }
-        toolbar.setTitle(CREATE_EVENT);
+        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(), FRAME_CONTAINER);
+
+//        Long currentEventId = Settings.fetchCurrentEventId(this);
+//        if (currentEventId > -1) {
+//            FragmentHelper.add(fragmentManager, FragmentEventParticipants.newInstance(currentEventId), FRAME_CONTAINER);
+//        } else {
+//            FragmentHelper.add(fragmentManager, FragmentCreateFindEvent.newInstance(), FRAME_CONTAINER);
+//        }
+//        toolbar.setTitle(CREATE_EVENT);
 
         drawerInit();
     }

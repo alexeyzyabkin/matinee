@@ -14,6 +14,7 @@ import com.invizorys.mobile.activity.MainActivity;
 import com.invizorys.mobile.api.MatineeService;
 import com.invizorys.mobile.api.RetrofitCallback;
 import com.invizorys.mobile.api.ServiceGenerator;
+import com.invizorys.mobile.fragment.event.FragmentParticipants;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.invizorys.mobile.util.Utils;
 import com.letionik.matinee.EventDto;
@@ -72,7 +73,7 @@ public class FragmentCreateFindEvent extends Fragment implements View.OnClickLis
                             Toast.makeText(getActivity(), "eventDto null", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(eventDto.getId()),
+                        FragmentHelper.add(fragmentManager, FragmentParticipants.newInstance(eventDto.getId()),
                                 MainActivity.FRAME_CONTAINER);
                     }
 

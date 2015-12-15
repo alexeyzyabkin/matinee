@@ -1,62 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.invizorys.mobile.fragment.FragmentEvent">
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_show_roles"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/show_roles"
-        android:visibility="gone" />
+        android:background="#CC4033"
+        app:tabSelectedTextColor="#FFFFFF"
+        app:tabTextColor="#000000" />
 
-    <LinearLayout
-        android:id="@+id/container_current_user"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_show_roles"
-        android:orientation="horizontal">
+        android:layout_height="match_parent" />
 
-        <ImageView
-            android:id="@+id/imageview_avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textview_event_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/textview_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/container_current_user"
-        android:layout_marginTop="2dp"
-        android:background="#C0C0C0" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/divider"
-        android:layout_marginTop="2dp" />
-
-</RelativeLayout>
+</LinearLayout>  

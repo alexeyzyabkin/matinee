@@ -16,5 +16,8 @@
     <string name="event_code">Код события:</string>
     <string name="send_tasks">Разослать задания</string>
     <string name="show_tasks">Посмотреть задания</string>
+    <string name="participants">Участники</string>
+    <string name="history">История</string>
+    <string name="my_tasks">Мои задания</string>
 
 </resources>
