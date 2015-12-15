@@ -20,7 +20,6 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     private FragmentParticipants fragmentParticipants = FragmentParticipants.newInstance((long) 1);
     private FragmentHistory fragmentHistory = FragmentHistory.newInstance();
 
-
     public TabPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;

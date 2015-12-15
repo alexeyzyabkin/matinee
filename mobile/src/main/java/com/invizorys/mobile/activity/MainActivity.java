@@ -2,6 +2,7 @@ package com.invizorys.mobile.activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 }).build();
+        drawerResult.setStatusBarColor(Color.parseColor("#CC4033"));
     }
 
     @Override
