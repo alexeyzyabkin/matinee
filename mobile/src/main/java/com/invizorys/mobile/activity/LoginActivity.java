@@ -20,6 +20,7 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
+import com.vk.sdk.util.VKUtil;
 
 import java.util.ArrayList;
 
@@ -38,8 +39,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
 
-//        String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
-//        Log.e("Vk", fingerprints[0]);
+        String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
+        Log.e("Vk", fingerprints[0]);
 
     }
 

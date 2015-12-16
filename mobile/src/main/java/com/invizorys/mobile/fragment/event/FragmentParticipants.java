@@ -3,6 +3,8 @@ package com.invizorys.mobile.fragment.event;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,7 +39,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class FragmentParticipants extends Fragment implements View.OnClickListener {
+public class FragmentParticipants extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private User currentUser;
     private Button buttonShowRoles;
     private ImageView imageViewAvatar;
@@ -47,6 +49,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     private RecyclerView recyclerView;
     private ParticipantRecyclerAdapter adapter;
     private EventStatus eventStatus;
+    private SwipeRefreshLayout swipeLayout;
 
     private static final String EVENT_ID = "event_id";
 
@@ -85,11 +88,16 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_participants, container, false);
+
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorSchemeColors(getResources().getColor(R.color.md_red_500));
+
         if (getArguments() != null) {
             eventId = getArguments().getLong(EVENT_ID);
         }
 
-        View view = inflater.inflate(R.layout.fragment_participants, container, false);
         matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
         textViewEventCode = (TextView) view.findViewById(R.id.textview_event_code);
         buttonShowRoles = (Button) view.findViewById(R.id.button_show_roles);
@@ -235,5 +243,15 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
 
     public void onEvent(UpdateParticipants updateParticipants) {
         getCurrentEvent(eventId);
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(false);
+            }
+        }, 5000);
     }
 }

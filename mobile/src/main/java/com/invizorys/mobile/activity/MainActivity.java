@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 }).build();
-        drawerResult.setStatusBarColor(Color.parseColor("#CC4033"));
+        drawerResult.setStatusBarColor(getResources().getColor(R.color.md_red_500));
     }
 
     @Override
