@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.api.MatineeService;
-import com.invizorys.mobile.api.RetrofitCallback;
-import com.invizorys.mobile.api.ServiceGenerator;
+import com.invizorys.mobile.network.api.MatineeService;
+import com.invizorys.mobile.network.api.RetrofitCallback;
+import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.invizorys.mobile.callback.SocialNetworkCallback;
 import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.util.Settings;

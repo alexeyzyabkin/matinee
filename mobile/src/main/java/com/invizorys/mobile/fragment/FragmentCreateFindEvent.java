@@ -11,9 +11,9 @@ import android.widget.Toast;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.activity.MainActivity;
-import com.invizorys.mobile.api.MatineeService;
-import com.invizorys.mobile.api.RetrofitCallback;
-import com.invizorys.mobile.api.ServiceGenerator;
+import com.invizorys.mobile.network.api.MatineeService;
+import com.invizorys.mobile.network.api.RetrofitCallback;
+import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.invizorys.mobile.fragment.event.FragmentParticipants;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.invizorys.mobile.util.Utils;

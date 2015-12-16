@@ -19,5 +19,6 @@
     <string name="participants">Участники</string>
     <string name="history">История</string>
     <string name="my_tasks">Мои задания</string>
+    <string name="gcm_sender_id">261304766293</string>
 
 </resources>
