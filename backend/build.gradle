@@ -12,6 +12,9 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
     }
+    configurations {
+        compile.exclude module: "spring-boot-starter-tomcat"
+    }
 }
 
 jar {
@@ -31,7 +34,12 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     compile('org.springframework.boot:spring-boot-starter-mobile')
     compile("org.modelmapper:modelmapper:0.7.5")
+
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-undertow")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+
     runtime('mysql:mysql-connector-java')
     testCompile("com.h2database:h2")
     testCompile('org.springframework.boot:spring-boot-starter-test')
