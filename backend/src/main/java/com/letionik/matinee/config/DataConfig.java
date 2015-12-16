@@ -59,7 +59,8 @@ public class DataConfig {
             dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
             dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
         } else {
-            String stand = env.getRequiredProperty(STAND_SYSTEM_PROPERTY_NAME);
+            String stand = env.getProperty(STAND_SYSTEM_PROPERTY_NAME);
+            if (StringUtils.isEmpty(stand)) stand = "openshift";
             try {
                 Properties devProperties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(DEV_PROPERTIES_PATH_TEMPLATE.replace("{stand}", stand)));
                 dataSource.setUrl(devProperties.getProperty(PROP_DATABASE_URL));
@@ -95,14 +96,14 @@ public class DataConfig {
         modelMapper.addConverter(new AbstractConverter<Date, LocalDateTime>() {
             @Override
             protected LocalDateTime convert(Date source) {
-                if(source == null) return null;
+                if (source == null) return null;
                 return LocalDateTime.ofInstant(source.toInstant(), ZoneId.systemDefault());
             }
         });
         modelMapper.addConverter(new AbstractConverter<LocalDateTime, Date>() {
             @Override
             protected Date convert(LocalDateTime source) {
-                if(source == null) return null;
+                if (source == null) return null;
                 return Date.from(source.atZone(ZoneId.systemDefault()).toInstant());
             }
         });
