@@ -8,7 +8,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#CC4033"
+        android:background="@color/md_red_700"
         app:tabSelectedTextColor="#FFFFFF"
         app:tabTextColor="#000000" />
 
