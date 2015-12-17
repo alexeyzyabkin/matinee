@@ -28,8 +28,6 @@ public class TaskProgress {
     @Enumerated
     @Column(name = "task_progress_task_status")
     private TaskStatus status = TaskStatus.NEW;
-    @Column(name = "task_progress_done_date")
-    private LocalDateTime doneDate;
 
     public Long getId() {
         return id;
@@ -65,13 +63,5 @@ public class TaskProgress {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
-    }
-
-    public LocalDateTime getDoneDate() {
-        return doneDate;
-    }
-
-    public void setDoneDate(LocalDateTime doneDate) {
-        this.doneDate = doneDate;
     }
 }

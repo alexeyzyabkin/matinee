@@ -22,7 +22,7 @@ public class Participant {
     @ManyToOne
     @JoinColumn(name = "participant_role_id", foreignKey = @ForeignKey(name = "paricipant_role_fk"))
     private Role role;
-    @OneToMany(mappedBy = "participant")
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private List<TaskProgress> progressTasks = new ArrayList<>();
     @NotNull
     @ManyToOne
