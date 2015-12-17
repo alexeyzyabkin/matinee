@@ -67,17 +67,18 @@ public class DataConfig {
         } else {
             String stand = env.getProperty(STAND_SYSTEM_PROPERTY_NAME);
             if (StringUtils.isEmpty(stand)) {
-                dataSource.setUrl(String.format(DB_CONNECTION_PATTERN, OPENSHIFT_MYSQL_DB_HOST, OPENSHIFT_MYSQL_DB_PORT, OPENSHIFT_APP_NAME));
+                dataSource.setUrl(String.format(DB_CONNECTION_PATTERN, env.getRequiredProperty(OPENSHIFT_MYSQL_DB_HOST), env.getRequiredProperty(OPENSHIFT_MYSQL_DB_PORT), env.getRequiredProperty(OPENSHIFT_APP_NAME)));
                 dataSource.setUsername(env.getRequiredProperty(OPENSHIFT_MYSQL_DB_USERNAME));
                 dataSource.setPassword(env.getRequiredProperty(OPENSHIFT_MYSQL_DB_PASSWORD));
-            }
-            try {
-                Properties devProperties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(DEV_PROPERTIES_PATH_TEMPLATE.replace("{stand}", stand)));
-                dataSource.setUrl(devProperties.getProperty(PROP_DATABASE_URL));
-                dataSource.setUsername(devProperties.getProperty(PROP_DATABASE_USERNAME));
-                dataSource.setPassword(devProperties.getProperty(PROP_DATABASE_PASSWORD));
-            } catch (IOException e) {
-                log.error("Can not read the file with developer's settings. Stand : " + stand, e);
+            } else {
+                try {
+                    Properties devProperties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(DEV_PROPERTIES_PATH_TEMPLATE.replace("{stand}", stand)));
+                    dataSource.setUrl(devProperties.getProperty(PROP_DATABASE_URL));
+                    dataSource.setUsername(devProperties.getProperty(PROP_DATABASE_USERNAME));
+                    dataSource.setPassword(devProperties.getProperty(PROP_DATABASE_PASSWORD));
+                } catch (IOException e) {
+                    log.error("Can not read the file with developer's settings. Stand : " + stand, e);
+                }
             }
         }
         return dataSource;
