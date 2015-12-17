@@ -59,27 +59,24 @@ public class DataConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
+
         boolean testPhase = !StringUtils.isEmpty(env.getProperty(PROP_DATABASE_URL));
         if (testPhase) {
-            dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
-            dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
-            dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
-        } else {
-            String stand = env.getProperty(STAND_SYSTEM_PROPERTY_NAME);
-            if (StringUtils.isEmpty(stand)) {
-                dataSource.setUrl(String.format(DB_CONNECTION_PATTERN, env.getRequiredProperty(OPENSHIFT_MYSQL_DB_HOST), env.getRequiredProperty(OPENSHIFT_MYSQL_DB_PORT), env.getRequiredProperty(OPENSHIFT_APP_NAME)));
-                dataSource.setUsername(env.getRequiredProperty(OPENSHIFT_MYSQL_DB_USERNAME));
-                dataSource.setPassword(env.getRequiredProperty(OPENSHIFT_MYSQL_DB_PASSWORD));
-            } else {
-                try {
-                    Properties devProperties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(DEV_PROPERTIES_PATH_TEMPLATE.replace("{stand}", stand)));
-                    dataSource.setUrl(devProperties.getProperty(PROP_DATABASE_URL));
-                    dataSource.setUsername(devProperties.getProperty(PROP_DATABASE_USERNAME));
-                    dataSource.setPassword(devProperties.getProperty(PROP_DATABASE_PASSWORD));
-                } catch (IOException e) {
-                    log.error("Can not read the file with developer's settings. Stand : " + stand, e);
-                }
-            }
+            return setDbProperties(dataSource, env.getRequiredProperty(PROP_DATABASE_URL), env.getRequiredProperty(PROP_DATABASE_USERNAME), env.getRequiredProperty(PROP_DATABASE_PASSWORD));
+        }
+
+        String stand = env.getProperty(STAND_SYSTEM_PROPERTY_NAME);
+        final boolean isOpenShift = StringUtils.isEmpty(stand);
+        if (isOpenShift) {
+            final String openshiftDbUrl = String.format(DB_CONNECTION_PATTERN, env.getRequiredProperty(OPENSHIFT_MYSQL_DB_HOST), env.getRequiredProperty(OPENSHIFT_MYSQL_DB_PORT), env.getRequiredProperty(OPENSHIFT_APP_NAME));
+            return setDbProperties(dataSource, openshiftDbUrl, env.getRequiredProperty(OPENSHIFT_MYSQL_DB_USERNAME), env.getRequiredProperty(OPENSHIFT_MYSQL_DB_PASSWORD));
+        }
+
+        try {
+            Properties devProperties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(DEV_PROPERTIES_PATH_TEMPLATE.replace("{stand}", stand)));
+            return setDbProperties(dataSource, devProperties.getProperty(PROP_DATABASE_URL), devProperties.getProperty(PROP_DATABASE_USERNAME), devProperties.getProperty(PROP_DATABASE_PASSWORD));
+        } catch (IOException e) {
+            log.error("Can not read the file with developer's settings. Stand : " + stand, e);
         }
         return dataSource;
     }
@@ -127,5 +124,12 @@ public class DataConfig {
         properties.put(PROP_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
         properties.put(PROP_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
         return properties;
+    }
+
+    private DataSource setDbProperties(DriverManagerDataSource dataSource, String url, String username, String password) {
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        return dataSource;
     }
 }
