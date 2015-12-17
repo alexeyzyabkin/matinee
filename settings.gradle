@@ -2,4 +2,4 @@ rootProject.name = 'matinee'
 
 include 'model'
 include 'backend'
-//include ':mobile'
+include ':mobile'

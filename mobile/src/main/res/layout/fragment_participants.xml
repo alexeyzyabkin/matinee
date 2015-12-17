@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.invizorys.mobile.fragment.event.FragmentParticipants">
+    tools:context=".ui.fragment.event.FragmentParticipants">
 
     <Button
         android:id="@+id/button_show_roles"

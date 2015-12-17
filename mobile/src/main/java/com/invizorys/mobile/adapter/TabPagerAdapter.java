@@ -6,9 +6,9 @@ import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.fragment.event.FragmentHistory;
-import com.invizorys.mobile.fragment.event.FragmentMyTasks;
-import com.invizorys.mobile.fragment.event.FragmentParticipants;
+import com.invizorys.mobile.ui.fragment.event.FragmentHistory;
+import com.invizorys.mobile.ui.fragment.event.FragmentMyTasks;
+import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
 
 /**
  * Created by Paryshkura Roman on 15.12.2015.

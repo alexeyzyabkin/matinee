@@ -3,7 +3,7 @@
     android:id="@+id/swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.invizorys.mobile.fragment.event.FragmentHistory">
+    tools:context=".ui.fragment.event.FragmentHistory">
 
     <ScrollView
         android:layout_width="match_parent"

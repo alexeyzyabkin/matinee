@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="2"
-    tools:context="com.invizorys.mobile.fragment.FragmentCreateFindEvent">
+    tools:context=".ui.fragment.FragmentCreateFindEvent">
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.activity.MainActivity;
+import com.invizorys.mobile.ui.activity.MainActivity;
 
 /**
  * Created by Paryshkura Roman on 16.12.2015.
