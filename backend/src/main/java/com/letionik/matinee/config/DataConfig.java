@@ -45,6 +45,12 @@ public class DataConfig {
     private static final String PROP_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String PROP_ENTITY_MANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
     private static final String PROP_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+    private static final String OPENSHIFT_MYSQL_DB_USERNAME = "OPENSHIFT_MYSQL_DB_USERNAME";
+    private static final String OPENSHIFT_MYSQL_DB_PASSWORD = "OPENSHIFT_MYSQL_DB_PASSWORD";
+    private static final String OPENSHIFT_MYSQL_DB_HOST = "OPENSHIFT_MYSQL_DB_HOST";
+    private static final String OPENSHIFT_MYSQL_DB_PORT = "OPENSHIFT_MYSQL_DB_PORT";
+    private static final String OPENSHIFT_APP_NAME = "OPENSHIFT_APP_NAME";
+    private static final String DB_CONNECTION_PATTERN = "jdbc:mysql://%s:%s/%s";
 
     @Resource
     private Environment env;
@@ -60,7 +66,11 @@ public class DataConfig {
             dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
         } else {
             String stand = env.getProperty(STAND_SYSTEM_PROPERTY_NAME);
-            if (StringUtils.isEmpty(stand)) stand = "openshift";
+            if (StringUtils.isEmpty(stand)) {
+                dataSource.setUrl(String.format(DB_CONNECTION_PATTERN, OPENSHIFT_MYSQL_DB_HOST, OPENSHIFT_MYSQL_DB_PORT, OPENSHIFT_APP_NAME));
+                dataSource.setUsername(env.getRequiredProperty(OPENSHIFT_MYSQL_DB_USERNAME));
+                dataSource.setPassword(env.getRequiredProperty(OPENSHIFT_MYSQL_DB_PASSWORD));
+            }
             try {
                 Properties devProperties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(DEV_PROPERTIES_PATH_TEMPLATE.replace("{stand}", stand)));
                 dataSource.setUrl(devProperties.getProperty(PROP_DATABASE_URL));
