@@ -15,15 +15,12 @@ public class Task {
     @Column(name = "task_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     @Column(name = "task_name")
     private String name;
-
     @NotNull
     @Column(name = "task_description")
     private String description;
-
     @NotNull
     @Column(name = "task_type")
     @Enumerated(EnumType.STRING)

@@ -71,7 +71,6 @@ public class EventService {
         Participant admin = new Participant();
         admin.setUser(user);
         admin.setEvent(event);
-        event.setAdmin(user);
         participantRepository.save(admin);
 
         event.addParticipant(admin);
@@ -91,21 +90,22 @@ public class EventService {
 
     @Transactional
     public EventDto revealTasks(Long eventID) {
-        List<Task> tasks = taskRepository.findAll();
-        Collections.shuffle(tasks);
-        Event event = eventRepository.getOne(eventID);
-        event.setStatus(EventStatus.TASKS_REVEALED);
-        event.getParticipants().stream().forEachOrdered(p -> {
-            for (int i = 0; i < 3; i++) {
-                TaskProgress taskProgress = new TaskProgress();
-                taskProgress.setTask(tasks.get(0));
-                taskProgress.setStatus(TaskStatus.SENT);
-                taskProgress.setParticipant(p);
-                taskProgressRepository.save(taskProgress);
-                tasks.remove(0);
-            }
-        });
-        return modelMapper.map(event, EventDto.class);
+//        List<Task> tasks = taskRepository.findAll();
+//        Collections.shuffle(tasks);
+//        Event event = eventRepository.getOne(eventID);
+//        event.setStatus(EventStatus.TASKS_REVEALED);
+//        event.getParticipants().stream().forEachOrdered(p -> {
+//            for (int i = 0; i < 3; i++) {
+//                TaskProgress taskProgress = new TaskProgress();
+//                taskProgress.setTask(tasks.get(0));
+//                taskProgress.setStatus(TaskStatus.SENT);
+//                taskProgress.setParticipant(p);
+//                taskProgressRepository.save(taskProgress);
+//                tasks.remove(0);
+//            }
+//        });
+//        return modelMapper.map(event, EventDto.class);
+        return new EventDto();
     }
 
     @Transactional

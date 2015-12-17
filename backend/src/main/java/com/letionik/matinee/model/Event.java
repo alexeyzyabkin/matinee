@@ -25,9 +25,6 @@ public class Event {
     private LocalDateTime creationDate;
     @Column(name = "event_start_date_time")
     private LocalDateTime startDate;
-    @ManyToOne
-    @JoinColumn(name = "event_admin_user_id")
-    private User admin;
     @OneToMany(mappedBy = "event")
     private List<Participant> participants = new ArrayList<>();
     @Column(name = "event_code")
@@ -73,14 +70,6 @@ public class Event {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public User getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(User admin) {
-        this.admin = admin;
     }
 
     public LocalDateTime getStartDate() {

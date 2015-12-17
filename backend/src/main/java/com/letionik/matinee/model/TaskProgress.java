@@ -16,18 +16,19 @@ public class TaskProgress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_progress_id")
     private Long id;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "task_progress_task_id", foreignKey = @ForeignKey(name = "task_progress_task_fk"))
     private Task task;
     @Column(name = "task_progress_executive_time")
     private LocalDateTime executiveTime;
     @ManyToOne
-    @JoinColumn(name = "task_progress_participant_id")
+    @JoinColumn(name = "task_progress_participant_id",foreignKey = @ForeignKey(name = "task_progress_participant_fk"))
     private Participant participant;
     @NotNull
     @Enumerated
     @Column(name = "task_progress_task_status")
     private TaskStatus status = TaskStatus.NEW;
-    @Column(name = "task_done_date")
+    @Column(name = "task_progress_done_date")
     private LocalDateTime doneDate;
 
     public Long getId() {
