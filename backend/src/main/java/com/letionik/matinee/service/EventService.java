@@ -1,9 +1,6 @@
 package com.letionik.matinee.service;
 
-import com.letionik.matinee.CreateEventRequestDto;
-import com.letionik.matinee.EventDto;
-import com.letionik.matinee.EventStatus;
-import com.letionik.matinee.TaskProgressDto;
+import com.letionik.matinee.*;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
 import org.modelmapper.ModelMapper;
@@ -74,7 +71,7 @@ public class EventService {
     @Transactional
     public EventDto enroll(String code, Long id) {
         Event event = eventRepository.getEventByCode(code);
-        if (event == null) return null;
+        if (event == null || !event.getStatus().equals(EventStatus.NEW)) return null;
         Participant participant = new Participant();
         participant.setUser(userRepository.findOne(id));
         participant.setEvent(event);
@@ -85,6 +82,7 @@ public class EventService {
     @Transactional
     public EventDto revealTasks(Long eventID) {
         Event event = eventRepository.findOne(eventID);
+        if (!event.getStatus().equals(EventStatus.ROLES_REVEALED)) return null;
         Stack<Task> tasks = new Stack<>();
         tasks.addAll(taskRepository.getRandomTasks(event.getParticipants().size() * TASKS_PER_PARTICIPANT_COUNT));
         event.getParticipants().forEach(participant ->
@@ -103,6 +101,7 @@ public class EventService {
     @Transactional
     public EventDto revealRoles(Long eventId) {
         Event event = eventRepository.getOne(eventId);
+        if (!event.getStatus().equals(EventStatus.NEW)) return null;
         event.setStatus(EventStatus.ROLES_REVEALED);
         List<Participant> participants = event.getParticipants();
         Collections.shuffle(participants);
@@ -116,9 +115,19 @@ public class EventService {
 
     @Transactional
     public List<TaskProgressDto> getHistory(Long id) {
-        List<TaskProgress> tasks = taskProgressRepository.findTasksByEventId(id);
+        List<TaskProgress> tasks = taskProgressRepository.findDoneTasksByEventId(id);
         Type listType = new TypeToken<List<TaskProgressDto>>() {
         }.getType();
         return modelMapper.map(tasks, listType);
+    }
+
+    @Transactional
+    public SortedMap<Long, Participant> closeEvent(Long eventId) {
+        Event event = eventRepository.getOne(eventId);
+        event.setStatus(EventStatus.FINISHED);
+        SortedMap<Long, Participant> statistics = new TreeMap<>();
+        event.getParticipants().forEach(p ->
+                statistics.put(p.getProgressTasks().stream().filter(t -> t.getStatus().equals(TaskStatus.DONE)).count(), p));
+        return statistics;
     }
 }

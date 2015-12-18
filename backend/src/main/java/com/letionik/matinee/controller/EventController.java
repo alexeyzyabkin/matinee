@@ -3,12 +3,16 @@ package com.letionik.matinee.controller;
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.TaskProgressDto;
+import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.service.EventService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.SortedMap;
 
 /**
  * Created by Alexey Zyabkin on 12.12.2015.
@@ -16,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "event")
 public class EventController {
+    private static final Logger log = LoggerFactory.getLogger(EventController.class);
+
     @Autowired
     private EventService eventService;
 
@@ -47,5 +53,10 @@ public class EventController {
     @RequestMapping(value = "history/{eventId}", method = RequestMethod.GET)
     public List<TaskProgressDto> getHistory(@PathVariable Long eventId) {
         return eventService.getHistory(eventId);
+    }
+
+    @RequestMapping(value = "/{eventId}", method = RequestMethod.POST)
+    public SortedMap<Long, Participant> closeEvent(@PathVariable Long eventId) {
+        return eventService.closeEvent(eventId);
     }
 }
