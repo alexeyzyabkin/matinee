@@ -3,20 +3,9 @@ package com.letionik.matinee.service;
 import com.letionik.matinee.*;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
-import com.letionik.matinee.*;
-import com.letionik.matinee.model.Event;
-import com.letionik.matinee.model.Participant;
-import com.letionik.matinee.model.TaskProgress;
-import com.letionik.matinee.model.User;
-import com.letionik.matinee.repository.EventRepository;
-import com.letionik.matinee.repository.ParticipantRepository;
-import com.letionik.matinee.repository.RoleRepository;
-import com.letionik.matinee.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +13,14 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * Created by Iryna Guzenko on 12.12.2015.
  */
 @Service
 public class EventService {
+    private static final int TASKS_PER_PARTICIPANT_COUNT = 3;
 
     @Autowired
     private EventRepository eventRepository;
@@ -71,7 +62,6 @@ public class EventService {
         Participant admin = new Participant();
         admin.setUser(user);
         admin.setEvent(event);
-        event.setAdmin(user);
         participantRepository.save(admin);
 
         event.addParticipant(admin);
@@ -81,7 +71,7 @@ public class EventService {
     @Transactional
     public EventDto enroll(String code, Long id) {
         Event event = eventRepository.getEventByCode(code);
-        if (event == null) return null;
+        if (event == null || !event.getStatus().equals(EventStatus.NEW)) return null;
         Participant participant = new Participant();
         participant.setUser(userRepository.findOne(id));
         participant.setEvent(event);
@@ -91,26 +81,27 @@ public class EventService {
 
     @Transactional
     public EventDto revealTasks(Long eventID) {
-        List<Task> tasks = taskRepository.findAll();
-        Collections.shuffle(tasks);
-        Event event = eventRepository.getOne(eventID);
-        event.setStatus(EventStatus.TASKS_REVEALED);
-        event.getParticipants().stream().forEachOrdered(p -> {
-            for (int i = 0; i < 3; i++) {
-                TaskProgress taskProgress = new TaskProgress();
-                taskProgress.setTask(tasks.get(0));
-                taskProgress.setStatus(TaskStatus.SENT);
-                taskProgress.setParticipant(p);
-                taskProgressRepository.save(taskProgress);
-                tasks.remove(0);
-            }
-        });
+        Event event = eventRepository.findOne(eventID);
+        if (!event.getStatus().equals(EventStatus.ROLES_REVEALED)) return null;
+        Stack<Task> tasks = new Stack<>();
+        tasks.addAll(taskRepository.getRandomTasks(event.getParticipants().size() * TASKS_PER_PARTICIPANT_COUNT));
+        event.getParticipants().forEach(participant ->
+                IntStream.range(0, TASKS_PER_PARTICIPANT_COUNT)
+                        .forEach(i -> participant.getProgressTasks().add(tightTaskAndParticipant(tasks.pop(), participant))));
         return modelMapper.map(event, EventDto.class);
+    }
+
+    private TaskProgress tightTaskAndParticipant(Task task, Participant participant) {
+        TaskProgress taskProgress = new TaskProgress();
+        taskProgress.setTask(task);
+        taskProgress.setParticipant(participant);
+        return taskProgress;
     }
 
     @Transactional
     public EventDto revealRoles(Long eventId) {
         Event event = eventRepository.getOne(eventId);
+        if (!event.getStatus().equals(EventStatus.NEW)) return null;
         event.setStatus(EventStatus.ROLES_REVEALED);
         List<Participant> participants = event.getParticipants();
         Collections.shuffle(participants);
@@ -124,8 +115,19 @@ public class EventService {
 
     @Transactional
     public List<TaskProgressDto> getHistory(Long id) {
-        List<TaskProgress> tasks = taskProgressRepository.findTasksByEventId(id);
-        Type listType = new TypeToken<List<TaskProgressDto>>() {}.getType();
+        List<TaskProgress> tasks = taskProgressRepository.findDoneTasksByEventId(id);
+        Type listType = new TypeToken<List<TaskProgressDto>>() {
+        }.getType();
         return modelMapper.map(tasks, listType);
+    }
+
+    @Transactional
+    public SortedMap<Long, Participant> closeEvent(Long eventId) {
+        Event event = eventRepository.getOne(eventId);
+        event.setStatus(EventStatus.FINISHED);
+        SortedMap<Long, Participant> statistics = new TreeMap<>();
+        event.getParticipants().forEach(p ->
+                statistics.put(p.getProgressTasks().stream().filter(t -> t.getStatus().equals(TaskStatus.DONE)).count(), p));
+        return statistics;
     }
 }

@@ -16,16 +16,25 @@ public class Participant {
     @Column(name = "participant_id")
     private Long id;
     @NotNull
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "participand_user_id", foreignKey = @ForeignKey(name = "paricipant_user_fk"))
     private User user;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "participant_role_id", foreignKey = @ForeignKey(name = "paricipant_role_fk"))
     private Role role;
-    @OneToMany(mappedBy = "participant")
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private List<TaskProgress> progressTasks = new ArrayList<>();
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "participant_event_id")
+    @JoinColumn(name = "participant_event_id", foreignKey = @ForeignKey(name = "paricipant_event_fk"))
     private Event event;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "participant_status")
+    private ParticipantStatus status;
+
+    public Long getId() {
+        return id;
+    }
 
     public User getUser() {
         return user;
@@ -59,7 +68,11 @@ public class Participant {
         this.event = event;
     }
 
-    public Long getId() {
-        return id;
+    public ParticipantStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ParticipantStatus status) {
+        this.status = status;
     }
 }

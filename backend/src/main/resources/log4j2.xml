@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" strict="true" name="XMLConfigTest" packages="org.apache.logging.log4j.test">
+    <Properties>
+        <Property name="root">logs</Property>
+        <Property name="config">config</Property>
+        <Property name="model">model</Property>
+        <Property name="repository">repository</Property>
+        <Property name="services">services</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="rootlog" fileName="${root}/rootlog.html"
+                     filePattern="${root}/rootlog-%d{MM-dd-yyyy}-%i.html">
+            <Layout type="HTMLLayout"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="2000"/>
+        </RollingFile>
+
+        <RollingFile name="config" fileName="${root}/${config}/config.html"
+                     filePattern="${root}/${config}/config-%d{MM-dd-yyyy}-%i.html">
+            <Layout type="HTMLLayout"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="2000"/>
+        </RollingFile>
+
+        <RollingFile name="model" fileName="${root}/${model}/model.html"
+                     filePattern="${root}/${model}/model-%d{MM-dd-yyyy}-%i.html">
+            <Layout type="HTMLLayout"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="2000"/>
+        </RollingFile>
+
+        <RollingFile name="repository" fileName="${root}/${repository}/repository.html"
+                     filePattern="${root}/${repository}/repository-%d{MM-dd-yyyy}-%i.html">
+            <Layout type="HTMLLayout"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="2000"/>
+        </RollingFile>
+
+        <RollingFile name="services" fileName="${root}/${services}/services.html"
+                     filePattern="${root}/${services}/services-%d{MM-dd-yyyy}-%i.html">
+            <Layout type="HTMLLayout"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="2000"/>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="rootlog"/>
+        </Root>
+
+        <Logger name="com.letionik.matinee.config" additivity="true" level="info">
+            <AppenderRef ref="config"/>
+        </Logger>
+
+        <Logger name="com.letionik.matinee.model" additivity="true" level="info">
+            <AppenderRef ref="model"/>
+        </Logger>
+
+        <Logger name="com.letionik.matinee.repository" additivity="true" level="info">
+            <AppenderRef ref="repository"/>
+        </Logger>
+
+        <Logger name="com.letionik.matinee.services" additivity="true" level="info">
+            <AppenderRef ref="services"/>
+        </Logger>
+    </Loggers>
+</Configuration>

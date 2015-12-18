@@ -13,18 +13,13 @@ public class Role {
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     @Column(name = "role_name")
     private String name;
-
-    @NotNull
-    @Column(name = "costume_description")
-    private String costumeDescription;
-
-    @OneToOne(mappedBy = "role")
-    private Participant participant;
-
+    @Column(name = "role_description")
+    private String description;
+    @Column(name = "role_picture_url")
+    private String pictureUrl;
     @Column(name = "role_priority")
     private int priority;
 
@@ -40,20 +35,20 @@ public class Role {
         this.name = name;
     }
 
-    public String getCostumeDescription() {
-        return costumeDescription;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setCostumeDescription(String costumeDescription) {
-        this.costumeDescription = costumeDescription;
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
-    public Participant getParticipant() {
-        return participant;
+    public String getDescription() {
+        return description;
     }
 
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getPriority() {

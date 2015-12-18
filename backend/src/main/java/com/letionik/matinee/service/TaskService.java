@@ -26,7 +26,6 @@ public class TaskService {
         //TODO: check that this task is marked by its owner participant
         TaskProgress taskProgress = taskProgressRepository.getTaskFromProcess(taskId);
         taskProgress.setStatus(TaskStatus.DONE);
-        taskProgress.setDoneDate(LocalDateTime.now());
         return modelMapper.map(taskProgress, TaskProgressDto.class);
     }
 }
