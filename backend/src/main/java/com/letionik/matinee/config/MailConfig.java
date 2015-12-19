@@ -18,14 +18,12 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:application.properties")
 public class MailConfig {
-    private static final Logger log = LoggerFactory.getLogger(MailConfig.class);
-
-    public static final String MAIL_USERNAME = "mail.username";
-    public static final String MAIL_PASSWORD = "mail.password";
-    public static final String PROP_MAIL_SMPT_AUTH = "mail.smtp.auth";
-    public static final String PROP_MAIL_SMPT_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
-    public static final String PROP_MAIL_SMPT_HOST = "mail.smtp.host";
-    public static final String PROP_MAIL_SMPT_PORT = "mail.smtp.port";
+    private static final String MAIL_USERNAME = "mail.username";
+    private static final String MAIL_PASSWORD = "mail.password";
+    private static final String PROP_MAIL_SMPT_AUTH = "mail.smtp.auth";
+    private static final String PROP_MAIL_SMPT_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
+    private static final String PROP_MAIL_SMPT_HOST = "mail.smtp.host";
+    private static final String PROP_MAIL_SMPT_PORT = "mail.smtp.port";
 
     @Resource
     private Environment env;
@@ -34,7 +32,6 @@ public class MailConfig {
     public JavaMailSenderImpl mailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost(env.getRequiredProperty(PROP_MAIL_SMPT_HOST));
-
         javaMailSender.setUsername(env.getRequiredProperty(MAIL_USERNAME));
         javaMailSender.setPassword(env.getRequiredProperty(MAIL_PASSWORD));
 
@@ -47,7 +44,6 @@ public class MailConfig {
 
         return javaMailSender;
     }
-
 
     @Bean
     public MailService mail(){
