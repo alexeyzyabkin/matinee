@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Created by Bohdan Pohotilyi on 18.12.2015.
  */
+@Service
 public class MailService {
     @Autowired
     private MailSender mailSender;
