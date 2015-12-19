@@ -9,7 +9,6 @@ import java.util.List;
 public class EventDto {
     private Long id;
     private String name;
-    private UserDto admin;
     private List<ParticipantDto> participants;
     private Date startDate;
     private EventStatus eventStatus;
@@ -30,14 +29,6 @@ public class EventDto {
 
     public Long getId() {
         return id;
-    }
-
-    public UserDto getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(UserDto admin) {
-        this.admin = admin;
     }
 
     public List<ParticipantDto> getParticipants() {
