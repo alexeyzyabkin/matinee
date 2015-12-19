@@ -36,6 +36,8 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-mobile')
     compile("org.modelmapper:modelmapper:0.7.5")
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.integration:spring-integration-mail:4.2.4.RELEASE')
+    compile('javax.mail:mail:1.4.7')
     compile('org.springframework.boot:spring-boot-starter-log4j2')
     runtime('mysql:mysql-connector-java')
     testCompile("com.h2database:h2")
