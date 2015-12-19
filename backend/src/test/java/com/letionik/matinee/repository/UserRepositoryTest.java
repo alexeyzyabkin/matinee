@@ -1,7 +1,7 @@
 package com.letionik.matinee.repository;
 
 import com.letionik.matinee.MatineeApplication;
-import com.letionik.matinee.model.Event;
+import com.letionik.matinee.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,31 +22,31 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestPropertySource("classpath:test.app.properties")
 @SpringApplicationConfiguration(classes = MatineeApplication.class)
-public class EventRepositoryTest {
-    private static final String COMPLEX_EVENT_CODE_HERE = "complex-event-code-here";
+public class UserRepositoryTest {
+    private static final String TEST_USER_LOGIN = "TEST_LOGIN";
 
     @Autowired
-    private EventRepository eventRepository;
+    private UserRepository userRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Before
     public void init() {
-        Event event = new Event();
-        event.setName("TestName");
-        event.setCode(COMPLEX_EVENT_CODE_HERE);
-        entityManager.persist(event);
+        User user = new User();
+        user.setName("TestName");
+        user.setLogin(TEST_USER_LOGIN);
+        entityManager.persist(user);
     }
 
     @Test
     @Transactional
     public void testFindOneByCode() {
-        Event foundedEvent = eventRepository.findOneByCode(COMPLEX_EVENT_CODE_HERE);
-        assertNotNull(foundedEvent);
-        assertEquals(COMPLEX_EVENT_CODE_HERE, foundedEvent.getCode());
+        User foundedUser = userRepository.findOneByLogin(TEST_USER_LOGIN);
+        assertNotNull(foundedUser);
+        assertEquals(TEST_USER_LOGIN, foundedUser.getLogin());
 
-        Event notFoundedEvent = eventRepository.findOneByCode("WRONG_EVENT_CODE");
-        assertNull(notFoundedEvent);
+        User notFoundedUser = userRepository.findOneByLogin("WRONG_USER_LOGIN");
+        assertNull(notFoundedUser);
     }
 }
