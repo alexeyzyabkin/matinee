@@ -3,7 +3,7 @@ package com.letionik.matinee.controller;
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.TaskProgressDto;
-import com.letionik.matinee.exception.EventNotFoundException;
+import com.letionik.matinee.exception.EventNotFoundOrInWrongStateException;
 import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.service.EventService;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class EventController {
         try {
             final EventDto event = eventService.enroll(code, (Long) session.getAttribute("user"));
             return new ResponseEntity<>(event, HttpStatus.OK);
-        } catch (EventNotFoundException e) {
+        } catch (EventNotFoundOrInWrongStateException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

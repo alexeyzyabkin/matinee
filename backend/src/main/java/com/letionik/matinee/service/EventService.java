@@ -1,7 +1,7 @@
 package com.letionik.matinee.service;
 
 import com.letionik.matinee.*;
-import com.letionik.matinee.exception.EventNotFoundException;
+import com.letionik.matinee.exception.EventNotFoundOrInWrongStateException;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
 import org.modelmapper.ModelMapper;
@@ -38,12 +38,6 @@ public class EventService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public EventDto getEventInfo(Long id) {
-        Event event = eventRepository.findOne(id);
-        return modelMapper.map(event, EventDto.class);
-    }
-
-    @Transactional
     public EventDto createEvent(CreateEventRequestDto eventDto, Long userId) {
         String code = UUID.randomUUID().toString().substring(0, 5);
 
@@ -64,9 +58,9 @@ public class EventService {
     }
 
     @Transactional
-    public EventDto enroll(String code, Long userId) throws EventNotFoundException {
+    public EventDto enroll(String code, Long userId) throws EventNotFoundOrInWrongStateException {
         Event event = eventRepository.findOneByCode(code);
-        if (event == null || event.getStatus() != EventStatus.NEW) throw new EventNotFoundException();
+        if (event == null || event.getStatus() != EventStatus.NEW) throw new EventNotFoundOrInWrongStateException(code);
         Participant participant = new Participant(userRepository.findOne(userId), event);
         participantRepository.save(participant);
         return modelMapper.map(event, EventDto.class);
@@ -99,21 +93,6 @@ public class EventService {
     }
 
     @Transactional
-    public List<TaskProgressDto> getHistory(Long id) {
-        List<TaskProgress> tasks = taskProgressRepository.findAllByParticipantEventId(id);
-        return tasks.stream()
-                .map(task -> modelMapper.map(task, TaskProgressDto.class))
-                .collect(Collectors.toList());
-    }
-
-    private TaskProgress tightTaskAndParticipant(Task task, Participant participant) {
-        TaskProgress taskProgress = new TaskProgress();
-        taskProgress.setTask(task);
-        taskProgress.setParticipant(participant);
-        return taskProgress;
-    }
-
-    @Transactional
     public SortedMap<Long, Participant> closeEvent(Long eventId) {
         Event event = eventRepository.getOne(eventId);
         event.setStatus(EventStatus.FINISHED);
@@ -121,5 +100,26 @@ public class EventService {
         event.getParticipants().forEach(p ->
                 statistics.put(p.getProgressTasks().stream().filter(t -> t.getStatus().equals(TaskStatus.DONE)).count(), p));
         return statistics;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TaskProgressDto> getHistory(Long id) {
+        List<TaskProgress> tasks = taskProgressRepository.findAllByParticipantEventId(id);
+        return tasks.stream()
+                .map(task -> modelMapper.map(task, TaskProgressDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public EventDto getEventInfo(Long id) {
+        Event event = eventRepository.findOne(id);
+        return modelMapper.map(event, EventDto.class);
+    }
+
+    private TaskProgress tightTaskAndParticipant(Task task, Participant participant) {
+        TaskProgress taskProgress = new TaskProgress();
+        taskProgress.setTask(task);
+        taskProgress.setParticipant(participant);
+        return taskProgress;
     }
 }
