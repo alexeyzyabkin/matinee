@@ -1,7 +1,8 @@
-package com.letionik.matinee;
+package com.letionik.matinee.repository;
 
+import com.letionik.matinee.MatineeApplication;
+import com.letionik.matinee.TaskType;
 import com.letionik.matinee.model.Task;
-import com.letionik.matinee.repository.TaskRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ public class TaskRepositoryTest {
             Task task = generateRandomTask(i);
             entityManager.persist(task);
         }
-
         List<Task> tasks = taskRepository.getRandomTasks(5);
         assertTrue(tasks.size() == 5);
     }
@@ -50,5 +50,4 @@ public class TaskRepositoryTest {
         task.setDescription("testdescription");
         return task;
     }
-
 }

@@ -1,18 +1,18 @@
 package com.letionik.matinee.service;
 
 import com.letionik.matinee.*;
+import com.letionik.matinee.exception.EventNotFoundException;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -45,36 +45,29 @@ public class EventService {
 
     @Transactional
     public EventDto createEvent(CreateEventRequestDto eventDto, Long userId) {
-        Event event = new Event();
-        event.setName(eventDto.getName());
+        String code = UUID.randomUUID().toString().substring(0, 5);
+
+        Event event = new Event.Builder().setName(eventDto.getName())
+                .setCode(code)
+                .setStatus(EventStatus.NEW)
+                .setCreationDate(LocalDateTime.now())
+                .build();
         Date date = eventDto.getStartDate();
         if (date != null) {
             event.setStartDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
         }
-
-        String code = UUID.randomUUID().toString().substring(0, 5);
-        event.setCode(code);
-        event.setStatus(EventStatus.NEW);
-        event.setCreationDate(LocalDateTime.now());
-        eventRepository.save(event);
-
-        User user = userRepository.getOne(userId);
-        Participant admin = new Participant();
-        admin.setUser(user);
-        admin.setEvent(event);
-        participantRepository.save(admin);
-
+        Participant admin = new Participant(userRepository.getOne(userId), event);
+        admin.setStatus(ParticipantStatus.ADMIN);
         event.addParticipant(admin);
+        eventRepository.save(event);
         return modelMapper.map(event, EventDto.class);
     }
 
     @Transactional
-    public EventDto enroll(String code, Long id) {
-        Event event = eventRepository.getEventByCode(code);
-        if (event == null || !event.getStatus().equals(EventStatus.NEW)) return null;
-        Participant participant = new Participant();
-        participant.setUser(userRepository.findOne(id));
-        participant.setEvent(event);
+    public EventDto enroll(String code, Long userId) throws EventNotFoundException {
+        Event event = eventRepository.findOneByCode(code);
+        if (event == null || event.getStatus() != EventStatus.NEW) throw new EventNotFoundException();
+        Participant participant = new Participant(userRepository.findOne(userId), event);
         participantRepository.save(participant);
         return modelMapper.map(event, EventDto.class);
     }
@@ -82,13 +75,35 @@ public class EventService {
     @Transactional
     public EventDto revealTasks(Long eventID) {
         Event event = eventRepository.findOne(eventID);
-        if (!event.getStatus().equals(EventStatus.ROLES_REVEALED)) return null;
+        event.setStatus(EventStatus.TASKS_REVEALED);
+
         Stack<Task> tasks = new Stack<>();
-        tasks.addAll(taskRepository.getRandomTasks(event.getParticipants().size() * TASKS_PER_PARTICIPANT_COUNT));
+        final int totalTasksCount = event.getParticipants().size() * TASKS_PER_PARTICIPANT_COUNT;
+        tasks.addAll(taskRepository.getRandomTasks(totalTasksCount));
         event.getParticipants().forEach(participant ->
                 IntStream.range(0, TASKS_PER_PARTICIPANT_COUNT)
                         .forEach(i -> participant.getProgressTasks().add(tightTaskAndParticipant(tasks.pop(), participant))));
         return modelMapper.map(event, EventDto.class);
+    }
+
+    @Transactional
+    public EventDto revealRoles(Long eventId) {
+        Event event = eventRepository.getOne(eventId);
+        event.setStatus(EventStatus.ROLES_REVEALED);
+
+        List<Participant> participants = event.getParticipants();
+        Stack<Role> roles = new Stack<>();
+        roles.addAll(roleRepository.getRolesByPriority(participants.size()));
+        participants.forEach(participant -> participant.setRole(roles.pop()));
+        return modelMapper.map(event, EventDto.class);
+    }
+
+    @Transactional
+    public List<TaskProgressDto> getHistory(Long id) {
+        List<TaskProgress> tasks = taskProgressRepository.findAllByParticipantEventId(id);
+        return tasks.stream()
+                .map(task -> modelMapper.map(task, TaskProgressDto.class))
+                .collect(Collectors.toList());
     }
 
     private TaskProgress tightTaskAndParticipant(Task task, Participant participant) {
@@ -96,29 +111,6 @@ public class EventService {
         taskProgress.setTask(task);
         taskProgress.setParticipant(participant);
         return taskProgress;
-    }
-
-    @Transactional
-    public EventDto revealRoles(Long eventId) {
-        Event event = eventRepository.getOne(eventId);
-        if (!event.getStatus().equals(EventStatus.NEW)) return null;
-        event.setStatus(EventStatus.ROLES_REVEALED);
-        List<Participant> participants = event.getParticipants();
-        Collections.shuffle(participants);
-        List<Role> roles = roleRepository.findAllByOrderByPriority();
-        for (Participant participant : participants) {
-            participant.setRole(roles.get(0));
-            roles.remove(0);
-        }
-        return modelMapper.map(event, EventDto.class);
-    }
-
-    @Transactional
-    public List<TaskProgressDto> getHistory(Long id) {
-        List<TaskProgress> tasks = taskProgressRepository.findDoneTasksByEventId(id);
-        Type listType = new TypeToken<List<TaskProgressDto>>() {
-        }.getType();
-        return modelMapper.map(tasks, listType);
     }
 
     @Transactional

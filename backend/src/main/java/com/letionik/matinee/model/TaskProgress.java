@@ -25,7 +25,7 @@ public class TaskProgress {
     @JoinColumn(name = "task_progress_participant_id",foreignKey = @ForeignKey(name = "task_progress_participant_fk"))
     private Participant participant;
     @NotNull
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "task_progress_task_status")
     private TaskStatus status = TaskStatus.NEW;
 

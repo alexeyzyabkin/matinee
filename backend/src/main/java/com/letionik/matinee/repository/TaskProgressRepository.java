@@ -11,8 +11,9 @@ import java.util.List;
  * Created by Bohdan Pohotilyi on 12.12.2015.
  */
 public interface TaskProgressRepository extends JpaRepository<TaskProgress, Long> {
-    @Query("SELECT pr FROM TaskProgress pr WHERE pr.task.id =:id")
-    TaskProgress getTaskFromProcess(@Param(value = "id") Long taskID);
+    TaskProgress findOneByTaskId(Long taskId);
+
+    List<TaskProgress> findAllByParticipantEventId(Long eventId);
 
     @Query("SELECT task FROM TaskProgress task WHERE task.participant.event.id = :eventId AND task.status=2")
     List<TaskProgress> findDoneTasksByEventId(@Param(value = "eventId") Long eventId);

@@ -2,6 +2,7 @@ package com.letionik.matinee.model;
 
 import com.letionik.matinee.EventStatus;
 
+import javax.accessibility.AccessibleRelationSet;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class Event {
     private LocalDateTime creationDate;
     @Column(name = "event_start_date_time")
     private LocalDateTime startDate;
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participant> participants = new ArrayList<>();
     @Column(name = "event_code")
     private String code;
@@ -86,5 +87,33 @@ public class Event {
 
     public void setStatus(EventStatus status) {
         this.status = status;
+    }
+
+    public static class Builder {
+        private Event event;
+
+        public Builder setName(String name) {
+            event.name = name;
+            return this;
+        }
+
+        public Builder setCode(String code) {
+            event.code = code;
+            return this;
+        }
+
+        public Builder setStatus(EventStatus status) {
+            event.status = status;
+            return this;
+        }
+
+        public Builder setCreationDate(LocalDateTime creationDate) {
+            event.creationDate = creationDate;
+            return this;
+        }
+
+        public Event build() {
+            return event;
+        }
     }
 }

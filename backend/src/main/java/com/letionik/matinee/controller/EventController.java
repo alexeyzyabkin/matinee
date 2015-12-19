@@ -3,11 +3,14 @@ package com.letionik.matinee.controller;
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.TaskProgressDto;
+import com.letionik.matinee.exception.EventNotFoundException;
 import com.letionik.matinee.model.Participant;
 import com.letionik.matinee.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -36,8 +39,13 @@ public class EventController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/enroll/{code}")
-    public EventDto enroll(@PathVariable String code, HttpSession session) {
-        return eventService.enroll(code, (Long) session.getAttribute("user"));
+    public ResponseEntity<EventDto> enroll(@PathVariable String code, HttpSession session) {
+        try {
+            final EventDto event = eventService.enroll(code, (Long) session.getAttribute("user"));
+            return new ResponseEntity<>(event, HttpStatus.OK);
+        } catch (EventNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/reveal/tasks/{eventId}", method = RequestMethod.POST)

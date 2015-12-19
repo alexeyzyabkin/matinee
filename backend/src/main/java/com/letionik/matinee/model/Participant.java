@@ -32,6 +32,13 @@ public class Participant {
     @Column(name = "participant_status")
     private ParticipantStatus status;
 
+    public Participant(){}
+
+    public Participant(User user, Event event) {
+        this.user = user;
+        this.event = event;
+    }
+
     public Long getId() {
         return id;
     }

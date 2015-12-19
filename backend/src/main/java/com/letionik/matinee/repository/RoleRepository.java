@@ -14,5 +14,6 @@ import java.util.List;
  */
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    List<Role> findAllByOrderByPriority();
+    @Query(value = "SELECT * FROM (SELECT * from role order by role_priority DESC LIMIT :limit) r ORDER BY RAND()", nativeQuery = true)
+    List<Role> getRolesByPriority(@Param("limit") int rolesCount);
 }
