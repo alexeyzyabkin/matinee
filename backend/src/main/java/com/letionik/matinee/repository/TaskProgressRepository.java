@@ -14,7 +14,4 @@ public interface TaskProgressRepository extends JpaRepository<TaskProgress, Long
     TaskProgress findOneByTaskId(Long taskId);
 
     List<TaskProgress> findAllByParticipantEventId(Long eventId);
-
-    @Query("SELECT task FROM TaskProgress task WHERE task.participant.event.id = :eventId AND task.status=2")
-    List<TaskProgress> findDoneTasksByEventId(@Param(value = "eventId") Long eventId);
 }

@@ -22,7 +22,6 @@ public class User {
     @NotNull
     @Column(name = "user_name")
     private String name;
-    @NotNull
     @Column(name = "user_surname")
     private String surname;
     @URL

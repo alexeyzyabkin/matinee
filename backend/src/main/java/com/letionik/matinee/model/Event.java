@@ -90,7 +90,7 @@ public class Event {
     }
 
     public static class Builder {
-        private Event event;
+        private Event event = new Event();
 
         public Builder setName(String name) {
             event.name = name;
