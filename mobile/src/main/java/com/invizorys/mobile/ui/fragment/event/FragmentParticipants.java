@@ -126,7 +126,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
                 if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
                     buttonShowRoles.setVisibility(View.VISIBLE);
                     buttonShowRoles.setText(getActivity().getString(R.string.show_tasks));
-                } else if (eventDto.getAdmin().getLogin().equals(currentUser.getSocialId())) {
+                } else if (eventDto.getAdmin().getUser().getLogin().equals(currentUser.getSocialId())) {
                     buttonShowRoles.setVisibility(View.VISIBLE);
                 }
                 textViewEventCode.setText(getActivity().getString(R.string.event_code) + eventDto.getCode());

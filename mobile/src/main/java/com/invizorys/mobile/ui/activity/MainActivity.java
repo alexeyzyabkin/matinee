@@ -14,10 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.ui.fragment.FragmentEvents;
 import com.invizorys.mobile.ui.fragment.event.FragmentEvent;
-import com.invizorys.mobile.model.UpdateParticipants;
-import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.invizorys.mobile.util.Settings;
 import com.mikepenz.materialdrawer.Drawer;
@@ -33,8 +32,6 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
-
-import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,22 +71,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_event, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
+        // Handle action bar item_email clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.action_refresh) {
-            EventBus.getDefault().post(new UpdateParticipants());
-        } else if (id == R.id.action_logout) {
-            Settings.saveCurrentEventId(this, (long) -1);
-        }
 
         return super.onOptionsItemSelected(item);
     }
