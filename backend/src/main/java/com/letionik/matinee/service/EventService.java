@@ -51,7 +51,7 @@ public class EventService {
             event.setStartDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
         }
         Participant admin = new Participant(userRepository.getOne(userId), event);
-        admin.setStatus(ParticipantStatus.ADMIN);
+        admin.setStatus(ParticipantType.ADMIN);
         event.addParticipant(admin);
         eventRepository.save(event);
         return modelMapper.map(event, EventDto.class);

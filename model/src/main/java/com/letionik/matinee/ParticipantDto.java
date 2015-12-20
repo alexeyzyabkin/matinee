@@ -12,7 +12,7 @@ public class ParticipantDto {
     private Date comeInDate;
     private RoleDto role;
     private List<TaskProgressDto> tasks;
-    private ParticipantStatus status;
+    private ParticipantType type;
 
     public Long getId() {
         return id;
@@ -54,11 +54,11 @@ public class ParticipantDto {
         this.tasks = tasks;
     }
 
-    public ParticipantStatus getStatus() {
-        return status;
+    public ParticipantType getType() {
+        return type;
     }
 
-    public void setStatus(ParticipantStatus status) {
-        this.status = status;
+    public void setType(ParticipantType type) {
+        this.type = type;
     }
 }

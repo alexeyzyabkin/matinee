@@ -1,6 +1,6 @@
 package com.letionik.matinee.model;
 
-import com.letionik.matinee.ParticipantStatus;
+import com.letionik.matinee.ParticipantType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,7 +32,7 @@ public class Participant {
     private Event event;
     @Enumerated(EnumType.STRING)
     @Column(name = "participant_status")
-    private ParticipantStatus status;
+    private ParticipantType status;
 
     public Participant(){}
 
@@ -77,11 +77,11 @@ public class Participant {
         this.event = event;
     }
 
-    public ParticipantStatus getStatus() {
+    public ParticipantType getStatus() {
         return status;
     }
 
-    public void setStatus(ParticipantStatus status) {
+    public void setStatus(ParticipantType status) {
         this.status = status;
     }
 }

@@ -70,7 +70,7 @@ public class EventServiceTest {
         assertFalse(result.getCode().isEmpty());
         assertSame(result.getParticipants().get(0).getUser().getId(), userId);
         assertEquals(result.getParticipants().get(0).getUser().getLogin(), testLogin);
-        assertSame(result.getParticipants().get(0).getStatus(), ParticipantStatus.ADMIN);
+        assertSame(result.getParticipants().get(0).getType(), ParticipantType.ADMIN);
         assertNull(result.getParticipants().get(0).getRole());
         assertSame(result.getParticipants().get(0).getTasks().size(), 0);
         assertEquals(result.getName(), eventName);

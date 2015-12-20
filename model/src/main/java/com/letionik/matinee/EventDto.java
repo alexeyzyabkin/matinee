@@ -70,4 +70,11 @@ public class EventDto {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public ParticipantDto getAdmin() {
+        for (ParticipantDto participant : participants) {
+            if (participant.getType() == ParticipantType.ADMIN) return participant;
+        }
+        return null;
+    }
 }
