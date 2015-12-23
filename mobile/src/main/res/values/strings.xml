@@ -1,14 +1,12 @@
 <resources>
+    <integer name="com_vk_sdk_AppId">5185514</integer>
+    <string name="gcm_sender_id">261304766293</string>
     <string name="app_name">Matinee</string>
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_logout">Logout</string>
-    <integer name="com_vk_sdk_AppId">5185514</integer>
     <string name="create_event">Создать событие</string>
     <string name="find_event">Найти встречу</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="event_name">Название встречи</string>
     <string name="event_date">Дата встречи</string>
     <string name="create">Создать</string>
@@ -19,7 +17,7 @@
     <string name="participants">Участники</string>
     <string name="history">История</string>
     <string name="my_tasks">Мои задания</string>
-    <string name="gcm_sender_id">261304766293</string>
     <string name="add">Добавить</string>
+    <string name="settings">Настройки</string>
 
 </resources>
