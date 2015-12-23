@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,12 +30,13 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public UserDto authorize(@RequestBody UserDto user, String token, HttpSession session) {
-        String url = "https://api.vk.com/method/users.get?access_token=" + token;
+    public UserDto authorize(@RequestBody UserDto user, HttpServletRequest request, HttpSession session) {
+        String url = "https://api.vk.com/method/users.get?access_token=" + request.getHeader("token");
         try {
             HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
             if (connection != null) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                //TODO: parse as json
                 if (in.readLine().substring(2, 10).equals("response")) {
                     userService.authorize(user);
                     session.setAttribute("user", user.getId());

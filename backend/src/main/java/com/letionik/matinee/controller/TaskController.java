@@ -21,8 +21,8 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @RequestMapping(value = "/done/{taskId}", method = RequestMethod.POST)
-    public TaskProgressDto markAsDone(@PathVariable Long taskId) {
-        return taskService.markAsDone(taskId);
+    @RequestMapping(value = "/done/{taskProgressId}", method = RequestMethod.POST)
+    public TaskProgressDto markAsDone(@PathVariable Long taskProgressId) {
+        return taskService.markAsDone(taskProgressId);
     }
 }

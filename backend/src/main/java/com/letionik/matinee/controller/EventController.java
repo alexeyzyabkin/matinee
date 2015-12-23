@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -29,12 +30,17 @@ public class EventController {
     private EventService eventService;
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
-    public EventDto getCurrentEvent(@PathVariable Long eventId) {
+    public EventDto getEvent(@PathVariable Long eventId) {
         return eventService.getEventInfo(eventId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public EventDto createEvent(@RequestBody CreateEventRequestDto createEventRequest, HttpSession session) {
+    @RequestMapping(method = RequestMethod.GET)
+    public List<EventDto> getEvents() {
+        return new ArrayList<>();
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public EventDto create(@RequestBody CreateEventRequestDto createEventRequest, HttpSession session) {
         return eventService.createEvent(createEventRequest, (Long) session.getAttribute("user"));
     }
 
@@ -48,23 +54,18 @@ public class EventController {
         }
     }
 
-    @RequestMapping(value = "/reveal/tasks/{eventId}", method = RequestMethod.POST)
-    public EventDto revealTasks(@PathVariable Long eventId) {
-        return eventService.revealTasks(eventId);
-    }
-
     @RequestMapping(value = "/reveal/roles/{eventId}", method = RequestMethod.POST)
     public EventDto revealRoles(@PathVariable Long eventId) {
         return eventService.revealRoles(eventId);
     }
 
-    @RequestMapping(value = "history/{eventId}", method = RequestMethod.GET)
-    public List<TaskProgressDto> getHistory(@PathVariable Long eventId) {
-        return eventService.getHistory(eventId);
+    @RequestMapping(value = "/reveal/tasks/{eventId}", method = RequestMethod.POST)
+    public EventDto revealTasks(@PathVariable Long eventId) {
+        return eventService.revealTasks(eventId);
     }
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.POST)
-    public SortedMap<Long, Participant> closeEvent(@PathVariable Long eventId) {
+    public SortedMap<Long, Participant> close(@PathVariable Long eventId) {
         return eventService.closeEvent(eventId);
     }
 }
