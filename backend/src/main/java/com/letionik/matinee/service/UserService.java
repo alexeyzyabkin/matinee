@@ -5,7 +5,6 @@ import com.letionik.matinee.exception.InvalidTokenException;
 import com.letionik.matinee.model.User;
 import com.letionik.matinee.repository.UserRepository;
 import com.letionik.matinee.utils.UrlConnectionReader;
-import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,14 +43,11 @@ public class UserService {
 
     private boolean isTokenValid(String token, String userId) {
         String url = VK_API_URL.replace("{token}", token);
+//      {"response":[{"uid":247830875,"first_name":"Testname","last_name":"Testsurname"}]}
         try {
-            JSONObject response = new JSONObject(urlConnectionReader.getText(url));
-            String login = String.valueOf(response.getJSONArray("response").getJSONObject(0).getLong("uid"));
-            return login.equals(userId);
+            return urlConnectionReader.getText(url).contains("\"uid\":" + userId + ",");
         } catch (IOException e) {
-            log.error("Exception during token validation", e);
-        } catch (NullPointerException e) {
-            log.error("Wrong response structure", e);
+            log.error("could not access VK");
         }
         return false;
     }
