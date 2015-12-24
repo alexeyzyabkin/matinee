@@ -2,6 +2,8 @@ package com.letionik.matinee.repository;
 
 import com.letionik.matinee.MatineeApplication;
 import com.letionik.matinee.model.Event;
+import com.letionik.matinee.model.Participant;
+import com.letionik.matinee.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -31,12 +35,23 @@ public class EventRepositoryTest {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private Long userId;
+
     @Before
     public void init() {
         Event event = new Event();
         event.setName("TestName");
         event.setCode(COMPLEX_EVENT_CODE_HERE);
         entityManager.persist(event);
+
+        User user = new User();
+        user.setName("name");
+        user.setLogin("name");
+        entityManager.persist(user);
+        userId = user.getId();
+
+        Participant participant = new Participant(user, event);
+        entityManager.persist(participant);
     }
 
     @Test
@@ -48,5 +63,14 @@ public class EventRepositoryTest {
 
         Event notFoundedEvent = eventRepository.findOneByCode("WRONG_EVENT_CODE");
         assertNull(notFoundedEvent);
+    }
+
+    @Test
+    @Transactional
+    public void testFindAllByUserId() {
+        List<Event> events = eventRepository.findAllByUserId(userId);
+        assertNotNull(events);
+        assertSame(events.size(), 1);
+        assertEquals(COMPLEX_EVENT_CODE_HERE, events.get(0).getCode());
     }
 }
