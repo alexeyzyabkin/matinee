@@ -91,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         profileDrawerItem, item1, item2, item3
                 )
+                .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
+                    @Override
+                    public boolean onNavigationClickListener(View clickedView) {
+                        FragmentHelper.pop(fragmentManager);
+                        showHamburger();
+                        return true;
+                    }
+                })
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -154,5 +162,10 @@ public class MainActivity extends AppCompatActivity {
     public void showBackArrow() {
         drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void showHamburger() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
     }
 }
