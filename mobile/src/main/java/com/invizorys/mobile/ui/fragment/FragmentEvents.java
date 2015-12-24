@@ -24,6 +24,7 @@ import com.letionik.matinee.EventDto;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.Date;
+import java.util.List;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -51,6 +52,20 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
         fragmentManager = getActivity().getFragmentManager();
 
         return view;
+    }
+
+    private void getEvents() {
+        matineeService.getEvents(new RetrofitCallback<List<EventDto>>(getActivity()) {
+            @Override
+            public void success(List<EventDto> eventDtos, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                super.failure(error);
+            }
+        });
     }
 
     private void createEvent(String eventName, Date startDate) {
