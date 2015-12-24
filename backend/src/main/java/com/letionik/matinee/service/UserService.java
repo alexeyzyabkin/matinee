@@ -51,7 +51,7 @@ public class UserService {
         } catch (IOException e) {
             log.error("Exception during token validation", e);
         } catch (NullPointerException e) {
-            log.error("Wrong response structure");
+            log.error("Wrong response structure", e);
         }
         return false;
     }
