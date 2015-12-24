@@ -2,9 +2,7 @@ package com.letionik.matinee.controller;
 
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
-import com.letionik.matinee.TaskProgressDto;
-import com.letionik.matinee.exception.EventNotFoundOrInWrongStateException;
-import com.letionik.matinee.model.Participant;
+import com.letionik.matinee.exception.EventEnrollException;
 import com.letionik.matinee.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
 
 /**
  * Created by Alexey Zyabkin on 12.12.2015.
@@ -31,12 +27,13 @@ public class EventController {
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
     public EventDto getEvent(@PathVariable Long eventId) {
-        return eventService.getEventInfo(eventId);
+        return eventService.getEvent(eventId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<EventDto> getEvents() {
-        return new ArrayList<>();
+    public List<EventDto> getEvents(HttpSession session) {
+        Long userId = (Long)session.getAttribute("user");
+        return eventService.getEvents(userId);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -49,8 +46,8 @@ public class EventController {
         try {
             final EventDto event = eventService.enroll(code, (Long) session.getAttribute("user"));
             return new ResponseEntity<>(event, HttpStatus.OK);
-        } catch (EventNotFoundOrInWrongStateException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (EventEnrollException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -65,7 +62,7 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.POST)
-    public SortedMap<Long, Participant> close(@PathVariable Long eventId) {
+    public EventDto close(@PathVariable Long eventId) {
         return eventService.closeEvent(eventId);
     }
 }
