@@ -3,7 +3,6 @@ package com.letionik.matinee.model;
 import com.letionik.matinee.ParticipantType;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +16,19 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "participant_id")
     private Long id;
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "participand_user_id", foreignKey = @ForeignKey(name = "paricipant_user_fk"))
+    @JoinColumn(name = "participant_user_id", foreignKey = @ForeignKey(name = "participant_user_fk"))
     private User user;
+    @Column(name = "participant_email")
+    private String email;
     @ManyToOne
-    @JoinColumn(name = "participant_role_id", foreignKey = @ForeignKey(name = "paricipant_role_fk"))
+    @JoinColumn(name = "participant_role_id", foreignKey = @ForeignKey(name = "participant_role_fk"))
     private Role role;
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private List<TaskProgress> progressTasks = new ArrayList<>();
-    @NotNull
+    //@NotNull
     @ManyToOne
-    @JoinColumn(name = "participant_event_id", foreignKey = @ForeignKey(name = "paricipant_event_fk"))
+    @JoinColumn(name = "participant_event_id", foreignKey = @ForeignKey(name = "participant_event_fk"))
     private Event event;
     @Enumerated(EnumType.STRING)
     @Column(name = "participant_status")
@@ -83,5 +83,26 @@ public class Participant {
 
     public void setStatus(ParticipantType status) {
         this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public static class Builder {
+        private Participant participant = new Participant();
+
+        public Builder setEmail(String email){
+            participant.email = email;
+            return this;
+        }
+
+        public Participant build() {
+            return participant;
+        }
     }
 }

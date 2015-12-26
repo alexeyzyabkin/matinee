@@ -1,11 +1,8 @@
 package com.letionik.matinee.config;
 
 import com.letionik.matinee.service.MailService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -16,7 +13,6 @@ import java.util.Properties;
  * Created by Bohdan Pohotilyi on 18.12.2015.
  */
 @Configuration
-@PropertySource("classpath:application.properties")
 public class MailConfig {
     private static final String MAIL_USERNAME = "mail.username";
     private static final String MAIL_PASSWORD = "mail.password";

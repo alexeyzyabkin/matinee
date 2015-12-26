@@ -21,7 +21,8 @@ import java.util.stream.IntStream;
 @Service
 public class EventService {
     private static final int TASKS_PER_PARTICIPANT_COUNT = 3;
-
+    private static final String ROLE_SUBJECT = "role";
+    private static final String TASKS_SUBJECT = "tasks";
     @Autowired
     private EventRepository eventRepository;
     @Autowired
@@ -36,6 +37,8 @@ public class EventService {
     private RoleRepository roleRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MailService mailService;
 
     @Transactional
     public EventDto createEvent(CreateEventRequestDto eventDto, Long userId) {
@@ -70,13 +73,15 @@ public class EventService {
     public EventDto revealTasks(Long eventID) {
         Event event = eventRepository.findOne(eventID);
         event.setStatus(EventStatus.TASKS_REVEALED);
+        List<Participant> participants = event.getParticipants();
 
         Stack<Task> tasks = new Stack<>();
         final int totalTasksCount = event.getParticipants().size() * TASKS_PER_PARTICIPANT_COUNT;
         tasks.addAll(taskRepository.getRandomTasks(totalTasksCount));
-        event.getParticipants().forEach(participant ->
+        participants.forEach(participant ->
                 IntStream.range(0, TASKS_PER_PARTICIPANT_COUNT)
                         .forEach(i -> participant.getProgressTasks().add(tightTaskAndParticipant(tasks.pop(), participant))));
+        participants.forEach(participant ->  mailService.sendMail(participant.getId(),TASKS_SUBJECT));
         return modelMapper.map(event, EventDto.class);
     }
 
@@ -89,6 +94,7 @@ public class EventService {
         Stack<Role> roles = new Stack<>();
         roles.addAll(roleRepository.getRolesByPriority(participants.size()));
         participants.forEach(participant -> participant.setRole(roles.pop()));
+        participants.forEach(participant -> mailService.sendMail(participant.getId(), ROLE_SUBJECT));
         return modelMapper.map(event, EventDto.class);
     }
 

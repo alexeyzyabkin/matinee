@@ -57,4 +57,9 @@ public class Task {
     public void setTaskType(TaskType taskType) {
         this.taskType = taskType;
     }
+
+    @Override
+    public String toString() {
+        return  name + "\n\n" + description;
+    }
 }
