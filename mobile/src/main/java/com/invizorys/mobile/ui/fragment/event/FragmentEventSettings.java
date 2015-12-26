@@ -2,6 +2,7 @@ package com.invizorys.mobile.ui.fragment.event;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.ServiceGenerator;
+import com.invizorys.mobile.ui.activity.MainActivity;
 
 public class FragmentEventSettings extends Fragment implements View.OnClickListener {
     private EditText editTextEmail;
@@ -29,6 +31,8 @@ public class FragmentEventSettings extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.settings);
+        ((MainActivity)getActivity()).showBackArrow();
     }
 
     @Override

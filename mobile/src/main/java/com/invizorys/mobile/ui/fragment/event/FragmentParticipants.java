@@ -16,13 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.ui.activity.MainActivity;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
+import com.invizorys.mobile.model.UpdateParticipants;
+import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
-import com.invizorys.mobile.model.UpdateParticipants;
-import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.util.Settings;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.EventStatus;
@@ -69,7 +68,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         currentUser = Settings.fetchUser(getActivity());
-        ((MainActivity) getActivity()).setToolbarTitle("New Year Party");
     }
 
     @Override

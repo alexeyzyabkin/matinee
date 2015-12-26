@@ -25,7 +25,7 @@ public class MailConfig {
     private Environment env;
 
     @Bean
-    public JavaMailSenderImpl mailSender(){
+    public JavaMailSenderImpl mailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost(env.getRequiredProperty(PROP_MAIL_SMPT_HOST));
         javaMailSender.setUsername(env.getRequiredProperty(MAIL_USERNAME));
@@ -42,7 +42,7 @@ public class MailConfig {
     }
 
     @Bean
-    public MailService mail(){
+    public MailService mail() {
         return new MailService();
     }
 }

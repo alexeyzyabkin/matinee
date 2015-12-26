@@ -42,4 +42,7 @@ public interface MatineeService {
 
     @POST("/task/done/{taskId}")
     void markTaskAsDone(@Path("taskId") Long taskId, RetrofitCallback<Object> retrofitCallback);
+
+    @GET("/event")
+    void getEvents(RetrofitCallback<List<EventDto>> retrofitCallback);
 }

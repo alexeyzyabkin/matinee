@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug" strict="true" name="XMLConfigTest" packages="org.apache.logging.log4j.test">
+<Configuration status="INFO" strict="true" name="XMLConfigTest" packages="org.apache.logging.log4j.test">
     <Properties>
         <Property name="root">logs</Property>
         <Property name="config">config</Property>
@@ -9,6 +9,10 @@
     </Properties>
 
     <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
         <RollingFile name="rootlog" fileName="${root}/rootlog.html"
                      filePattern="${root}/rootlog-%d{MM-dd-yyyy}-%i.html">
             <Layout type="HTMLLayout"/>
@@ -62,6 +66,7 @@
     </Appenders>
     <Loggers>
         <Root level="info">
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="rootlog"/>
         </Root>
 

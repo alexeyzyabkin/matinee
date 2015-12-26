@@ -2,6 +2,7 @@ package com.invizorys.mobile.ui.activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,18 +48,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(), FRAME_CONTAINER);
-
-//        Long currentEventId = Settings.fetchCurrentEventId(this);
-//        if (currentEventId > -1) {
-//            FragmentHelper.add(fragmentManager, FragmentEventParticipants.newInstance(currentEventId), FRAME_CONTAINER);
-//        } else {
-//            FragmentHelper.add(fragmentManager, FragmentCreateFindEvent.newInstance(), FRAME_CONTAINER);
-//        }
-//        toolbar.setTitle(CREATE_EVENT);
-
         user = Settings.fetchUser(this);
         drawerInit();
     }
@@ -98,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         profileDrawerItem, item1, item2, item3
                 )
+                .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
+                    @Override
+                    public boolean onNavigationClickListener(View clickedView) {
+                        FragmentHelper.pop(fragmentManager);
+                        showHamburger();
+                        return true;
+                    }
+                })
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -156,5 +157,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
+    }
+
+    public void showBackArrow() {
+        drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void showHamburger() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
     }
 }

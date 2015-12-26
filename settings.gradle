@@ -2,4 +2,5 @@ rootProject.name = 'matinee'
 
 include 'model'
 include 'backend'
+//рібята, перестаньте комітити закоменчений мобайл!!!
 include ':mobile'
