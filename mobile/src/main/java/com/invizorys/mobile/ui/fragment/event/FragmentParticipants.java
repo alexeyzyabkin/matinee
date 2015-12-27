@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
-import com.invizorys.mobile.model.UpdateParticipants;
 import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
@@ -96,7 +95,8 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
             eventId = getArguments().getLong(EVENT_ID);
         }
 
-        matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
+        matineeService = ServiceGenerator.createService(MatineeService.class,
+                MatineeService.BASE_URL, getActivity());
         textViewEventCode = (TextView) view.findViewById(R.id.textview_event_code);
         buttonShowRoles = (Button) view.findViewById(R.id.button_show_roles);
         buttonShowRoles.setOnClickListener(this);
@@ -237,10 +237,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
                 }
                 break;
         }
-    }
-
-    public void onEvent(UpdateParticipants updateParticipants) {
-        getCurrentEvent(eventId);
     }
 
     @Override

@@ -50,7 +50,8 @@ public class FragmentCreateFindEvent extends Fragment implements View.OnClickLis
 
         fragmentManager = getActivity().getFragmentManager();
 
-        matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
+        matineeService = ServiceGenerator.createService(MatineeService.class,
+                MatineeService.BASE_URL, getActivity());
         enrollCodeText = (EditText) view.findViewById(R.id.enroll_code_text);
         return view;
     }

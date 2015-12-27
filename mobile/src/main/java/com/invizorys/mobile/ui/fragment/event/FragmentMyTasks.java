@@ -45,7 +45,8 @@ public class FragmentMyTasks extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
+        matineeService = ServiceGenerator.createService(MatineeService.class,
+                MatineeService.BASE_URL, getActivity());
 
         View view = inflater.inflate(R.layout.fragment_my_tasks, container, false);
 

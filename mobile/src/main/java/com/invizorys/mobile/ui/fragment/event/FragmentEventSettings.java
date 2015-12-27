@@ -38,7 +38,8 @@ public class FragmentEventSettings extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
+        matineeService = ServiceGenerator.createService(MatineeService.class,
+                MatineeService.BASE_URL, getActivity());
 
         View view = inflater.inflate(R.layout.fragment_event_settings, container, false);
         view.findViewById(R.id.button_add_email).setOnClickListener(this);

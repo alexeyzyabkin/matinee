@@ -15,6 +15,7 @@ public class Settings {
     public static final String USER = "user";
     public static final String APP_NAME = "Matinee";
     public static final String EVENT_ID = "eventId";
+    public static final String TOKEN = "token";
 
     public static void saveUser(Activity activity, User user) {
         SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
@@ -42,6 +43,18 @@ public class Settings {
     public static Long fetchCurrentEventId(Activity activity) {
         SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
         return mPrefs.getLong(EVENT_ID, -1);
+    }
+
+    public static void saveToken(Context context, String token) {
+        SharedPreferences mPrefs = context.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        prefsEditor.putString(TOKEN, token);
+        prefsEditor.apply();
+    }
+
+    public static String fetchToken(Context context) {
+        SharedPreferences mPrefs = context.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
+        return mPrefs.getString(TOKEN, null);
     }
 
 }

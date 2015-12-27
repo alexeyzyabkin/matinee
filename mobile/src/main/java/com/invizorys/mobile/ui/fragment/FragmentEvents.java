@@ -2,6 +2,7 @@ package com.invizorys.mobile.ui.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.model.EventsUpdated;
+import com.invizorys.mobile.network.NetworkService;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
@@ -24,7 +27,6 @@ import com.letionik.matinee.EventDto;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.Date;
-import java.util.List;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -45,27 +47,18 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        matineeService = ServiceGenerator.createService(MatineeService.class, MatineeService.BASE_URL);
+        matineeService = ServiceGenerator.createService(MatineeService.class,
+                MatineeService.BASE_URL, getActivity());
         View view = inflater.inflate(R.layout.fragment_events, container, false);
         view.findViewById(R.id.button_create_event).setOnClickListener(this);
 
         fragmentManager = getActivity().getFragmentManager();
 
+        Intent intent = new Intent(getActivity(), NetworkService.class);
+        intent.putExtra(NetworkService.NETWORK_REQUEST, NetworkService.NetworkRequest.GET_EVENTS);
+        getActivity().startService(intent);
+
         return view;
-    }
-
-    private void getEvents() {
-        matineeService.getEvents(new RetrofitCallback<List<EventDto>>(getActivity()) {
-            @Override
-            public void success(List<EventDto> eventDtos, Response response) {
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                super.failure(error);
-            }
-        });
     }
 
     private void createEvent(String eventName, Date startDate) {
@@ -114,5 +107,10 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
                 showCreateEventDialog();
                 break;
         }
+    }
+
+    //TODO handle update events
+    public void onEvent(EventsUpdated eventsUpdated) {
+
     }
 }
