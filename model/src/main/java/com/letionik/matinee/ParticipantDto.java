@@ -9,6 +9,7 @@ import java.util.List;
 public class ParticipantDto {
     private Long id;
     private UserDto user;
+    private String email;
     private Date comeInDate;
     private RoleDto role;
     private List<TaskProgressDto> tasks;
@@ -60,5 +61,13 @@ public class ParticipantDto {
 
     public void setType(ParticipantType type) {
         this.type = type;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
