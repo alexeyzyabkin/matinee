@@ -81,6 +81,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
         });
     }
 
+    //TODO implement handling emtpy fields
     public void showCreateEventDialog() {
         boolean wrapInScrollView = true;
         MaterialDialog materialDialog = new MaterialDialog.Builder(getActivity())

@@ -60,6 +60,10 @@
             android:name=".network.gcm.RegistrationIntentService"
             android:exported="false">
         </service>
+        <service
+            android:name=".network.NetworkService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

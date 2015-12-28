@@ -2,6 +2,7 @@ package com.invizorys.mobile.network.api;
 
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
+import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.TaskProgressDto;
 import com.letionik.matinee.UserDto;
 
@@ -45,4 +46,7 @@ public interface MatineeService {
 
     @GET("/event")
     void getEvents(RetrofitCallback<List<EventDto>> retrofitCallback);
+
+    @POST("/email")
+    void addParticipantEmail(@Path("email") String email, RetrofitCallback<ParticipantDto> participantDtoRetrofitCallback);
 }

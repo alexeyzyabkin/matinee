@@ -12,8 +12,13 @@ import android.widget.EditText;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.network.api.MatineeService;
+import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.invizorys.mobile.ui.activity.MainActivity;
+import com.letionik.matinee.ParticipantDto;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class FragmentEventSettings extends Fragment implements View.OnClickListener {
     private EditText editTextEmail;
@@ -53,7 +58,18 @@ public class FragmentEventSettings extends Fragment implements View.OnClickListe
     }
 
     private void addEmail() {
-        editTextEmail.getText().toString();
+        String email = editTextEmail.getText().toString();
+        matineeService.addParticipantEmail(email, new RetrofitCallback<ParticipantDto>(getActivity()) {
+            @Override
+            public void success(ParticipantDto participantDto, Response response) {
+                String test = "";
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                super.failure(error);
+            }
+        });
     }
 
     private void getEmails() {

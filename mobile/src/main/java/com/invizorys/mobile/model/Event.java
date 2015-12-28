@@ -2,12 +2,12 @@ package com.invizorys.mobile.model;
 
 import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.ParticipantDto;
-import com.letionik.matinee.ParticipantType;
 
 import java.util.Date;
 import java.util.List;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 
 /**
  * Created by Paryshkura Roman on 26.12.2015.
@@ -15,8 +15,10 @@ import io.realm.RealmObject;
 public class Event extends RealmObject {
     private Long id;
     private String name;
+    @Ignore
     private List<ParticipantDto> participants;
     private Date startDate;
+    @Ignore
     private EventStatus eventStatus;
     private Date creationDate;
     private String code;
@@ -77,10 +79,10 @@ public class Event extends RealmObject {
         this.code = code;
     }
 
-    public ParticipantDto getAdmin() {
-        for (ParticipantDto participant : participants) {
-            if (participant.getType() == ParticipantType.ADMIN) return participant;
-        }
-        return null;
-    }
+//    public ParticipantDto getAdmin() {
+//        for (ParticipantDto participant : participants) {
+//            if (participant.getType() == ParticipantType.ADMIN) return participant;
+//        }
+//        return null;
+//    }
 }

@@ -48,7 +48,7 @@ public class ServiceGenerator {
                     @Override
                     public void intercept(RequestFacade request) {
                         request.addHeader("Accept", "application/json;versions=1");
-                        request.addHeader("Authorization", getToken(context));
+                        request.addHeader("token", getToken(context));
                     }
                 });
 

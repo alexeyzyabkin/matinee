@@ -32,18 +32,6 @@ public class NetworkService extends IntentService {
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
         switch ((NetworkRequest)intent.getSerializableExtra(NETWORK_REQUEST)) {
             case GET_EVENTS:

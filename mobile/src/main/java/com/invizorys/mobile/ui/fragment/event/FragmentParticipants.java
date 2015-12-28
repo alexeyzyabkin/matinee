@@ -33,7 +33,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -72,13 +71,11 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
