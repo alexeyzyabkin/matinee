@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.data.EventDataSource;
+import com.invizorys.mobile.model.Event;
 import com.invizorys.mobile.model.EventsUpdated;
 import com.invizorys.mobile.network.NetworkService;
 import com.invizorys.mobile.network.api.MatineeService;
@@ -27,6 +29,7 @@ import com.letionik.matinee.EventDto;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.Date;
+import java.util.List;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -58,6 +61,8 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
         intent.putExtra(NetworkService.NETWORK_REQUEST, NetworkService.NetworkRequest.GET_EVENTS);
         getActivity().startService(intent);
 
+        getEvents();
+
         return view;
     }
 
@@ -79,6 +84,11 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
                 super.failure(error);
             }
         });
+    }
+
+    private void getEvents() {
+        EventDataSource eventDataSource = new EventDataSource(getActivity());
+        List<Event> events = eventDataSource.getAllEvents();
     }
 
     //TODO implement handling emtpy fields

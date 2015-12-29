@@ -33,7 +33,7 @@ public class NetworkService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        switch ((NetworkRequest)intent.getSerializableExtra(NETWORK_REQUEST)) {
+        switch ((NetworkRequest) intent.getSerializableExtra(NETWORK_REQUEST)) {
             case GET_EVENTS:
                 getEvents();
                 break;
@@ -58,11 +58,11 @@ public class NetworkService extends IntentService {
 
     private void saveEvents(List<EventDto> eventDtos) {
         EventDataSource eventDataSource = new EventDataSource(this);
-//        eventDataSource.beginTransaction();
+        eventDataSource.beginTransaction();
         for (EventDto eventDto : eventDtos) {
             eventDataSource.saveEvent(eventDto);
         }
-//        eventDataSource.endTransaction();
+        eventDataSource.endTransaction();
     }
 
     public enum NetworkRequest implements Serializable {

@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.ui.fragment.FragmentEvents;
-import com.invizorys.mobile.ui.fragment.event.FragmentEvent;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.invizorys.mobile.util.Settings;
 import com.mikepenz.materialdrawer.Drawer;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(), FRAME_CONTAINER);
+        FragmentHelper.add(fragmentManager, FragmentEvents.newInstance(), FRAME_CONTAINER);
         user = Settings.fetchUser(this);
         drawerInit();
     }

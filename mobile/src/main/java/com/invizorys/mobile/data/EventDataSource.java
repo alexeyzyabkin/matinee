@@ -32,7 +32,7 @@ public class EventDataSource {
         event.setParticipants(eventDto.getParticipants());
     }
 
-    public List<Event> findAll() {
+    public List<Event> getAllEvents() {
         return realm.where(Event.class).findAll();
     }
 

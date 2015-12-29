@@ -11,6 +11,7 @@ import java.util.List;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
@@ -22,7 +23,8 @@ public interface MatineeService {
     @POST("/user")
     void register(@Body UserDto userDto, RetrofitCallback<UserDto> userDtoRetrofitCallback);
 
-    @POST("/event")
+    //TODO need to change it to POST
+    @PUT("/event")
     void createEvent(@Body CreateEventRequestDto createEventRequestDto,
                      RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 
