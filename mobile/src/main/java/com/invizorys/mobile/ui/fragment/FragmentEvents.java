@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.adapter.EventRecyclerAdapter;
 import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.model.Event;
 import com.invizorys.mobile.model.EventsUpdated;
@@ -37,6 +40,7 @@ import retrofit.client.Response;
 public class FragmentEvents extends Fragment implements View.OnClickListener {
     private MatineeService matineeService;
     private FragmentManager fragmentManager;
+    private RecyclerView recyclerViewEvents;
 
     public static FragmentEvents newInstance() {
         return new FragmentEvents();
@@ -54,6 +58,10 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
                 MatineeService.BASE_URL, getActivity());
         View view = inflater.inflate(R.layout.fragment_events, container, false);
         view.findViewById(R.id.button_create_event).setOnClickListener(this);
+
+        recyclerViewEvents = (RecyclerView) view.findViewById(R.id.recyclerview_events);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewEvents.setLayoutManager(linearLayoutManager);
 
         fragmentManager = getActivity().getFragmentManager();
 
@@ -89,6 +97,8 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
     private void getEvents() {
         EventDataSource eventDataSource = new EventDataSource(getActivity());
         List<Event> events = eventDataSource.getAllEvents();
+        EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(events);
+        recyclerViewEvents.setAdapter(eventRecyclerAdapter);
     }
 
     //TODO implement handling emtpy fields
