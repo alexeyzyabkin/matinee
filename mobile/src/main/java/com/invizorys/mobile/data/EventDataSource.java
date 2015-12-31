@@ -23,15 +23,7 @@ public class EventDataSource {
 
     public void saveEvent(EventDto eventDto) {
 //        Event event = realm.createObject(Event.class);
-        Event event = new Event();
-        event.setId(eventDto.getId());
-        event.setCode(eventDto.getCode());
-        event.setCreationDate(eventDto.getCreationDate());
-        event.setStartDate(eventDto.getStartDate());
-//        event.setEventStatus(eventDto.getEventStatus());
-        event.setName(eventDto.getName());
-        event.setParticipants(eventDto.getParticipants());
-
+        Event event = new Event(eventDto);
         realm.copyToRealmOrUpdate(event);
     }
 

@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
@@ -118,6 +119,11 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
             @Override
             public void success(EventDto eventDto, Response response) {
                 eventStatus = eventDto.getEventStatus();
+                //TODO admin = null???
+                if (eventDto.getAdmin() == null) {
+                    Toast.makeText(getActivity(), "admin not found", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
                     buttonShowRoles.setVisibility(View.VISIBLE);
                     buttonShowRoles.setText(getActivity().getString(R.string.show_tasks));
