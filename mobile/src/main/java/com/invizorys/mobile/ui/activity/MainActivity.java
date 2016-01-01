@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         if (drawerResult.isDrawerOpen()) {
             drawerResult.closeDrawer();
         } else {
-            super.onBackPressed();
+            FragmentHelper.pop(fragmentManager);
         }
     }
 

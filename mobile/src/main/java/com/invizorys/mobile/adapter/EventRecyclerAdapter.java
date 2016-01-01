@@ -20,9 +20,11 @@ import java.util.List;
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.ViewHolder> {
     private List<Event> events;
     private Context context;
+    private EventListener eventListener;
 
-    public EventRecyclerAdapter(List<Event> events) {
+    public EventRecyclerAdapter(List<Event> events, EventListener eventListener) {
         this.events = events;
+        this.eventListener = eventListener;
     }
 
     @Override
@@ -42,6 +44,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                eventListener.onSelected(event.getId());
                 Toast.makeText(context, "selected event id = " + event.getId(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -63,5 +66,9 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             textViewParticipantsNumber = (TextView) itemView.findViewById(R.id.textview_participants_number);
             textViewData = (TextView) itemView.findViewById(R.id.textview_data);
         }
+    }
+
+    public interface EventListener {
+        void onSelected(long eventId);
     }
 }

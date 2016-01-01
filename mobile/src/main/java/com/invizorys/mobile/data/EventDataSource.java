@@ -35,6 +35,10 @@ public class EventDataSource {
         return realm.where(Event.class).equalTo(ID, eventId).findFirst();
     }
 
+    public void clearTable() {
+        realm.clear(Event.class);
+    }
+
     public void beginTransaction() {
         realm.beginTransaction();
     }

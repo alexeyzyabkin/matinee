@@ -59,6 +59,7 @@ public class NetworkService extends IntentService {
     private void saveEvents(List<EventDto> eventDtos) {
         EventDataSource eventDataSource = new EventDataSource(this);
         eventDataSource.beginTransaction();
+//        eventDataSource.clearTable();
         for (EventDto eventDto : eventDtos) {
             eventDataSource.saveEvent(eventDto);
         }

@@ -33,18 +33,6 @@ public class Settings {
         return gson.fromJson(json, User.class);
     }
 
-    public static void saveCurrentEventId(Activity activity, Long currentEventId) {
-        SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        prefsEditor.putLong(EVENT_ID, currentEventId);
-        prefsEditor.apply();
-    }
-
-    public static Long fetchCurrentEventId(Activity activity) {
-        SharedPreferences mPrefs = activity.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
-        return mPrefs.getLong(EVENT_ID, -1);
-    }
-
     public static void saveToken(Context context, String token) {
         SharedPreferences mPrefs = context.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();

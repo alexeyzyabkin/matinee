@@ -26,7 +26,6 @@ import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.invizorys.mobile.ui.activity.MainActivity;
 import com.invizorys.mobile.ui.fragment.event.FragmentEvent;
 import com.invizorys.mobile.util.FragmentHelper;
-import com.invizorys.mobile.util.Settings;
 import com.letionik.matinee.CreateEventRequestDto;
 import com.letionik.matinee.EventDto;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -37,7 +36,7 @@ import java.util.List;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class FragmentEvents extends Fragment implements View.OnClickListener {
+public class FragmentEvents extends Fragment implements View.OnClickListener, EventRecyclerAdapter.EventListener {
     private MatineeService matineeService;
     private FragmentManager fragmentManager;
     private RecyclerView recyclerViewEvents;
@@ -82,7 +81,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(), "eventDto null", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Settings.saveCurrentEventId(getActivity(), eventDto.getId());
+//                eventDto.getId();
                 FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(),
                         MainActivity.FRAME_CONTAINER);
             }
@@ -97,7 +96,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
     private void getEvents() {
         EventDataSource eventDataSource = new EventDataSource(getActivity());
         List<Event> events = eventDataSource.getAllEvents();
-        EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(events);
+        EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(events, this);
         recyclerViewEvents.setAdapter(eventRecyclerAdapter);
     }
 
@@ -133,5 +132,11 @@ public class FragmentEvents extends Fragment implements View.OnClickListener {
     //TODO handle update events
     public void onEvent(EventsUpdated eventsUpdated) {
 
+    }
+
+    @Override
+    public void onSelected(long eventId) {
+        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(),
+                MainActivity.FRAME_CONTAINER);
     }
 }
