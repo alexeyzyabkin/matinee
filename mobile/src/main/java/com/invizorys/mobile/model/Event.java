@@ -4,25 +4,24 @@ import com.letionik.matinee.EventDto;
 import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.ParticipantType;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Paryshkura Roman on 26.12.2015.
  */
-public class Event extends RealmObject {
+public class Event extends RealmObject implements Serializable {
     @PrimaryKey
     private Long id;
     private String name;
     private RealmList<Participant> participants;
     private Date startDate;
-    @Ignore
-    private EventStatus eventStatus;
+    private String eventStatus;
     private Date creationDate;
     private String code;
 
@@ -34,7 +33,7 @@ public class Event extends RealmObject {
         this.name = eventDto.getName();
         this.participants = convertParticipantsDtoToParticipants(eventDto.getParticipants());
         this.startDate = eventDto.getStartDate();
-//        this.eventStatus = eventDto.getEventStatus();
+        this.eventStatus = eventDto.getEventStatus().toString();
         this.creationDate = eventDto.getCreationDate();
         this.code = eventDto.getCode();
     }
@@ -75,14 +74,6 @@ public class Event extends RealmObject {
         this.id = id;
     }
 
-    public EventStatus getEventStatus() {
-        return eventStatus;
-    }
-
-    public void setEventStatus(EventStatus eventStatus) {
-        this.eventStatus = eventStatus;
-    }
-
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
@@ -93,6 +84,14 @@ public class Event extends RealmObject {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(String eventStatus) {
+        this.eventStatus = eventStatus;
     }
 
     public static RealmList<Participant> convertParticipantsDtoToParticipants(List<ParticipantDto> participantDtos) {
@@ -109,5 +108,13 @@ public class Event extends RealmObject {
             if (participant.getType() == ParticipantType.ADMIN) return participant;
         }
         return null;
+    }
+
+    public static EventStatus getEventStatusEnum(Event event) {
+        return EventStatus.valueOf(event.getEventStatus());
+    }
+
+    public static void setEventStatusEnum(Event event, EventStatus enumValue) {
+        event.setEventStatus(enumValue.toString());
     }
 }

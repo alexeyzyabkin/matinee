@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.invizorys.mobile.callback.SocialNetworkCallback;
 import com.invizorys.mobile.model.User;
+import com.letionik.matinee.Sex;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
@@ -30,6 +31,11 @@ public class VkSocialNetwork {
             VKScope.WALL,
             VKScope.MESSAGES
     };
+    private static final String ID_KEY = "id";
+    private static final String FIRST_NAME_KEY = "first_name";
+    private static final String LAST_NAME_KEY = "last_name";
+    private static final String SEX_KEY = "sex";
+    private static final String BDAY_KEY = "bdate";
 
     public VkSocialNetwork(Activity activity) {
         this.activity = activity;
@@ -75,23 +81,23 @@ public class VkSocialNetwork {
 
     private User getUserData(JSONObject jsonResponse) throws JSONException {
         User socialUser = new User();
-        if (jsonResponse.has("id")) {
-            socialUser.setSocialId(jsonResponse.getString("id"));
+        if (jsonResponse.has(ID_KEY)) {
+            socialUser.setSocialId(jsonResponse.getString(ID_KEY));
         }
-        if (jsonResponse.has("first_name")) {
-            socialUser.setFirstName(jsonResponse.getString("first_name"));
+        if (jsonResponse.has(FIRST_NAME_KEY)) {
+            socialUser.setName(jsonResponse.getString(FIRST_NAME_KEY));
         }
-        if (jsonResponse.has("last_name")) {
-            socialUser.setLastName(jsonResponse.getString("last_name"));
+        if (jsonResponse.has(LAST_NAME_KEY)) {
+            socialUser.setSurname(jsonResponse.getString(LAST_NAME_KEY));
         }
         if (jsonResponse.has(FIELD_PHOTO_NAME)) {
             socialUser.setAvatarUrl(jsonResponse.getString(FIELD_PHOTO_NAME));
         }
-        if (jsonResponse.has("sex")) {
-            socialUser.setSex(jsonResponse.getString("sex"));
+        if (jsonResponse.has(SEX_KEY)) {
+            socialUser.setSex(Sex.parseSex(jsonResponse.getString(SEX_KEY)));
         }
-        if (jsonResponse.has("bdate")) {
-            socialUser.setBirthDate(jsonResponse.getString("bdate"));
+        if (jsonResponse.has(BDAY_KEY)) {
+            socialUser.setBirthDate(jsonResponse.getString(BDAY_KEY));
         }
         return socialUser;
     }

@@ -40,6 +40,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
     private MatineeService matineeService;
     private FragmentManager fragmentManager;
     private RecyclerView recyclerViewEvents;
+    private EventDataSource eventDataSource;
 
     public static FragmentEvents newInstance() {
         return new FragmentEvents();
@@ -55,8 +56,11 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
                              Bundle savedInstanceState) {
         matineeService = ServiceGenerator.createService(MatineeService.class,
                 MatineeService.BASE_URL, getActivity());
+        eventDataSource = new EventDataSource(getActivity());
+
         View view = inflater.inflate(R.layout.fragment_events, container, false);
         view.findViewById(R.id.button_create_event).setOnClickListener(this);
+        view.findViewById(R.id.button_find_event).setOnClickListener(this);
 
         recyclerViewEvents = (RecyclerView) view.findViewById(R.id.recyclerview_events);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -81,6 +85,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
                     Toast.makeText(getActivity(), "eventDto null", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                eventDataSource.saveEvent(eventDto);
 //                eventDto.getId();
                 FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(),
                         MainActivity.FRAME_CONTAINER);
@@ -93,14 +98,27 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
         });
     }
 
+    private void enrollToEvent(String code) {
+        matineeService.enroll(code, new RetrofitCallback<EventDto>(getActivity()) {
+            @Override
+            public void success(EventDto eventDto, Response response) {
+                String s = "d";
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                super.failure(error);
+            }
+        });
+    }
+
     private void getEvents() {
-        EventDataSource eventDataSource = new EventDataSource(getActivity());
         List<Event> events = eventDataSource.getAllEvents();
         EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(events, this);
         recyclerViewEvents.setAdapter(eventRecyclerAdapter);
     }
 
-    //TODO implement handling emtpy fields
+    //TODO implement handling empty fields
     public void showCreateEventDialog() {
         boolean wrapInScrollView = true;
         MaterialDialog materialDialog = new MaterialDialog.Builder(getActivity())
@@ -120,18 +138,38 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
                 .show();
     }
 
+    //TODO implement handling empty fields
+    public void showEnrollToEventDialog() {
+        boolean wrapInScrollView = true;
+        MaterialDialog materialDialog = new MaterialDialog.Builder(getActivity())
+                .title("Поиск события")
+                .customView(R.layout.dialog_find_event, wrapInScrollView)
+                .positiveText("Найти")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        EditText editText = (EditText) materialDialog.findViewById(R.id.edittext_event_code);
+                        enrollToEvent(editText.getText().toString());
+                    }
+                })
+                .negativeText("Отмена")
+                .show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_create_event:
                 showCreateEventDialog();
                 break;
+            case R.id.button_find_event:
+                showEnrollToEventDialog();
+                break;
         }
     }
 
-    //TODO handle update events
     public void onEvent(EventsUpdated eventsUpdated) {
-
+        getEvents();
     }
 
     @Override

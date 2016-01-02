@@ -29,19 +29,19 @@ public interface MatineeService {
                      RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 
     @POST("/event/enroll/{code}")
-    void enroll(@Path("code") String code, RetrofitCallback<EventDto> userDtoRetrofitCallback);
+    void enroll(@Path("code") String code, RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 
     @POST("/event/reveal/tasks/{eventId}")
-    void revealTasks(@Path("eventId") Long eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
+    void revealTasks(@Path("eventId") Long eventId, RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 
     @POST("/event/reveal/roles/{eventId}")
-    void revealRoles(@Path("eventId") Long eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
+    void revealRoles(@Path("eventId") Long eventId, RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 
     @POST("/event/history/{eventId}")
-    void getHistory(@Path("eventId") String eventId, RetrofitCallback<List<TaskProgressDto>> userDtoRetrofitCallback);
+    void getHistory(@Path("eventId") String eventId, RetrofitCallback<List<TaskProgressDto>> retrofitCallback);
 
     @GET("/event/{eventId}")
-    void getCurrentEvent(@Path("eventId") Long eventId, RetrofitCallback<EventDto> userDtoRetrofitCallback);
+    void getCurrentEvent(@Path("eventId") Long eventId, RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 
     @POST("/task/done/{taskId}")
     void markTaskAsDone(@Path("taskId") Long taskId, RetrofitCallback<Object> retrofitCallback);

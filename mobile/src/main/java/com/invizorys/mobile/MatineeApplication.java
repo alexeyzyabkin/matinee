@@ -1,13 +1,7 @@
 package com.invizorys.mobile;
 
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 
-import com.invizorys.mobile.ui.activity.LoginActivity;
-import com.invizorys.mobile.ui.activity.MainActivity;
-import com.invizorys.mobile.util.Settings;
 import com.vk.sdk.VKSdk;
 
 /**
@@ -20,20 +14,21 @@ public class MatineeApplication extends Application {
         super.onCreate();
         VKSdk.initialize(this);
 
-        Context context = getApplicationContext();
-        Intent loginIntent = new Intent(context, LoginActivity.class);
-        Intent mainIntent = new Intent(context, MainActivity.class);
-        String token = Settings.fetchToken(context);
-        PendingIntent pendingIntent;
-        if (token == null || token.isEmpty()) {
-            pendingIntent = PendingIntent.getActivity(context, 22, loginIntent, 0);
-        } else {
-            pendingIntent = PendingIntent.getActivity(context, 22, mainIntent, 0);
-        }
-        try {
-            pendingIntent.send();
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
-        }
+        //TODO uncomment when on server side will be implemented token processing
+//        Context context = getApplicationContext();
+//        Intent loginIntent = new Intent(context, LoginActivity.class);
+//        Intent mainIntent = new Intent(context, MainActivity.class);
+//        String token = Settings.fetchToken(context);
+//        PendingIntent pendingIntent;
+//        if (token == null || token.isEmpty()) {
+//            pendingIntent = PendingIntent.getActivity(context, 22, loginIntent, 0);
+//        } else {
+//            pendingIntent = PendingIntent.getActivity(context, 22, mainIntent, 0);
+//        }
+//        try {
+//            pendingIntent.send();
+//        } catch (PendingIntent.CanceledException e) {
+//            e.printStackTrace();
+//        }
     }
 }

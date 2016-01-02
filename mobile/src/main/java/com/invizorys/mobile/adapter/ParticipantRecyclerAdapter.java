@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.model.Participant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
  */
 public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<ParticipantRecyclerAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<User> participants;
+    private ArrayList<Participant> participants;
 
-    public ParticipantRecyclerAdapter(Context context, ArrayList<User> participants) {
+    public ParticipantRecyclerAdapter(Context context, ArrayList<Participant> participants) {
         this.context = context;
         this.participants = participants;
     }
@@ -34,9 +34,9 @@ public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<Participant
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        User participant = getItem(position);
-        Picasso.with(context).load(participant.getAvatarUrl()).into(holder.imageViewAvatar);
-        String name = participant.getFirstName() + " " + participant.getLastName();
+        Participant participant = getItem(position);
+        Picasso.with(context).load(participant.getUser().getAvatarUrl()).into(holder.imageViewAvatar);
+        String name = participant.getUser().getName() + " " + participant.getUser().getSurname();
         holder.textViewName.setText(name);
 
         if (participant.getRole() == null) {
@@ -45,7 +45,7 @@ public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<Participant
         } else {
             holder.imageViewArrow.setVisibility(View.INVISIBLE);
             holder.textViewRole.setVisibility(View.VISIBLE);
-            holder.textViewRole.setText(participant.getRole());
+            holder.textViewRole.setText(participant.getRole().getName());
         }
     }
 
@@ -54,11 +54,11 @@ public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<Participant
         return participants.size();
     }
 
-    public User getItem(int position) {
+    public Participant getItem(int position) {
         return participants.get(position);
     }
 
-    public void updateParticipants(ArrayList<User> participants) {
+    public void updateParticipants(ArrayList<Participant> participants) {
         this.participants = participants;
         notifyDataSetChanged();
     }

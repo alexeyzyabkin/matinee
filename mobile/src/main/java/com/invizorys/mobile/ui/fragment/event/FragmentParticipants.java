@@ -18,11 +18,12 @@ import android.widget.Toast;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
+import com.invizorys.mobile.data.UserDataSource;
+import com.invizorys.mobile.model.Participant;
 import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
-import com.invizorys.mobile.util.Settings;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.ParticipantDto;
@@ -66,7 +67,8 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentUser = Settings.fetchUser(getActivity());
+        UserDataSource userDataSource = new UserDataSource(getActivity());
+        currentUser = userDataSource.getUser();
     }
 
     @Override
@@ -103,7 +105,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         Picasso.with(getActivity()).load(currentUser.getAvatarUrl()).into(imageViewAvatar);
 
         textViewName = (TextView) view.findViewById(R.id.textview_name);
-        String name = currentUser.getFirstName() + " " + currentUser.getLastName();
+        String name = currentUser.getName() + " " + currentUser.getSurname();
         textViewName.setText(name);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
@@ -132,7 +134,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
                 }
                 textViewEventCode.setText(getActivity().getString(R.string.event_code) + eventDto.getCode());
 
-                ArrayList<User> participants = getParticipants(eventDto);
+                ArrayList<Participant> participants = getParticipants(eventDto);
                 adapter = new ParticipantRecyclerAdapter(getActivity(), participants);
                 recyclerView.setAdapter(adapter);
             }
@@ -152,7 +154,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
                 if (eventStatus.equals(EventStatus.ROLES_REVEALED)) {
                     buttonShowRoles.setText(R.string.send_tasks);
                 }
-                ArrayList<User> participants = getParticipants(eventDto);
+                ArrayList<Participant> participants = getParticipants(eventDto);
                 adapter.updateParticipants(participants);
             }
 
@@ -213,16 +215,18 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         });
     }
 
-    private ArrayList<User> getParticipants(EventDto eventDto) {
+    private ArrayList<Participant> getParticipants(EventDto eventDto) {
         List<ParticipantDto> participantDtoList = eventDto.getParticipants();
-        ArrayList<User> participants = new ArrayList<>();
+        ArrayList<Participant> participants = new ArrayList<>();
         for (ParticipantDto participantDto : participantDtoList) {
             UserDto userDto = participantDto.getUser();
+            Participant participant = new Participant();
             User user = new User(userDto.getName(), userDto.getSurname(), userDto.getAvatarUrl());
+            participant.setUser(user);
             if (participantDto.getRole() != null) {
-                user.setRole(participantDto.getRole().getName());
+                participant.setRole(participantDto.getRole());
             }
-            participants.add(user);
+            participants.add(participant);
         }
         return participants;
     }

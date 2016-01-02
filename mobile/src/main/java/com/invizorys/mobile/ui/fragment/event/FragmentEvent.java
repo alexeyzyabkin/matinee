@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.TabPagerAdapter;
+import com.invizorys.mobile.model.Event;
 import com.invizorys.mobile.ui.activity.MainActivity;
 import com.invizorys.mobile.util.FragmentHelper;
 
@@ -23,6 +24,14 @@ public class FragmentEvent extends Fragment {
 
     public static FragmentEvent newInstance() {
         return new FragmentEvent();
+    }
+
+    public static FragmentEvent newInstance(Event event) {
+        FragmentEvent fragmentEvent = new FragmentEvent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("", event);
+        fragmentEvent.setArguments(bundle);
+        return fragmentEvent;
     }
 
     public FragmentEvent() {
@@ -38,7 +47,7 @@ public class FragmentEvent extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("New Year Party");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Year Party");
     }
 
     @Override

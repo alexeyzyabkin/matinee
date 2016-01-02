@@ -14,7 +14,7 @@ import io.realm.Realm;
  */
 public class EventDataSource {
     public static final String ID = "id";
-    private String LOG_TAG = "PersonRealmDataSource";
+    private String LOG_TAG = "EventDataSource";
     private Realm realm;
 
     public EventDataSource(Context context) {

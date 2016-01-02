@@ -4,7 +4,6 @@ import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.ParticipantType;
 import com.letionik.matinee.RoleDto;
 import com.letionik.matinee.TaskProgressDto;
-import com.letionik.matinee.UserDto;
 
 import java.util.Date;
 import java.util.List;
@@ -17,8 +16,7 @@ import io.realm.annotations.Ignore;
  */
 public class Participant extends RealmObject {
     private Long id;
-    @Ignore
-    private UserDto user;
+    private User user;
     private String email;
     private Date comeInDate;
     @Ignore
@@ -33,7 +31,7 @@ public class Participant extends RealmObject {
 
     public Participant(ParticipantDto participantDto) {
         this.id = participantDto.getId();
-        this.user = participantDto.getUser();
+        this.user = new User(participantDto.getUser());
         this.email = participantDto.getEmail();
         this.comeInDate = participantDto.getComeInDate();
         this.role = participantDto.getRole();
@@ -49,11 +47,11 @@ public class Participant extends RealmObject {
         this.id = id;
     }
 
-    public UserDto getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDto user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

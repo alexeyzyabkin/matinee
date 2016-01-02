@@ -15,10 +15,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.data.UserDataSource;
 import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.ui.fragment.FragmentEvents;
 import com.invizorys.mobile.util.FragmentHelper;
-import com.invizorys.mobile.util.Settings;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -51,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FragmentHelper.add(fragmentManager, FragmentEvents.newInstance(), FRAME_CONTAINER);
-        user = Settings.fetchUser(this);
+
+        UserDataSource userDataSource = new UserDataSource(this);
+        user = userDataSource.getUser();
+
         drawerInit();
     }
 
@@ -78,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void drawerInit() {
-        ProfileDrawerItem profileDrawerItem = new ProfileDrawerItem().withName(user.getFirstName()
-                + " " + user.getLastName()).withIcon(user.getAvatarUrl()).withEnabled(false);
+        ProfileDrawerItem profileDrawerItem = new ProfileDrawerItem().withName(user.getName()
+                + " " + user.getSurname()).withIcon(user.getAvatarUrl()).withEnabled(false);
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName(EVENTS);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Feedback");
         PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("About");

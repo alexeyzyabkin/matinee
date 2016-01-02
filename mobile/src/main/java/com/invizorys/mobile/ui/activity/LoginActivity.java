@@ -8,13 +8,13 @@ import android.view.View;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.callback.SocialNetworkCallback;
+import com.invizorys.mobile.data.UserDataSource;
 import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.invizorys.mobile.util.Settings;
 import com.invizorys.mobile.util.social.VkSocialNetwork;
-import com.letionik.matinee.Sex;
 import com.letionik.matinee.UserDto;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -78,12 +78,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onUserReceive(User user) {
-        Settings.saveUser(this, user);
+        UserDataSource userDataSource = new UserDataSource(this);
+        userDataSource.saveUser(user);
         String accessToken = VKSdk.getAccessToken().accessToken;
         Settings.saveToken(this, accessToken);
 
-        matineeService.register(new UserDto(user.getSocialId(), user.getFirstName(),
-                user.getLastName(), Sex.parseSex(user.getSex()),
+        matineeService.register(new UserDto(user.getSocialId(), user.getName(),
+                user.getSurname(), user.getSex(),
                 user.getAvatarUrl()), new RetrofitCallback<UserDto>(LoginActivity.this) {
             @Override
             public void success(UserDto userDto, Response response) {
