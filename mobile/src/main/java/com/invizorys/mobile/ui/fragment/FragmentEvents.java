@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,14 +34,17 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class FragmentEvents extends Fragment implements View.OnClickListener, EventRecyclerAdapter.EventListener {
+public class FragmentEvents extends Fragment implements View.OnClickListener,
+        EventRecyclerAdapter.EventListener, SwipeRefreshLayout.OnRefreshListener {
     private MatineeService matineeService;
     private FragmentManager fragmentManager;
     private RecyclerView recyclerViewEvents;
     private EventDataSource eventDataSource;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static FragmentEvents newInstance() {
         return new FragmentEvents();
@@ -50,6 +54,17 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,19 +77,26 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
         view.findViewById(R.id.button_create_event).setOnClickListener(this);
         view.findViewById(R.id.button_find_event).setOnClickListener(this);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         recyclerViewEvents = (RecyclerView) view.findViewById(R.id.recyclerview_events);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewEvents.setLayoutManager(linearLayoutManager);
 
         fragmentManager = getActivity().getFragmentManager();
 
-        Intent intent = new Intent(getActivity(), NetworkService.class);
-        intent.putExtra(NetworkService.NETWORK_REQUEST, NetworkService.NetworkRequest.GET_EVENTS);
-        getActivity().startService(intent);
 
+        loadEvents();
         getEvents();
 
         return view;
+    }
+
+    private void loadEvents() {
+        Intent intent = new Intent(getActivity(), NetworkService.class);
+        intent.putExtra(NetworkService.NETWORK_REQUEST, NetworkService.NetworkRequest.GET_EVENTS);
+        getActivity().startService(intent);
     }
 
     private void createEvent(String eventName, Date startDate) {
@@ -170,11 +192,17 @@ public class FragmentEvents extends Fragment implements View.OnClickListener, Ev
 
     public void onEvent(EventsUpdated eventsUpdated) {
         getEvents();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onSelected(long eventId) {
         FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(),
                 MainActivity.FRAME_CONTAINER);
+    }
+
+    @Override
+    public void onRefresh() {
+        loadEvents();
     }
 }
