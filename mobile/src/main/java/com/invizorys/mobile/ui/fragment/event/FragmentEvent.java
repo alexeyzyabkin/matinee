@@ -21,6 +21,9 @@ import com.invizorys.mobile.util.FragmentHelper;
 
 public class FragmentEvent extends Fragment {
     private FragmentManager fragmentManager;
+    private Event currentEvent;
+
+    private static final String EVENT = "event";
 
     public static FragmentEvent newInstance() {
         return new FragmentEvent();
@@ -29,7 +32,7 @@ public class FragmentEvent extends Fragment {
     public static FragmentEvent newInstance(Event event) {
         FragmentEvent fragmentEvent = new FragmentEvent();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("", event);
+        bundle.putSerializable(EVENT, event);
         fragmentEvent.setArguments(bundle);
         return fragmentEvent;
     }
@@ -55,9 +58,13 @@ public class FragmentEvent extends Fragment {
                              Bundle savedInstanceState) {
         fragmentManager = getActivity().getFragmentManager();
 
+        if (getArguments() != null) {
+            currentEvent = (Event) getArguments().getSerializable(EVENT);
+        }
+
         View view = inflater.inflate(R.layout.fragment_event, container, false);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        viewPager.setAdapter(new TabPagerAdapter(getFragmentManager(), getActivity()));
+        viewPager.setAdapter(new TabPagerAdapter(getFragmentManager(), getActivity(), currentEvent));
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
@@ -80,5 +87,9 @@ public class FragmentEvent extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public Event getCurrentEvent() {
+        return currentEvent;
     }
 }

@@ -86,7 +86,6 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
 
         fragmentManager = getActivity().getFragmentManager();
 
-
         loadEvents();
         getEvents();
 
@@ -196,8 +195,8 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onSelected(long eventId) {
-        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(),
+    public void onSelected(Event event) {
+        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(event),
                 MainActivity.FRAME_CONTAINER);
     }
 

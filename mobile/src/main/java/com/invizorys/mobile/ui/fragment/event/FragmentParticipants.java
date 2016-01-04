@@ -19,20 +19,19 @@ import android.widget.Toast;
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
 import com.invizorys.mobile.data.UserDataSource;
+import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.model.EventStatus;
 import com.invizorys.mobile.model.Participant;
 import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.letionik.matinee.EventDto;
-import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.TaskDto;
 import com.letionik.matinee.TaskProgressDto;
-import com.letionik.matinee.UserDto;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RetrofitError;
@@ -44,18 +43,18 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     private ImageView imageViewAvatar;
     private TextView textViewName, textViewEventCode;
     private MatineeService matineeService;
-    private Long eventId;
     private RecyclerView recyclerView;
     private ParticipantRecyclerAdapter adapter;
     private EventStatus eventStatus;
     private SwipeRefreshLayout swipeLayout;
+    private Event currentEvent;
 
-    private static final String EVENT_ID = "event_id";
+    private static final String EVENT = "event";
 
-    public static FragmentParticipants newInstance(Long eventId) {
+    public static FragmentParticipants newInstance(Event event) {
         FragmentParticipants fragment = new FragmentParticipants();
         Bundle args = new Bundle();
-        args.putLong(EVENT_ID, eventId);
+        args.putSerializable(EVENT, event);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,7 +91,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         swipeLayout.setColorSchemeColors(getResources().getColor(R.color.md_red_500));
 
         if (getArguments() != null) {
-            eventId = getArguments().getLong(EVENT_ID);
+            currentEvent = (Event) getArguments().getSerializable(EVENT);
         }
 
         matineeService = ServiceGenerator.createService(MatineeService.class,
@@ -111,50 +110,40 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
-        getCurrentEvent(eventId);
+        initCurrentEvent();
 
         return view;
     }
 
-    private void getCurrentEvent(Long eventId) {
-        matineeService.getCurrentEvent(eventId, new RetrofitCallback<EventDto>(getActivity()) {
-            @Override
-            public void success(EventDto eventDto, Response response) {
-                eventStatus = eventDto.getEventStatus();
-                //TODO admin = null???
-                if (eventDto.getAdmin() == null) {
-                    Toast.makeText(getActivity(), "admin not found", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-                    buttonShowRoles.setVisibility(View.VISIBLE);
-                    buttonShowRoles.setText(getActivity().getString(R.string.show_tasks));
-                } else if (eventDto.getAdmin().getUser().getLogin().equals(currentUser.getSocialId())) {
-                    buttonShowRoles.setVisibility(View.VISIBLE);
-                }
-                textViewEventCode.setText(getActivity().getString(R.string.event_code) + eventDto.getCode());
+    private void initCurrentEvent() {
+        eventStatus = Event.getEventStatusEnum(currentEvent);
+        //TODO admin = null???
+        if (Event.getAdmin(currentEvent.getParticipants()) == null) {
+            Toast.makeText(getActivity(), "admin not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
+            buttonShowRoles.setVisibility(View.VISIBLE);
+            buttonShowRoles.setText(getActivity().getString(R.string.show_tasks));
+        } else if (Event.getAdmin(currentEvent.getParticipants()).getUser().getSocialId().equals(currentUser.getSocialId())) {
+            buttonShowRoles.setVisibility(View.VISIBLE);
+        }
+        textViewEventCode.setText(getActivity().getString(R.string.event_code) + currentEvent.getCode());
 
-                ArrayList<Participant> participants = getParticipants(eventDto);
-                adapter = new ParticipantRecyclerAdapter(getActivity(), participants);
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                super.failure(error);
-            }
-        });
+        List<Participant> participants = currentEvent.getParticipants();
+        adapter = new ParticipantRecyclerAdapter(getActivity(), participants);
+        recyclerView.setAdapter(adapter);
     }
 
     private void revealRoles() {
-        matineeService.revealRoles(eventId, new RetrofitCallback<EventDto>(getActivity()) {
+        matineeService.revealRoles(currentEvent.getId(), new RetrofitCallback<EventDto>(getActivity()) {
             @Override
             public void success(EventDto eventDto, Response response) {
-                eventStatus = eventDto.getEventStatus();
+                eventStatus = Event.getEventStatusEnum(currentEvent);
                 if (eventStatus.equals(EventStatus.ROLES_REVEALED)) {
                     buttonShowRoles.setText(R.string.send_tasks);
                 }
-                ArrayList<Participant> participants = getParticipants(eventDto);
+                List<Participant> participants = currentEvent.getParticipants();
                 adapter.updateParticipants(participants);
             }
 
@@ -166,10 +155,10 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     }
 
     private void revealTasks() {
-        matineeService.revealTasks(eventId, new RetrofitCallback<EventDto>(getActivity()) {
+        matineeService.revealTasks(currentEvent.getId(), new RetrofitCallback<EventDto>(getActivity()) {
             @Override
             public void success(EventDto eventDto, Response response) {
-                eventStatus = eventDto.getEventStatus();
+                eventStatus = Event.getEventStatusEnum(currentEvent);
                 if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
                     buttonShowRoles.setText(R.string.show_tasks);
                 }
@@ -186,7 +175,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         matineeService.getCurrentEvent(eventId, new RetrofitCallback<EventDto>(getActivity()) {
             @Override
             public void success(EventDto eventDto, Response response) {
-                eventStatus = eventDto.getEventStatus();
+                eventStatus = Event.getEventStatusEnum(currentEvent);
                 List<ParticipantDto> participantDtos = eventDto.getParticipants();
                 for (ParticipantDto participantDto : participantDtos) {
                     if (participantDto.getUser().getLogin().equals(currentUser.getSocialId())) {
@@ -215,22 +204,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         });
     }
 
-    private ArrayList<Participant> getParticipants(EventDto eventDto) {
-        List<ParticipantDto> participantDtoList = eventDto.getParticipants();
-        ArrayList<Participant> participants = new ArrayList<>();
-        for (ParticipantDto participantDto : participantDtoList) {
-            UserDto userDto = participantDto.getUser();
-            Participant participant = new Participant();
-            User user = new User(userDto.getName(), userDto.getSurname(), userDto.getAvatarUrl());
-            participant.setUser(user);
-            if (participantDto.getRole() != null) {
-                participant.setRole(participantDto.getRole());
-            }
-            participants.add(participant);
-        }
-        return participants;
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -240,7 +213,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
                 } else if (eventStatus.equals(EventStatus.ROLES_REVEALED)) {
                     revealTasks();
                 } else if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-                    showTask(eventId);
+                    showTask(currentEvent.getId());
                 }
                 break;
         }

@@ -103,8 +103,8 @@ public class Event extends RealmObject implements Serializable {
         return result;
     }
 
-    public static ParticipantDto getAdmin(List<ParticipantDto> participants) {
-        for (ParticipantDto participant : participants) {
+    public static Participant getAdmin(RealmList<Participant> participants) {
+        for (Participant participant : participants) {
             if (participant.getType() == ParticipantType.ADMIN) return participant;
         }
         return null;

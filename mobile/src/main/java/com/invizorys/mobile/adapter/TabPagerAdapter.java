@@ -3,9 +3,10 @@ package com.invizorys.mobile.adapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.model.Event;
 import com.invizorys.mobile.ui.fragment.event.FragmentHistory;
 import com.invizorys.mobile.ui.fragment.event.FragmentMyTasks;
 import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
@@ -13,16 +14,17 @@ import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
 /**
  * Created by Paryshkura Roman on 15.12.2015.
  */
-public class TabPagerAdapter extends FragmentPagerAdapter {
+public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
     private final int PAGE_COUNT = 3;
     private FragmentMyTasks fragmentMyTasks = FragmentMyTasks.newInstance();
-    private FragmentParticipants fragmentParticipants = FragmentParticipants.newInstance((long) 1);
+    private FragmentParticipants fragmentParticipants;
     private FragmentHistory fragmentHistory = FragmentHistory.newInstance();
 
-    public TabPagerAdapter(FragmentManager fm, Context context) {
+    public TabPagerAdapter(FragmentManager fm, Context context, Event event) {
         super(fm);
         this.context = context;
+        fragmentParticipants = FragmentParticipants.newInstance(event);
     }
 
     @Override
@@ -56,4 +58,9 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
+//    @Override
+//    public Object instantiateItem(ViewGroup container, int position) {
+//        return super.instantiateItem(container, position);
+//    }
 }

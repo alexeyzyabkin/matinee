@@ -12,16 +12,16 @@ import com.invizorys.mobile.R;
 import com.invizorys.mobile.model.Participant;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Paryshkura Roman on 13.12.2015.
  */
 public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<ParticipantRecyclerAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Participant> participants;
+    private List<Participant> participants;
 
-    public ParticipantRecyclerAdapter(Context context, ArrayList<Participant> participants) {
+    public ParticipantRecyclerAdapter(Context context, List<Participant> participants) {
         this.context = context;
         this.participants = participants;
     }
@@ -58,7 +58,7 @@ public class ParticipantRecyclerAdapter extends RecyclerView.Adapter<Participant
         return participants.get(position);
     }
 
-    public void updateParticipants(ArrayList<Participant> participants) {
+    public void updateParticipants(List<Participant> participants) {
         this.participants = participants;
         notifyDataSetChanged();
     }

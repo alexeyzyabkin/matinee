@@ -44,7 +44,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                eventListener.onSelected(event.getId());
+                eventListener.onSelected(event);
                 Toast.makeText(context, "selected event id = " + event.getId(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -69,6 +69,6 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     }
 
     public interface EventListener {
-        void onSelected(long eventId);
+        void onSelected(Event event);
     }
 }
