@@ -48,18 +48,13 @@ public class FragmentEvent extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Year Party");
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentManager = getActivity().getFragmentManager();
 
         if (getArguments() != null) {
             currentEvent = (Event) getArguments().getSerializable(EVENT);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(currentEvent.getName());
         }
 
         View view = inflater.inflate(R.layout.fragment_event, container, false);

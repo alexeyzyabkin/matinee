@@ -19,12 +19,13 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private final int PAGE_COUNT = 3;
     private FragmentMyTasks fragmentMyTasks = FragmentMyTasks.newInstance();
     private FragmentParticipants fragmentParticipants;
-    private FragmentHistory fragmentHistory = FragmentHistory.newInstance();
+    private FragmentHistory fragmentHistory;
 
     public TabPagerAdapter(FragmentManager fm, Context context, Event event) {
         super(fm);
         this.context = context;
         fragmentParticipants = FragmentParticipants.newInstance(event);
+        fragmentHistory = FragmentHistory.newInstance(event);
     }
 
     @Override

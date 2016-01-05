@@ -22,7 +22,7 @@ public class Utils {
         }
     }
 
-    public static String  dateToString(Date date) {
+    public static String dateToString(Date date) {
         Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return formatter.format(date);
     }
