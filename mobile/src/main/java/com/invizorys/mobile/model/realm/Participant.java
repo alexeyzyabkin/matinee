@@ -1,4 +1,4 @@
-package com.invizorys.mobile.model;
+package com.invizorys.mobile.model.realm;
 
 import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.ParticipantType;

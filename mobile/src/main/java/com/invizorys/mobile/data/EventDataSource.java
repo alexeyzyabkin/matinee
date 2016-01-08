@@ -2,7 +2,7 @@ package com.invizorys.mobile.data;
 
 import android.content.Context;
 
-import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.model.realm.Event;
 import com.letionik.matinee.EventDto;
 
 import java.util.List;
@@ -28,11 +28,11 @@ public class EventDataSource {
     }
 
     public List<Event> getAllEvents() {
-        return realm.where(Event.class).findAll();
+        return realm.copyFromRealm(realm.where(Event.class).findAll());
     }
 
-    public Event findEventById(long eventId) {
-        return realm.where(Event.class).equalTo(ID, eventId).findFirst();
+    public Event getEventById(long eventId) {
+        return realm.copyFromRealm(realm.where(Event.class).equalTo(ID, eventId).findFirst());
     }
 
     public void clearTable() {

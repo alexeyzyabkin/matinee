@@ -9,12 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.data.EventDataSource;
+import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.model.HistoryRecord;
-import com.invizorys.mobile.model.Participant;
+import com.invizorys.mobile.model.realm.Participant;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.letionik.matinee.TaskProgressDto;
@@ -26,12 +26,13 @@ public class FragmentHistory extends Fragment implements SwipeRefreshLayout.OnRe
     private MatineeService matineeService;
     private Event currentEvent;
 
-    private static final String EVENT = "event";
+    private static final String EVENT_ID = "eventId";
 
-    public static FragmentHistory newInstance(Event event) {
+    //see FragmentEvent newInstance() method description
+    public static FragmentHistory newInstance(long eventId) {
         FragmentHistory fragmentHistory = new FragmentHistory();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(EVENT, event);
+        bundle.putSerializable(EVENT_ID, eventId);
         fragmentHistory.setArguments(bundle);
         return fragmentHistory;
     }
@@ -47,7 +48,9 @@ public class FragmentHistory extends Fragment implements SwipeRefreshLayout.OnRe
                 MatineeService.BASE_URL, getActivity());
 
         if (getArguments() != null) {
-            currentEvent = (Event) getArguments().getSerializable(EVENT);
+            long currentEventId = getArguments().getLong(EVENT_ID);
+            EventDataSource eventDataSource = new EventDataSource(getActivity());
+            currentEvent = eventDataSource.getEventById(currentEventId);
         }
 
         View view = inflater.inflate(R.layout.fragment_history, container, false);

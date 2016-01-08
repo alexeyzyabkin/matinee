@@ -12,11 +12,12 @@ import android.view.ViewGroup;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.MyTaskRecyclerAdapter;
+import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.data.UserDataSource;
-import com.invizorys.mobile.model.Event;
-import com.invizorys.mobile.model.Participant;
+import com.invizorys.mobile.model.realm.Event;
+import com.invizorys.mobile.model.realm.Participant;
 import com.invizorys.mobile.model.Task;
-import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.letionik.matinee.TaskDto;
@@ -26,16 +27,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentMyTasks extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String EVENT = "event";
+    private static final String EVENT_ID = "eventId";
     private MatineeService matineeService;
     private RecyclerView recyclerView;
     private Event currentEvent;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static FragmentMyTasks newInstance(Event currentEvent) {
+    //see FragmentEvent newInstance() method description
+    public static FragmentMyTasks newInstance(long currentEventId) {
         FragmentMyTasks fragmentMyTasks = new FragmentMyTasks();
         Bundle args = new Bundle();
-        args.putSerializable(EVENT, currentEvent);
+        args.putLong(EVENT_ID, currentEventId);
         fragmentMyTasks.setArguments(args);
         return fragmentMyTasks;
     }
@@ -48,7 +50,9 @@ public class FragmentMyTasks extends Fragment implements SwipeRefreshLayout.OnRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            currentEvent = (Event) getArguments().getSerializable(EVENT);
+            long currentEventId = getArguments().getLong(EVENT_ID);
+            EventDataSource eventDataSource = new EventDataSource(getActivity());
+            currentEvent = eventDataSource.getEventById(currentEventId);
         }
     }
 

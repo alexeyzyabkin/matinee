@@ -18,11 +18,12 @@ import android.widget.Toast;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
+import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.data.UserDataSource;
-import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.model.EventStatus;
-import com.invizorys.mobile.model.Participant;
-import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.model.realm.Participant;
+import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
@@ -49,12 +50,13 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     private SwipeRefreshLayout swipeLayout;
     private Event currentEvent;
 
-    private static final String EVENT = "event";
+    private static final String EVENT_ID = "eventId";
 
-    public static FragmentParticipants newInstance(Event event) {
+    //see FragmentEvent newInstance() method description
+    public static FragmentParticipants newInstance(long event) {
         FragmentParticipants fragment = new FragmentParticipants();
         Bundle args = new Bundle();
-        args.putSerializable(EVENT, event);
+        args.putSerializable(EVENT_ID, event);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,7 +93,9 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         swipeLayout.setColorSchemeColors(getResources().getColor(R.color.md_red_500));
 
         if (getArguments() != null) {
-            currentEvent = (Event) getArguments().getSerializable(EVENT);
+            long currentEventId = getArguments().getLong(EVENT_ID);
+            EventDataSource eventDataSource = new EventDataSource(getActivity());
+            currentEvent = eventDataSource.getEventById(currentEventId);
         }
 
         matineeService = ServiceGenerator.createService(MatineeService.class,
@@ -116,6 +120,10 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     }
 
     private void initCurrentEvent() {
+        List<Participant> participants = currentEvent.getParticipants();
+        adapter = new ParticipantRecyclerAdapter(getActivity(), participants);
+        recyclerView.setAdapter(adapter);
+
         eventStatus = Event.getEventStatusEnum(currentEvent);
         //TODO admin = null???
         if (Event.getAdmin(currentEvent.getParticipants()) == null) {
@@ -129,10 +137,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
             buttonShowRoles.setVisibility(View.VISIBLE);
         }
         textViewEventCode.setText(getActivity().getString(R.string.event_code) + currentEvent.getCode());
-
-        List<Participant> participants = currentEvent.getParticipants();
-        adapter = new ParticipantRecyclerAdapter(getActivity(), participants);
-        recyclerView.setAdapter(adapter);
     }
 
     private void revealRoles() {

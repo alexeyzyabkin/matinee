@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.util.Utils;
 
 import java.util.List;

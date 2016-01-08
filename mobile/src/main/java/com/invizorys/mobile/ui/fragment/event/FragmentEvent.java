@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.TabPagerAdapter;
-import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.data.EventDataSource;
+import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.ui.activity.MainActivity;
 import com.invizorys.mobile.util.FragmentHelper;
 
@@ -23,12 +24,15 @@ public class FragmentEvent extends Fragment {
     private FragmentManager fragmentManager;
     private Event currentEvent;
 
-    private static final String EVENT = "event";
+    private static final String EVENT_ID = "eventId";
 
-    public static FragmentEvent newInstance(Event event) {
+    //NotSerializableException: io.realm.RealmList
+    //RealmList isn't serializable that's why need to send eventId instead event
+    //Passing primary keys is probably the best option
+    public static FragmentEvent newInstance(long eventId) {
         FragmentEvent fragmentEvent = new FragmentEvent();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(EVENT, event);
+        bundle.putSerializable(EVENT_ID, eventId);
         fragmentEvent.setArguments(bundle);
         return fragmentEvent;
     }
@@ -49,13 +53,16 @@ public class FragmentEvent extends Fragment {
         fragmentManager = getActivity().getFragmentManager();
 
         if (getArguments() != null) {
-            currentEvent = (Event) getArguments().getSerializable(EVENT);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(currentEvent.getName());
+            long currentEventId = getArguments().getLong(EVENT_ID);
+            EventDataSource eventDataSource = new EventDataSource(getActivity());
+            currentEvent = eventDataSource.getEventById(currentEventId);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(currentEvent.getName()
+                    + "(" + currentEvent.getCode() + ")");
         }
 
         View view = inflater.inflate(R.layout.fragment_event, container, false);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        viewPager.setAdapter(new TabPagerAdapter(getFragmentManager(), getActivity(), currentEvent));
+        viewPager.setAdapter(new TabPagerAdapter(getFragmentManager(), getActivity(), currentEvent.getId()));
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
@@ -78,9 +85,5 @@ public class FragmentEvent extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public Event getCurrentEvent() {
-        return currentEvent;
     }
 }

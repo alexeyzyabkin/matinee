@@ -19,7 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.EventRecyclerAdapter;
 import com.invizorys.mobile.data.EventDataSource;
-import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.model.EventsUpdated;
 import com.invizorys.mobile.network.NetworkService;
 import com.invizorys.mobile.network.api.MatineeService;
@@ -116,7 +116,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
                 eventDataSource.beginTransaction();
                 eventDataSource.saveEvent(eventDto);
                 eventDataSource.endTransaction();
-                FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(eventDataSource.findEventById(eventDto.getId())),
+                FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(eventDto.getId()),
                         MainActivity.FRAME_CONTAINER);
             }
 
@@ -204,7 +204,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
 
     @Override
     public void onSelected(Event event) {
-        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(event),
+        FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(event.getId()),
                 MainActivity.FRAME_CONTAINER);
     }
 

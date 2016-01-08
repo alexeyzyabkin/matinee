@@ -2,7 +2,7 @@ package com.invizorys.mobile.data;
 
 import android.content.Context;
 
-import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.model.realm.User;
 
 import io.realm.Realm;
 

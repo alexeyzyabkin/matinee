@@ -1,6 +1,6 @@
 package com.invizorys.mobile.callback;
 
-import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.model.realm.User;
 
 import java.util.ArrayList;
 

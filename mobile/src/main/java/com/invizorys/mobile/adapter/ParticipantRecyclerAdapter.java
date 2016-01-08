@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.model.Participant;
+import com.invizorys.mobile.model.realm.Participant;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

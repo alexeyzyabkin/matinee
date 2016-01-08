@@ -3,7 +3,7 @@ package com.invizorys.mobile.util.social;
 import android.app.Activity;
 
 import com.invizorys.mobile.callback.SocialNetworkCallback;
-import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.model.realm.User;
 import com.letionik.matinee.Sex;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.data.UserDataSource;
-import com.invizorys.mobile.model.User;
+import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.ui.fragment.FragmentEvents;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.mikepenz.materialdrawer.Drawer;

@@ -1,5 +1,6 @@
-package com.invizorys.mobile.model;
+package com.invizorys.mobile.model.realm;
 
+import com.invizorys.mobile.model.EventStatus;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.ParticipantType;

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.model.Event;
 import com.invizorys.mobile.ui.fragment.event.FragmentHistory;
 import com.invizorys.mobile.ui.fragment.event.FragmentMyTasks;
 import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
@@ -21,12 +20,12 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private FragmentParticipants fragmentParticipants;
     private FragmentHistory fragmentHistory;
 
-    public TabPagerAdapter(FragmentManager fm, Context context, Event event) {
+    public TabPagerAdapter(FragmentManager fm, Context context, long currentEventId) {
         super(fm);
         this.context = context;
-        fragmentMyTasks = FragmentMyTasks.newInstance(event);
-        fragmentParticipants = FragmentParticipants.newInstance(event);
-        fragmentHistory = FragmentHistory.newInstance(event);
+        fragmentMyTasks = FragmentMyTasks.newInstance(currentEventId);
+        fragmentParticipants = FragmentParticipants.newInstance(currentEventId);
+        fragmentHistory = FragmentHistory.newInstance(currentEventId);
     }
 
     @Override
