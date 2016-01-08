@@ -70,7 +70,6 @@ public class FragmentHistory extends Fragment implements SwipeRefreshLayout.OnRe
         for (Participant participant : participants) {
             List<TaskProgressDto> taskProgressDtos = participant.getTasks();
             if (taskProgressDtos == null) {
-                Toast.makeText(getActivity(), "tasks not found", Toast.LENGTH_SHORT).show();
                 return;
             }
             for (TaskProgressDto taskProgressDto : taskProgressDtos) {

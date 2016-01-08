@@ -5,7 +5,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textview_task"
+        android:id="@+id/textview_task_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textview_task_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -17,13 +17,14 @@ import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
     private final int PAGE_COUNT = 3;
-    private FragmentMyTasks fragmentMyTasks = FragmentMyTasks.newInstance();
+    private FragmentMyTasks fragmentMyTasks;
     private FragmentParticipants fragmentParticipants;
     private FragmentHistory fragmentHistory;
 
     public TabPagerAdapter(FragmentManager fm, Context context, Event event) {
         super(fm);
         this.context = context;
+        fragmentMyTasks = FragmentMyTasks.newInstance(event);
         fragmentParticipants = FragmentParticipants.newInstance(event);
         fragmentHistory = FragmentHistory.newInstance(event);
     }

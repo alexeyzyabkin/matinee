@@ -25,10 +25,6 @@ public class FragmentEvent extends Fragment {
 
     private static final String EVENT = "event";
 
-    public static FragmentEvent newInstance() {
-        return new FragmentEvent();
-    }
-
     public static FragmentEvent newInstance(Event event) {
         FragmentEvent fragmentEvent = new FragmentEvent();
         Bundle bundle = new Bundle();

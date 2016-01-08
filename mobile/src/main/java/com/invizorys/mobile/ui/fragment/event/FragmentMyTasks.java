@@ -2,6 +2,8 @@ package com.invizorys.mobile.ui.fragment.event;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,23 +11,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.invizorys.mobile.R;
+import com.invizorys.mobile.adapter.MyTaskRecyclerAdapter;
+import com.invizorys.mobile.data.UserDataSource;
+import com.invizorys.mobile.model.Event;
+import com.invizorys.mobile.model.Participant;
+import com.invizorys.mobile.model.Task;
+import com.invizorys.mobile.model.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.ServiceGenerator;
+import com.letionik.matinee.TaskDto;
+import com.letionik.matinee.TaskProgressDto;
 
-public class FragmentMyTasks extends Fragment {
-    private static final String EVENT_ID = "eventId";
+import java.util.ArrayList;
+import java.util.List;
+
+public class FragmentMyTasks extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String EVENT = "event";
     private MatineeService matineeService;
     private RecyclerView recyclerView;
-    private Long eventId;
+    private Event currentEvent;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static FragmentMyTasks newInstance() {
-        return new FragmentMyTasks();
-    }
-
-    public static FragmentMyTasks newInstance(Long eventId) {
+    public static FragmentMyTasks newInstance(Event currentEvent) {
         FragmentMyTasks fragmentMyTasks = new FragmentMyTasks();
         Bundle args = new Bundle();
-        args.putLong(EVENT_ID, eventId);
+        args.putSerializable(EVENT, currentEvent);
         fragmentMyTasks.setArguments(args);
         return fragmentMyTasks;
     }
@@ -38,7 +48,7 @@ public class FragmentMyTasks extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            eventId = getArguments().getLong(EVENT_ID);
+            currentEvent = (Event) getArguments().getSerializable(EVENT);
         }
     }
 
@@ -54,40 +64,43 @@ public class FragmentMyTasks extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-//        showTask(eventId);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.md_red_500));
+
+        showTasks();
 
         return view;
     }
 
-//    private void showTask(Long eventId) {
-//        matineeService.getCurrentEvent(eventId, new RetrofitCallback<EventDto>(getActivity()) {
-//            @Override
-//            public void success(EventDto eventDto, Response response) {
-//                List<ParticipantDto> participantDtos = eventDto.getParticipants();
-//                for (ParticipantDto participantDto : participantDtos) {
-//                    if (participantDto.getUser().getLogin().equals(currentUser.getSocialId())) {
-//                        List<TaskProgressDto> taskProgressDtos = participantDto.getTasks();
-//                        StringBuilder taskStringBuilder = new StringBuilder();
-//                        for (TaskProgressDto taskProgressDto : taskProgressDtos) {
-//                            TaskDto taskDto = taskProgressDto.getTask();
-//                            taskStringBuilder.append(taskDto.getName());
-//                            taskStringBuilder.append("\n");
-//                            taskStringBuilder.append(taskDto.getDescription());
-//                            taskStringBuilder.append("\n\n");
-//                        }
-//                        Dialog dialog = new Dialog(getActivity());
-//                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                        dialog.setContentView(R.layout.dialog_tasks);
-//                        ((TextView) dialog.findViewById(R.id.textview_tasks)).setText(taskStringBuilder);
-//                        dialog.show();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                super.failure(error);
-//            }
-//        });
-//    }
+    private void showTasks() {
+        UserDataSource userDataSource = new UserDataSource(getActivity());
+        User currentUser = userDataSource.getUser();
+
+        List<Participant> participants = currentEvent.getParticipants();
+        for (Participant participantDto : participants) {
+            if (participantDto.getUser().getSocialId().equals(currentUser.getSocialId())) {
+                List<TaskProgressDto> taskProgressDtos = participantDto.getTasks();
+                if (taskProgressDtos == null) {
+                    return;
+                }
+                ArrayList<Task> tasks = new ArrayList<>();
+                for (TaskProgressDto taskProgressDto : taskProgressDtos) {
+                    TaskDto taskDto = taskProgressDto.getTask();
+                    tasks.add(new Task(taskDto.getName(), taskDto.getDescription()));
+                }
+                recyclerView.setAdapter(new MyTaskRecyclerAdapter(tasks));
+            }
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 5000);
+    }
 }

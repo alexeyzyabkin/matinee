@@ -113,9 +113,10 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
                     Toast.makeText(getActivity(), "eventDto null", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                eventDataSource.beginTransaction();
                 eventDataSource.saveEvent(eventDto);
-//                eventDto.getId();
-                FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(),
+                eventDataSource.endTransaction();
+                FragmentHelper.add(fragmentManager, FragmentEvent.newInstance(eventDataSource.findEventById(eventDto.getId())),
                         MainActivity.FRAME_CONTAINER);
             }
 

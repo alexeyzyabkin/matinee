@@ -30,7 +30,8 @@ public class MyTaskRecyclerAdapter extends RecyclerView.Adapter<MyTaskRecyclerAd
     @Override
     public void onBindViewHolder(MyTaskRecyclerAdapter.ViewHolder holder, int position) {
         Task task = tasks.get(position);
-        holder.textViewTask.setText(task.getText());
+        holder.textViewTaskName.setText(task.getName());
+        holder.textViewTaskDescription.setText(task.getDescription());
     }
 
     @Override
@@ -39,11 +40,13 @@ public class MyTaskRecyclerAdapter extends RecyclerView.Adapter<MyTaskRecyclerAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewTask;
+        public TextView textViewTaskName;
+        public TextView textViewTaskDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textViewTask = (TextView) itemView.findViewById(R.id.textview_task);
+            textViewTaskName = (TextView) itemView.findViewById(R.id.textview_task_name);
+            textViewTaskDescription = (TextView) itemView.findViewById(R.id.textview_task_description);
         }
     }
 }

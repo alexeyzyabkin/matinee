@@ -31,7 +31,7 @@ public class EventDataSource {
         return realm.where(Event.class).findAll();
     }
 
-    public Event findEventById(int eventId) {
+    public Event findEventById(long eventId) {
         return realm.where(Event.class).equalTo(ID, eventId).findFirst();
     }
 
