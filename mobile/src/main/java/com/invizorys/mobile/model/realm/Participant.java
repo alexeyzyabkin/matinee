@@ -8,8 +8,8 @@ import com.letionik.matinee.TaskProgressDto;
 import java.util.Date;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 
 /**
  * Created by Paryshkura Roman on 30.12.2015.
@@ -19,12 +19,9 @@ public class Participant extends RealmObject {
     private User user;
     private String email;
     private Date comeInDate;
-    @Ignore
-    private RoleDto role;
-    @Ignore
-    private List<TaskProgressDto> tasks;
-    @Ignore
-    private ParticipantType type;
+    private Role role;
+    private RealmList<TaskProgress> tasks;
+    private String participantType;
 
     public Participant() {
     }
@@ -34,9 +31,15 @@ public class Participant extends RealmObject {
         this.user = new User(participantDto.getUser());
         this.email = participantDto.getEmail();
         this.comeInDate = participantDto.getComeInDate();
-        this.role = participantDto.getRole();
-        this.tasks = participantDto.getTasks();
-        this.type = participantDto.getType();
+        RoleDto roleDto = participantDto.getRole();
+        if (roleDto != null) {
+            this.role = new Role(participantDto.getRole());
+        }
+        this.tasks = convertTasksDtoToTasks(participantDto.getTasks());
+        ParticipantType participantType = participantDto.getType();
+        if (participantType != null) {
+            this.participantType = participantDto.getType().toString();
+        }
     }
 
     public Long getId() {
@@ -63,28 +66,28 @@ public class Participant extends RealmObject {
         this.comeInDate = comeInDate;
     }
 
-    public RoleDto getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(RoleDto role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public List<TaskProgressDto> getTasks() {
+    public RealmList<TaskProgress> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<TaskProgressDto> tasks) {
+    public void setTasks(RealmList<TaskProgress> tasks) {
         this.tasks = tasks;
     }
 
-    public ParticipantType getType() {
-        return type;
+    public String getParticipantType() {
+        return participantType;
     }
 
-    public void setType(ParticipantType type) {
-        this.type = type;
+    public void setParticipantType(String participantType) {
+        this.participantType = participantType;
     }
 
     public String getEmail() {
@@ -93,5 +96,22 @@ public class Participant extends RealmObject {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public static RealmList<TaskProgress> convertTasksDtoToTasks(List<TaskProgressDto> taskProgressDtos) {
+        RealmList<TaskProgress> result = new RealmList<>();
+        for (TaskProgressDto taskProgressDto : taskProgressDtos) {
+            TaskProgress taskProgress = new TaskProgress(taskProgressDto);
+            result.add(taskProgress);
+        }
+        return result;
+    }
+
+    public static ParticipantType getEventStatusEnum(Participant participant) {
+        return ParticipantType.valueOf(participant.getParticipantType());
+    }
+
+    public static void setEventStatusEnum(Participant participant, ParticipantType enumValue) {
+        participant.setParticipantType(enumValue.toString());
     }
 }

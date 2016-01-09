@@ -17,7 +17,7 @@ public class FragmentHelper {
 
     public static boolean pop(FragmentManager fragmentManager) {
         fragmentManager.popBackStack();
-        return getStackCount(fragmentManager) == 0;
+        return getStackCount(fragmentManager) == 1;
     }
 
     public static int getStackCount(FragmentManager fragmentManager) {

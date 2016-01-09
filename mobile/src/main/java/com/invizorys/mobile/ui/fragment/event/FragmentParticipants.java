@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,13 +22,13 @@ import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
 import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.data.UserDataSource;
 import com.invizorys.mobile.model.realm.Event;
-import com.invizorys.mobile.model.EventStatus;
 import com.invizorys.mobile.model.realm.Participant;
 import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.letionik.matinee.EventDto;
+import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.TaskDto;
 import com.letionik.matinee.TaskProgressDto;
@@ -41,8 +42,7 @@ import retrofit.client.Response;
 public class FragmentParticipants extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private User currentUser;
     private Button buttonShowRoles;
-    private ImageView imageViewAvatar;
-    private TextView textViewName, textViewEventCode;
+    private TextView textViewEventCode;
     private MatineeService matineeService;
     private RecyclerView recyclerView;
     private ParticipantRecyclerAdapter adapter;
@@ -90,7 +90,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
 
         swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeColors(getResources().getColor(R.color.md_red_500));
+        swipeLayout.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.md_red_500));
 
         if (getArguments() != null) {
             long currentEventId = getArguments().getLong(EVENT_ID);
@@ -104,10 +104,10 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         buttonShowRoles = (Button) view.findViewById(R.id.button_show_roles);
         buttonShowRoles.setOnClickListener(this);
 
-        imageViewAvatar = (ImageView) view.findViewById(R.id.imageview_avatar);
+        ImageView imageViewAvatar = (ImageView) view.findViewById(R.id.imageview_avatar);
         Picasso.with(getActivity()).load(currentUser.getAvatarUrl()).into(imageViewAvatar);
 
-        textViewName = (TextView) view.findViewById(R.id.textview_name);
+        TextView textViewName = (TextView) view.findViewById(R.id.textview_name);
         String name = currentUser.getName() + " " + currentUser.getSurname();
         textViewName.setText(name);
 
@@ -125,15 +125,16 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         recyclerView.setAdapter(adapter);
 
         eventStatus = Event.getEventStatusEnum(currentEvent);
+        Participant admin = Event.getAdmin(currentEvent.getParticipants());
         //TODO admin = null???
-        if (Event.getAdmin(currentEvent.getParticipants()) == null) {
+        if (admin == null) {
             Toast.makeText(getActivity(), "admin not found", Toast.LENGTH_SHORT).show();
             return;
         }
         if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
             buttonShowRoles.setVisibility(View.VISIBLE);
             buttonShowRoles.setText(getActivity().getString(R.string.show_tasks));
-        } else if (Event.getAdmin(currentEvent.getParticipants()).getUser().getSocialId().equals(currentUser.getSocialId())) {
+        } else if (currentUser.getSocialId().equals(admin.getUser().getSocialId())) {
             buttonShowRoles.setVisibility(View.VISIBLE);
         }
         textViewEventCode.setText(getActivity().getString(R.string.event_code) + currentEvent.getCode());

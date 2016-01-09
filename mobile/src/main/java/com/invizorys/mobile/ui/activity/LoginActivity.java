@@ -53,6 +53,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
+                String accessToken = res.accessToken;
+                Settings.saveToken(LoginActivity.this, accessToken);
+
                 // User passed Authorization
                 new VkSocialNetwork(LoginActivity.this).getUserData(LoginActivity.this);
             }
@@ -80,11 +83,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onUserReceive(User user) {
         UserDataSource userDataSource = new UserDataSource(this);
         userDataSource.saveUser(user);
-        String accessToken = VKSdk.getAccessToken().accessToken;
-        Settings.saveToken(this, accessToken);
 
         matineeService.register(new UserDto(user.getSocialId(), user.getName(),
-                user.getSurname(), user.getSex(),
+                user.getSurname(), User.getSexEnum(user),
                 user.getAvatarUrl()), new RetrofitCallback<UserDto>(LoginActivity.this) {
             @Override
             public void success(UserDto userDto, Response response) {

@@ -1,7 +1,7 @@
 package com.invizorys.mobile.model.realm;
 
-import com.invizorys.mobile.model.EventStatus;
 import com.letionik.matinee.EventDto;
+import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.ParticipantDto;
 import com.letionik.matinee.ParticipantType;
 
@@ -106,7 +106,8 @@ public class Event extends RealmObject implements Serializable {
 
     public static Participant getAdmin(RealmList<Participant> participants) {
         for (Participant participant : participants) {
-            if (participant.getType() == ParticipantType.ADMIN) return participant;
+            if (ParticipantType.ADMIN.toString().equals(participant.getParticipantType()))
+                return participant;
         }
         return null;
     }

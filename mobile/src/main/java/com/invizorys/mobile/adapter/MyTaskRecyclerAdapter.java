@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.invizorys.mobile.R;
-import com.invizorys.mobile.model.Task;
+import com.invizorys.mobile.model.realm.Task;
 
 import java.util.ArrayList;
 

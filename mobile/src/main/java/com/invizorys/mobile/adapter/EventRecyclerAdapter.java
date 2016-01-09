@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.model.realm.Event;
@@ -45,7 +44,6 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             @Override
             public void onClick(View view) {
                 eventListener.onSelected(event);
-                Toast.makeText(context, "selected event id = " + event.getId(), Toast.LENGTH_SHORT).show();
             }
         });
     }

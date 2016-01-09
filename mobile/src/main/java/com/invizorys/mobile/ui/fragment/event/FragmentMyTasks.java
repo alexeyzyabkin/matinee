@@ -3,6 +3,7 @@ package com.invizorys.mobile.ui.fragment.event;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +17,11 @@ import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.data.UserDataSource;
 import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.model.realm.Participant;
-import com.invizorys.mobile.model.Task;
+import com.invizorys.mobile.model.realm.Task;
+import com.invizorys.mobile.model.realm.TaskProgress;
 import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.ServiceGenerator;
-import com.letionik.matinee.TaskDto;
-import com.letionik.matinee.TaskProgressDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,7 @@ public class FragmentMyTasks extends Fragment implements SwipeRefreshLayout.OnRe
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.md_red_500));
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.md_red_500));
 
         showTasks();
 
@@ -82,16 +82,16 @@ public class FragmentMyTasks extends Fragment implements SwipeRefreshLayout.OnRe
         User currentUser = userDataSource.getUser();
 
         List<Participant> participants = currentEvent.getParticipants();
-        for (Participant participantDto : participants) {
-            if (participantDto.getUser().getSocialId().equals(currentUser.getSocialId())) {
-                List<TaskProgressDto> taskProgressDtos = participantDto.getTasks();
-                if (taskProgressDtos == null) {
+        for (Participant participant : participants) {
+            if (participant.getUser().getSocialId().equals(currentUser.getSocialId())) {
+                List<TaskProgress> taskProgresses = participant.getTasks();
+                if (taskProgresses == null) {
                     return;
                 }
                 ArrayList<Task> tasks = new ArrayList<>();
-                for (TaskProgressDto taskProgressDto : taskProgressDtos) {
-                    TaskDto taskDto = taskProgressDto.getTask();
-                    tasks.add(new Task(taskDto.getName(), taskDto.getDescription()));
+                for (TaskProgress taskProgress : taskProgresses) {
+                    Task task = taskProgress.getTask();
+                    tasks.add(new Task(task.getName(), task.getDescription()));
                 }
                 recyclerView.setAdapter(new MyTaskRecyclerAdapter(tasks));
             }

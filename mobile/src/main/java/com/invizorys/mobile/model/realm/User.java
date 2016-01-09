@@ -4,7 +4,6 @@ import com.letionik.matinee.Sex;
 import com.letionik.matinee.UserDto;
 
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -16,8 +15,7 @@ public class User extends RealmObject {
     private String surname;
     @PrimaryKey
     private String socialId;
-    @Ignore
-    private Sex sex;
+    private String sex;
     private String avatarUrl;
     private int age;
     private String birthDate;
@@ -30,7 +28,7 @@ public class User extends RealmObject {
         this.name = userDto.getName();
         this.surname = userDto.getSurname();
         this.socialId = userDto.getLogin();
-        this.sex = userDto.getSex();
+        this.sex = userDto.getSex().toString();
         this.avatarUrl = userDto.getAvatarUrl();
     }
 
@@ -88,11 +86,11 @@ public class User extends RealmObject {
         this.avatarUrl = avatarUrl;
     }
 
-    public Sex getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -102,5 +100,13 @@ public class User extends RealmObject {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public static Sex getSexEnum(User user) {
+        return Sex.valueOf(user.getSex());
+    }
+
+    public static void setSexEnum(User user, Sex enumValue) {
+        user.setSex(enumValue.toString());
     }
 }

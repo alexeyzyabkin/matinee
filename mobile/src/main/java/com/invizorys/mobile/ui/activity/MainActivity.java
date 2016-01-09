@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EVENTS = "Events";
     private Drawer drawerResult;
     private Toolbar toolbar;
+    private ActionBar actionBar;
     private User user;
     private FragmentManager fragmentManager = getFragmentManager();
 
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
 
         FragmentHelper.add(fragmentManager, FragmentEvents.newInstance(), FRAME_CONTAINER);
 
@@ -115,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 }).build();
-        drawerResult.setStatusBarColor(getResources().getColor(R.color.md_red_900));
+        drawerResult.setStatusBarColor(ContextCompat.getColor(this, R.color.md_red_900));
 
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override
@@ -153,7 +157,9 @@ public class MainActivity extends AppCompatActivity {
         if (drawerResult.isDrawerOpen()) {
             drawerResult.closeDrawer();
         } else {
-            FragmentHelper.pop(fragmentManager);
+            if (FragmentHelper.pop(fragmentManager)) {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -163,11 +169,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void showBackArrow() {
         drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public void showHamburger() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
         drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
     }
 }

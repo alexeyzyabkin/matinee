@@ -94,7 +94,7 @@ public class VkSocialNetwork {
             socialUser.setAvatarUrl(jsonResponse.getString(FIELD_PHOTO_NAME));
         }
         if (jsonResponse.has(SEX_KEY)) {
-            socialUser.setSex(Sex.parseSex(jsonResponse.getString(SEX_KEY)));
+            socialUser.setSex(Sex.parseSex(jsonResponse.getString(SEX_KEY)).toString());
         }
         if (jsonResponse.has(BDAY_KEY)) {
             socialUser.setBirthDate(jsonResponse.getString(BDAY_KEY));
