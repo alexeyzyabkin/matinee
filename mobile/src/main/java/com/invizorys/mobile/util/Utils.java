@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,8 +24,19 @@ public class Utils {
     }
 
     public static String dateToString(Date date) {
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Format formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         return formatter.format(date);
     }
 
+    public static boolean isInternetAvailable() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

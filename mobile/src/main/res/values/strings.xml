@@ -21,5 +21,6 @@
     <string name="settings">Настройки</string>
     <string name="enter_сode">Введи код</string>
     <string name="events">События</string>
+    <string name="internet_is_unavailable">Интернет недоступен</string>
 
 </resources>

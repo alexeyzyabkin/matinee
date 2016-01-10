@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.callback.SocialNetworkCallback;
@@ -14,6 +15,7 @@ import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
 import com.invizorys.mobile.util.Settings;
+import com.invizorys.mobile.util.Utils;
 import com.invizorys.mobile.util.social.VkSocialNetwork;
 import com.letionik.matinee.UserDto;
 import com.vk.sdk.VKAccessToken;
@@ -44,8 +46,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void vkLogin() {
-        VkSocialNetwork vkSocialNetwork = new VkSocialNetwork(this);
-        vkSocialNetwork.login();
+        if (Utils.isInternetAvailable()) {
+            VkSocialNetwork vkSocialNetwork = new VkSocialNetwork(LoginActivity.this);
+            vkSocialNetwork.login();
+        } else {
+            Toast.makeText(this, R.string.internet_is_unavailable, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
