@@ -177,7 +177,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     }
 
     private void showTask(Long eventId) {
-        matineeService.getCurrentEvent(eventId, new RetrofitCallback<EventDto>(getActivity()) {
+        matineeService.getEvent(eventId, new RetrofitCallback<EventDto>(getActivity()) {
             @Override
             public void success(EventDto eventDto, Response response) {
                 eventStatus = Event.getEventStatusEnum(currentEvent);

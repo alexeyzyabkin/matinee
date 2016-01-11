@@ -1,12 +1,14 @@
 package com.invizorys.mobile.model;
 
 /**
- * Created by Paryshkura Roman on 27.12.2015.
+ * @author Created by rparishkura@rightandabove.com at 11.01.2016
+ * @author Last modified by $Author$ <br>
+ * @author Last modified on $LastChangedDate$ at revision $Revision$ <br>
  */
-public class EventsUpdated {
+public class EventUpdated {
     private boolean isSuccessful;
 
-    public EventsUpdated(boolean isSuccessful) {
+    public EventUpdated(boolean isSuccessful) {
         this.isSuccessful = isSuccessful;
     }
 

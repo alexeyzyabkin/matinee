@@ -22,6 +22,7 @@ import retrofit.client.Response;
  */
 public class NetworkService extends IntentService {
     public static final String NETWORK_REQUEST = "networkRequest";
+    public static final String EVENT_ID = "eventId";
     private static final String name = "NetworkService";
     private MatineeService matineeService;
 
@@ -35,23 +36,43 @@ public class NetworkService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         switch ((NetworkRequest) intent.getSerializableExtra(NETWORK_REQUEST)) {
             case GET_EVENTS:
-                getEvents();
+                syncEvents();
+                break;
+            case GET_EVENT:
+                long eventId = intent.getLongExtra(EVENT_ID, 0);
+                syncEvent(eventId);
                 break;
         }
-
     }
 
-    private void getEvents() {
+    private void syncEvents() {
         matineeService.getEvents(new RetrofitCallback<List<EventDto>>(this) {
             @Override
             public void success(List<EventDto> eventDtos, Response response) {
                 saveEvents(eventDtos);
-                EventBus.getDefault().post(new EventsUpdated());
+                EventBus.getDefault().post(new EventsUpdated(true));
             }
 
             @Override
             public void failure(RetrofitError error) {
                 super.failure(error);
+                EventBus.getDefault().post(new EventsUpdated(false));
+            }
+        });
+    }
+
+    private void syncEvent(long eventId) {
+        matineeService.getEvent(eventId, new RetrofitCallback<EventDto>(this) {
+            @Override
+            public void success(EventDto eventDto, Response response) {
+                saveEvent(eventDto);
+                EventBus.getDefault().post(new EventsUpdated(true));
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                super.failure(error);
+                EventBus.getDefault().post(new EventsUpdated(false));
             }
         });
     }
@@ -66,7 +87,14 @@ public class NetworkService extends IntentService {
         eventDataSource.endTransaction();
     }
 
+    private void saveEvent(EventDto eventDto) {
+        EventDataSource eventDataSource = new EventDataSource(this);
+        eventDataSource.beginTransaction();
+        eventDataSource.saveEvent(eventDto);
+        eventDataSource.endTransaction();
+    }
+
     public enum NetworkRequest implements Serializable {
-        GET_EVENTS
+        GET_EVENTS, GET_EVENT
     }
 }

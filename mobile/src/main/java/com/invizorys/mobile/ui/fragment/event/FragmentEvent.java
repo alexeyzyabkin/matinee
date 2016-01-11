@@ -86,4 +86,8 @@ public class FragmentEvent extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void test() {
+        String s = "";
+    }
 }

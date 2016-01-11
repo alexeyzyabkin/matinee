@@ -8,6 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.internal.MDButton;
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.EventRecyclerAdapter;
 import com.invizorys.mobile.data.EventDataSource;
@@ -64,7 +67,6 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.events);
     }
 
     @Override
@@ -76,6 +78,7 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.events);
         matineeService = ServiceGenerator.createService(MatineeService.class,
                 MatineeService.BASE_URL, getActivity());
         eventDataSource = new EventDataSource(getActivity());
@@ -157,14 +160,41 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        EditText editText = (EditText) materialDialog.findViewById(R.id.edittext_event_name);
+                        EditText editTextEventName = (EditText) materialDialog.findViewById(R.id.edittext_event_name);
+                        String eventName = editTextEventName.getText().toString();
                         MaterialCalendarView calendarView =
                                 (MaterialCalendarView) materialDialog.findViewById(R.id.calendarView);
-                        createEvent(editText.getText().toString(), calendarView.getSelectedDate().getDate());
+                        createEvent(eventName, calendarView.getSelectedDate().getDate());
                     }
                 })
                 .negativeText("Отмена")
                 .show();
+
+        materialDialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+        EditText editTextEventName = (EditText) materialDialog.findViewById(R.id.edittext_event_name);
+        editTextEventName.addTextChangedListener(getTextWatcher(materialDialog));
+    }
+
+    private TextWatcher getTextWatcher(final MaterialDialog materialDialog) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                MDButton button = materialDialog.getActionButton(DialogAction.POSITIVE);
+                if (s.toString().isEmpty()) {
+                    button.setEnabled(false);
+                } else {
+                    button.setEnabled(true);
+                }
+            }
+        };
     }
 
     //TODO implement handling empty fields
@@ -198,7 +228,9 @@ public class FragmentEvents extends Fragment implements View.OnClickListener,
     }
 
     public void onEvent(EventsUpdated eventsUpdated) {
-        getEvents();
+        if (eventsUpdated.isSuccessful()) {
+            getEvents();
+        }
         swipeRefreshLayout.setRefreshing(false);
     }
 

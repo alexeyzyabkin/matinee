@@ -41,7 +41,7 @@ public interface MatineeService {
     void getHistory(@Path("eventId") String eventId, RetrofitCallback<List<TaskProgressDto>> retrofitCallback);
 
     @GET("/event/{eventId}")
-    void getCurrentEvent(@Path("eventId") Long eventId, RetrofitCallback<EventDto> eventDtoRetrofitCallback);
+    void getEvent(@Path("eventId") Long eventId, RetrofitCallback<EventDto> eventDtoRetrofitCallback);
 
     @POST("/task/done/{taskId}")
     void markTaskAsDone(@Path("taskId") Long taskId, RetrofitCallback<Object> retrofitCallback);
