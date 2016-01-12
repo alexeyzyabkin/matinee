@@ -21,6 +21,7 @@ import com.invizorys.mobile.data.UserDataSource;
 import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.network.NetworkService;
 import com.invizorys.mobile.ui.fragment.FragmentEvents;
+import com.invizorys.mobile.ui.fragment.FragmentProfile;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void drawerInit() {
         ProfileDrawerItem profileDrawerItem = new ProfileDrawerItem().withName(user.getName()
-                + " " + user.getSurname()).withIcon(user.getAvatarUrl()).withEnabled(false);
+                + " " + user.getSurname()).withIcon(user.getAvatarUrl());
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName(EVENTS);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Feedback");
         PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("About");
@@ -116,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
                                     toolbar.setTitle(EVENTS);
                                     break;
                             }
+                        } else if (drawerItem instanceof ProfileDrawerItem) {
+                            showUserScreen();
                         }
                         return false;
                     }
@@ -162,6 +165,12 @@ public class MainActivity extends AppCompatActivity {
                 super.onBackPressed();
             }
         }
+    }
+
+    private void showUserScreen() {
+        UserDataSource userDataSource = new UserDataSource(this);
+        User user = userDataSource.getUser();
+        FragmentHelper.add(fragmentManager, FragmentProfile.newInstance(user), FRAME_CONTAINER);
     }
 
     public void setToolbarTitle(String title) {

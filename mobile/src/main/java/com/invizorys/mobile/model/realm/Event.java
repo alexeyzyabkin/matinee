@@ -109,7 +109,11 @@ public class Event extends RealmObject implements Serializable {
             if (ParticipantType.ADMIN.toString().equals(participant.getParticipantType()))
                 return participant;
         }
-        return null;
+
+        //TODO dummy(remove it later)
+        return participants.get(0);
+
+//        return null;
     }
 
     public static EventStatus getEventStatusEnum(Event event) {

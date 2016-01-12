@@ -18,7 +18,71 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_events"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/container_buttons" />
+
+            <LinearLayout
+                android:id="@+id/container_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/button_create"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/md_red_700"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="13dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="13dp"
+                        android:text="Создать событие"
+                        android:textAllCaps="true"
+                        android:textColor="#FFFFFF" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_create" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/md_red_700"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="13dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="13dp"
+                        android:text="Найти событие"
+                        android:textAllCaps="true"
+                        android:textColor="#FFFFFF" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_search" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <com.getbase.floatingactionbutton.FloatingActionsMenu
                 android:id="@+id/multiple_actions"
