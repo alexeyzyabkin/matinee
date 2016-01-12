@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.data.UserDataSource;
 import com.invizorys.mobile.model.realm.User;
+import com.invizorys.mobile.network.NetworkService;
 import com.invizorys.mobile.ui.fragment.FragmentEvents;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.mikepenz.materialdrawer.Drawer;
@@ -175,5 +176,12 @@ public class MainActivity extends AppCompatActivity {
     public void showHamburger() {
         actionBar.setDisplayHomeAsUpEnabled(false);
         drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+    }
+
+    public void updateEvent(long eventId) {
+        Intent intent = new Intent(this, NetworkService.class);
+        intent.putExtra(NetworkService.NETWORK_REQUEST, NetworkService.NetworkRequest.GET_EVENT);
+        intent.putExtra(NetworkService.EVENT_ID, eventId);
+        startService(intent);
     }
 }

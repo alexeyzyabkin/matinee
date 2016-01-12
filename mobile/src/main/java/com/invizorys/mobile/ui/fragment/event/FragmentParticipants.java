@@ -21,12 +21,14 @@ import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
 import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.data.UserDataSource;
+import com.invizorys.mobile.model.EventUpdated;
 import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.model.realm.Participant;
 import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
+import com.invizorys.mobile.ui.activity.MainActivity;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.ParticipantDto;
@@ -36,6 +38,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -49,6 +52,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     private EventStatus eventStatus;
     private SwipeRefreshLayout swipeLayout;
     private Event currentEvent;
+    private EventDataSource eventDataSource;
 
     private static final String EVENT_ID = "eventId";
 
@@ -75,10 +79,12 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -92,9 +98,9 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.md_red_500));
 
+        eventDataSource = new EventDataSource(getActivity());
         if (getArguments() != null) {
             long currentEventId = getArguments().getLong(EVENT_ID);
-            EventDataSource eventDataSource = new EventDataSource(getActivity());
             currentEvent = eventDataSource.getEventById(currentEventId);
         }
 
@@ -209,6 +215,14 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         });
     }
 
+    public void onEvent(EventUpdated eventUpdated) {
+        if (eventUpdated.isSuccessful()) {
+            currentEvent = eventDataSource.getEventById(eventUpdated.getEventId());
+            initCurrentEvent();
+        }
+        swipeLayout.setRefreshing(false);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -226,11 +240,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeLayout.setRefreshing(false);
-            }
-        }, 5000);
+        ((MainActivity) getActivity()).updateEvent(currentEvent.getId());
     }
 }

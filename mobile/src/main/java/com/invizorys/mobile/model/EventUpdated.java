@@ -6,10 +6,20 @@ package com.invizorys.mobile.model;
  * @author Last modified on $LastChangedDate$ at revision $Revision$ <br>
  */
 public class EventUpdated {
+    private long eventId;
     private boolean isSuccessful;
 
-    public EventUpdated(boolean isSuccessful) {
+    public EventUpdated(long eventId, boolean isSuccessful) {
+        this.eventId = eventId;
         this.isSuccessful = isSuccessful;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 
     public boolean isSuccessful() {

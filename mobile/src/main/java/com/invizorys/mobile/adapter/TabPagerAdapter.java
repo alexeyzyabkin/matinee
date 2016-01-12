@@ -14,8 +14,8 @@ import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
  * Created by Paryshkura Roman on 15.12.2015.
  */
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
+    public static final int PAGE_COUNT = 3;
     private Context context;
-    private final int PAGE_COUNT = 3;
     private FragmentMyTasks fragmentMyTasks;
     private FragmentParticipants fragmentParticipants;
     private FragmentHistory fragmentHistory;

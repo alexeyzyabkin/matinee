@@ -62,6 +62,7 @@ public class FragmentEvent extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_event, container, false);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(TabPagerAdapter.PAGE_COUNT);
         viewPager.setAdapter(new TabPagerAdapter(getFragmentManager(), getActivity(), currentEvent.getId()));
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
@@ -85,9 +86,5 @@ public class FragmentEvent extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void test() {
-        String s = "";
     }
 }
