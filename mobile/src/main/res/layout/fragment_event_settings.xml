@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.invizorys.mobile.ui.fragment.event.FragmentEventSettings">
+    tools:context=".ui.fragment.FragmentEventSettings">
 
     <EditText
         android:id="@+id/edittext_email"

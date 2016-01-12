@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.model.realm.User;
+import com.invizorys.mobile.ui.activity.MainActivity;
 
 public class FragmentProfile extends Fragment {
     private static final String USER = "user";
@@ -25,6 +26,12 @@ public class FragmentProfile extends Fragment {
 
     public FragmentProfile() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity)getActivity()).showBackArrow();
     }
 
     @Override

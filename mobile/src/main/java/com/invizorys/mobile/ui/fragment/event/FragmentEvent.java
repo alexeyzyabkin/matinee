@@ -18,6 +18,7 @@ import com.invizorys.mobile.adapter.TabPagerAdapter;
 import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.ui.activity.MainActivity;
+import com.invizorys.mobile.ui.fragment.FragmentEventSettings;
 import com.invizorys.mobile.util.FragmentHelper;
 
 public class FragmentEvent extends Fragment {
@@ -67,6 +68,13 @@ public class FragmentEvent extends Fragment {
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+
+        TabLayout.Tab tabAssignment = tabLayout.getTabAt(0);
+        tabAssignment.setIcon(R.drawable.selector_assignment);
+        TabLayout.Tab tabPeople = tabLayout.getTabAt(1);
+        tabPeople.setIcon(R.drawable.selector_people);
+        TabLayout.Tab tabHistory = tabLayout.getTabAt(2);
+        tabHistory.setIcon(R.drawable.selector_history);
 
         return view;
     }

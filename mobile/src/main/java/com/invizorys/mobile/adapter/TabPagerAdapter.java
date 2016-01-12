@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
-import com.invizorys.mobile.R;
 import com.invizorys.mobile.ui.fragment.event.FragmentHistory;
 import com.invizorys.mobile.ui.fragment.event.FragmentMyTasks;
 import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
@@ -46,19 +45,19 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
         return PAGE_COUNT;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return context.getString(R.string.my_tasks);
-            case 1:
-                return context.getString(R.string.participants);
-            case 2:
-                return context.getString(R.string.history);
-            default:
-                return null;
-        }
-    }
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//        switch (position) {
+//            case 0:
+//                return context.getString(R.string.my_tasks);
+//            case 1:
+//                return context.getString(R.string.participants);
+//            case 2:
+//                return context.getString(R.string.history);
+//            default:
+//                return null;
+//        }
+//    }
 
 //    @Override
 //    public Object instantiateItem(ViewGroup container, int position) {
