@@ -14,6 +14,9 @@ import com.invizorys.mobile.ui.fragment.event.FragmentParticipants;
  */
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
     public static final int PAGE_COUNT = 3;
+    public static final int MY_TASK_TAB = 0;
+    public static final int PARTICIPANTS_TAB = 1;
+    public static final int HISTORY_TAB = 2;
     private Context context;
     private FragmentMyTasks fragmentMyTasks;
     private FragmentParticipants fragmentParticipants;
@@ -30,11 +33,11 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
+            case MY_TASK_TAB:
                 return fragmentMyTasks;
-            case 1:
+            case PARTICIPANTS_TAB:
                 return fragmentParticipants;
-            case 2:
+            case HISTORY_TAB:
                 return fragmentHistory;
         }
         return null;

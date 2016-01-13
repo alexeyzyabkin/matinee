@@ -45,7 +45,6 @@ import retrofit.client.Response;
 public class FragmentParticipants extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private User currentUser;
     private Button buttonShowRoles;
-    private TextView textViewEventCode;
     private MatineeService matineeService;
     private RecyclerView recyclerView;
     private ParticipantRecyclerAdapter adapter;
@@ -106,16 +105,8 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
 
         matineeService = ServiceGenerator.createService(MatineeService.class,
                 MatineeService.BASE_URL, getActivity());
-        textViewEventCode = (TextView) view.findViewById(R.id.textview_event_code);
         buttonShowRoles = (Button) view.findViewById(R.id.button_show_roles);
         buttonShowRoles.setOnClickListener(this);
-
-        ImageView imageViewAvatar = (ImageView) view.findViewById(R.id.imageview_avatar);
-        Picasso.with(getActivity()).load(currentUser.getAvatarUrl()).into(imageViewAvatar);
-
-        TextView textViewName = (TextView) view.findViewById(R.id.textview_name);
-        String name = currentUser.getName() + " " + currentUser.getSurname();
-        textViewName.setText(name);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -137,13 +128,11 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
             Toast.makeText(getActivity(), "admin not found", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-            buttonShowRoles.setVisibility(View.VISIBLE);
-            buttonShowRoles.setText(getActivity().getString(R.string.show_tasks));
-        } else if (currentUser.getSocialId().equals(admin.getUser().getSocialId())) {
+        if (currentUser.getSocialId().equals(admin.getUser().getSocialId()) &&
+                (currentEvent.getEventStatus().equals(EventStatus.NEW.toString()) ||
+                        currentEvent.getEventStatus().equals(EventStatus.ROLES_REVEALED.toString()))) {
             buttonShowRoles.setVisibility(View.VISIBLE);
         }
-        textViewEventCode.setText(getActivity().getString(R.string.event_code) + currentEvent.getCode());
     }
 
     private void revealRoles() {
@@ -171,40 +160,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
             public void success(EventDto eventDto, Response response) {
                 eventStatus = Event.getEventStatusEnum(currentEvent);
                 if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-                    buttonShowRoles.setText(R.string.show_tasks);
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                super.failure(error);
-            }
-        });
-    }
-
-    private void showTask(Long eventId) {
-        matineeService.getEvent(eventId, new RetrofitCallback<EventDto>(getActivity()) {
-            @Override
-            public void success(EventDto eventDto, Response response) {
-                eventStatus = Event.getEventStatusEnum(currentEvent);
-                List<ParticipantDto> participantDtos = eventDto.getParticipants();
-                for (ParticipantDto participantDto : participantDtos) {
-                    if (participantDto.getUser().getLogin().equals(currentUser.getSocialId())) {
-                        List<TaskProgressDto> taskProgressDtos = participantDto.getTasks();
-                        StringBuilder taskStringBuilder = new StringBuilder();
-                        for (TaskProgressDto taskProgressDto : taskProgressDtos) {
-                            TaskDto taskDto = taskProgressDto.getTask();
-                            taskStringBuilder.append(taskDto.getName());
-                            taskStringBuilder.append("\n");
-                            taskStringBuilder.append(taskDto.getDescription());
-                            taskStringBuilder.append("\n\n");
-                        }
-                        Dialog dialog = new Dialog(getActivity());
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.dialog_tasks);
-                        ((TextView) dialog.findViewById(R.id.textview_tasks)).setText(taskStringBuilder);
-                        dialog.show();
-                    }
+                    buttonShowRoles.setVisibility(View.GONE);
                 }
             }
 
@@ -231,8 +187,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
                     revealRoles();
                 } else if (eventStatus.equals(EventStatus.ROLES_REVEALED)) {
                     revealTasks();
-                } else if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-                    showTask(currentEvent.getId());
                 }
                 break;
         }
