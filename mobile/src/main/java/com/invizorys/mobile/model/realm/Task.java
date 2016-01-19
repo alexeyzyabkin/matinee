@@ -25,7 +25,9 @@ public class Task extends RealmObject {
         this.id = taskDto.getId();
         this.name = taskDto.getName();
         this.description = taskDto.getDescription();
-        this.type = taskDto.getType().toString();
+        if (taskDto.getType() != null) {
+            this.type = taskDto.getType().toString();
+        }
     }
 
     public Long getId() {

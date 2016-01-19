@@ -11,7 +11,7 @@
     <string name="event_date">Дата встречи</string>
     <string name="create">Создать</string>
     <string name="show_roles">Показать роли</string>
-    <string name="event_code">Код события:</string>
+    <string name="event_code">Код события: %s</string>
     <string name="send_tasks">Разослать задания</string>
     <string name="show_tasks">Посмотреть задания</string>
     <string name="participants">Участники</string>
@@ -22,5 +22,6 @@
     <string name="enter_сode">Введи код</string>
     <string name="events">События</string>
     <string name="internet_is_unavailable">Интернет недоступен</string>
+    <string name="event_admin">Администратор события: %s</string>
 
 </resources>

@@ -3,13 +3,15 @@ package com.invizorys.mobile.model.realm;
 import com.letionik.matinee.Sex;
 import com.letionik.matinee.UserDto;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Paryshkura Roman on 12.12.2015.
  */
-public class User extends RealmObject {
+public class User extends RealmObject implements Serializable {
     private Long id;
     private String name;
     private String surname;

@@ -4,6 +4,13 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/action_info"
+        android:icon="@drawable/ic_info_white"
+        android:orderInCategory="100"
+        app:showAsAction="always|withText"
+        android:title="@string/action_settings" />
+
+    <item
         android:id="@+id/action_settings"
         android:icon="@mipmap/ic_settings"
         android:orderInCategory="100"

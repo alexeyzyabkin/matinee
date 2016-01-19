@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.invizorys.mobile.data.EventDataSource;
+import com.invizorys.mobile.model.EventUpdated;
 import com.invizorys.mobile.model.EventsUpdated;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
@@ -61,18 +62,18 @@ public class NetworkService extends IntentService {
         });
     }
 
-    private void syncEvent(long eventId) {
+    private void syncEvent(final long eventId) {
         matineeService.getEvent(eventId, new RetrofitCallback<EventDto>(this) {
             @Override
             public void success(EventDto eventDto, Response response) {
                 saveEvent(eventDto);
-                EventBus.getDefault().post(new EventsUpdated(true));
+                EventBus.getDefault().post(new EventUpdated(eventId, true));
             }
 
             @Override
             public void failure(RetrofitError error) {
                 super.failure(error);
-                EventBus.getDefault().post(new EventsUpdated(false));
+                EventBus.getDefault().post(new EventUpdated(eventId, false));
             }
         });
     }

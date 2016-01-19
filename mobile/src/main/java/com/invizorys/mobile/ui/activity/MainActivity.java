@@ -19,7 +19,9 @@ import android.widget.ImageView;
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.data.UserDataSource;
 import com.invizorys.mobile.model.realm.User;
+import com.invizorys.mobile.network.NetworkService;
 import com.invizorys.mobile.ui.fragment.FragmentEvents;
+import com.invizorys.mobile.ui.fragment.FragmentProfile;
 import com.invizorys.mobile.util.FragmentHelper;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int FRAME_CONTAINER = R.id.activity_main_container;
     public static final String EVENTS = "Events";
+    public static final String FEEDBACK = "Feedback";
+    public static final String ABOUT = "About";
+    public static final String LOGOUT = "Logout";
     private Drawer drawerResult;
     private Toolbar toolbar;
     private ActionBar actionBar;
@@ -86,16 +91,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void drawerInit() {
         ProfileDrawerItem profileDrawerItem = new ProfileDrawerItem().withName(user.getName()
-                + " " + user.getSurname()).withIcon(user.getAvatarUrl()).withEnabled(false);
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName(EVENTS);
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Feedback");
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("About");
+                + " " + user.getSurname()).withIcon(user.getAvatarUrl());
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName(EVENTS)
+                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_event));
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName(FEEDBACK)
+                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_feedback));
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName(ABOUT)
+                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_info_black));
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withName(LOGOUT)
+                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_logout));;
 
         drawerResult = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .addDrawerItems(
-                        profileDrawerItem, item1, item2, item3
+                        profileDrawerItem, item1, item2, item3, item4
                 )
                 .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
                     @Override
@@ -115,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
                                     toolbar.setTitle(EVENTS);
                                     break;
                             }
+                        } else if (drawerItem instanceof ProfileDrawerItem) {
+                            showUserScreen();
                         }
                         return false;
                     }
@@ -163,6 +175,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void showUserScreen() {
+        UserDataSource userDataSource = new UserDataSource(this);
+        User user = userDataSource.getUser();
+        FragmentHelper.add(fragmentManager, FragmentProfile.newInstance(user), FRAME_CONTAINER);
+    }
+
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
     }
@@ -175,5 +193,12 @@ public class MainActivity extends AppCompatActivity {
     public void showHamburger() {
         actionBar.setDisplayHomeAsUpEnabled(false);
         drawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+    }
+
+    public void updateEvent(long eventId) {
+        Intent intent = new Intent(this, NetworkService.class);
+        intent.putExtra(NetworkService.NETWORK_REQUEST, NetworkService.NetworkRequest.GET_EVENT);
+        intent.putExtra(NetworkService.EVENT_ID, eventId);
+        startService(intent);
     }
 }

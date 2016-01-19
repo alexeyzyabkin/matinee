@@ -1,4 +1,4 @@
-package com.invizorys.mobile.ui.fragment.event;
+package com.invizorys.mobile.ui.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;

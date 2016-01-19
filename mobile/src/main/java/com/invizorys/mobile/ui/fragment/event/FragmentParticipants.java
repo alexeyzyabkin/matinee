@@ -21,12 +21,14 @@ import com.invizorys.mobile.R;
 import com.invizorys.mobile.adapter.ParticipantRecyclerAdapter;
 import com.invizorys.mobile.data.EventDataSource;
 import com.invizorys.mobile.data.UserDataSource;
+import com.invizorys.mobile.model.EventUpdated;
 import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.model.realm.Participant;
 import com.invizorys.mobile.model.realm.User;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.RetrofitCallback;
 import com.invizorys.mobile.network.api.ServiceGenerator;
+import com.invizorys.mobile.ui.activity.MainActivity;
 import com.letionik.matinee.EventDto;
 import com.letionik.matinee.EventStatus;
 import com.letionik.matinee.ParticipantDto;
@@ -36,19 +38,20 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class FragmentParticipants extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private User currentUser;
     private Button buttonShowRoles;
-    private TextView textViewEventCode;
     private MatineeService matineeService;
     private RecyclerView recyclerView;
     private ParticipantRecyclerAdapter adapter;
     private EventStatus eventStatus;
     private SwipeRefreshLayout swipeLayout;
     private Event currentEvent;
+    private EventDataSource eventDataSource;
 
     private static final String EVENT_ID = "eventId";
 
@@ -75,10 +78,12 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -92,24 +97,16 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.md_red_500));
 
+        eventDataSource = new EventDataSource(getActivity());
         if (getArguments() != null) {
             long currentEventId = getArguments().getLong(EVENT_ID);
-            EventDataSource eventDataSource = new EventDataSource(getActivity());
             currentEvent = eventDataSource.getEventById(currentEventId);
         }
 
         matineeService = ServiceGenerator.createService(MatineeService.class,
                 MatineeService.BASE_URL, getActivity());
-        textViewEventCode = (TextView) view.findViewById(R.id.textview_event_code);
         buttonShowRoles = (Button) view.findViewById(R.id.button_show_roles);
         buttonShowRoles.setOnClickListener(this);
-
-        ImageView imageViewAvatar = (ImageView) view.findViewById(R.id.imageview_avatar);
-        Picasso.with(getActivity()).load(currentUser.getAvatarUrl()).into(imageViewAvatar);
-
-        TextView textViewName = (TextView) view.findViewById(R.id.textview_name);
-        String name = currentUser.getName() + " " + currentUser.getSurname();
-        textViewName.setText(name);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -131,13 +128,11 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
             Toast.makeText(getActivity(), "admin not found", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-            buttonShowRoles.setVisibility(View.VISIBLE);
-            buttonShowRoles.setText(getActivity().getString(R.string.show_tasks));
-        } else if (currentUser.getSocialId().equals(admin.getUser().getSocialId())) {
+        if (currentUser.getSocialId().equals(admin.getUser().getSocialId()) &&
+                (currentEvent.getEventStatus().equals(EventStatus.NEW.toString()) ||
+                        currentEvent.getEventStatus().equals(EventStatus.ROLES_REVEALED.toString()))) {
             buttonShowRoles.setVisibility(View.VISIBLE);
         }
-        textViewEventCode.setText(getActivity().getString(R.string.event_code) + currentEvent.getCode());
     }
 
     private void revealRoles() {
@@ -165,7 +160,7 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
             public void success(EventDto eventDto, Response response) {
                 eventStatus = Event.getEventStatusEnum(currentEvent);
                 if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-                    buttonShowRoles.setText(R.string.show_tasks);
+                    buttonShowRoles.setVisibility(View.GONE);
                 }
             }
 
@@ -176,37 +171,12 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
         });
     }
 
-    private void showTask(Long eventId) {
-        matineeService.getEvent(eventId, new RetrofitCallback<EventDto>(getActivity()) {
-            @Override
-            public void success(EventDto eventDto, Response response) {
-                eventStatus = Event.getEventStatusEnum(currentEvent);
-                List<ParticipantDto> participantDtos = eventDto.getParticipants();
-                for (ParticipantDto participantDto : participantDtos) {
-                    if (participantDto.getUser().getLogin().equals(currentUser.getSocialId())) {
-                        List<TaskProgressDto> taskProgressDtos = participantDto.getTasks();
-                        StringBuilder taskStringBuilder = new StringBuilder();
-                        for (TaskProgressDto taskProgressDto : taskProgressDtos) {
-                            TaskDto taskDto = taskProgressDto.getTask();
-                            taskStringBuilder.append(taskDto.getName());
-                            taskStringBuilder.append("\n");
-                            taskStringBuilder.append(taskDto.getDescription());
-                            taskStringBuilder.append("\n\n");
-                        }
-                        Dialog dialog = new Dialog(getActivity());
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.dialog_tasks);
-                        ((TextView) dialog.findViewById(R.id.textview_tasks)).setText(taskStringBuilder);
-                        dialog.show();
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                super.failure(error);
-            }
-        });
+    public void onEvent(EventUpdated eventUpdated) {
+        if (eventUpdated.isSuccessful()) {
+            currentEvent = eventDataSource.getEventById(eventUpdated.getEventId());
+            initCurrentEvent();
+        }
+        swipeLayout.setRefreshing(false);
     }
 
     @Override
@@ -217,8 +187,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
                     revealRoles();
                 } else if (eventStatus.equals(EventStatus.ROLES_REVEALED)) {
                     revealTasks();
-                } else if (eventStatus.equals(EventStatus.TASKS_REVEALED)) {
-                    showTask(currentEvent.getId());
                 }
                 break;
         }
@@ -226,11 +194,6 @@ public class FragmentParticipants extends Fragment implements View.OnClickListen
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeLayout.setRefreshing(false);
-            }
-        }, 5000);
+        ((MainActivity) getActivity()).updateEvent(currentEvent.getId());
     }
 }

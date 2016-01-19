@@ -13,19 +13,23 @@ import android.view.ViewGroup;
 
 import com.invizorys.mobile.R;
 import com.invizorys.mobile.data.EventDataSource;
+import com.invizorys.mobile.model.EventUpdated;
 import com.invizorys.mobile.model.HistoryRecord;
 import com.invizorys.mobile.model.realm.Event;
 import com.invizorys.mobile.model.realm.Participant;
 import com.invizorys.mobile.model.realm.TaskProgress;
 import com.invizorys.mobile.network.api.MatineeService;
 import com.invizorys.mobile.network.api.ServiceGenerator;
+import com.invizorys.mobile.ui.activity.MainActivity;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 public class FragmentHistory extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipeLayout;
-    private MatineeService matineeService;
     private Event currentEvent;
+    private EventDataSource eventDataSource;
 
     private static final String EVENT_ID = "eventId";
 
@@ -43,14 +47,23 @@ public class FragmentHistory extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        matineeService = ServiceGenerator.createService(MatineeService.class,
-                MatineeService.BASE_URL, getActivity());
-
+        eventDataSource = new EventDataSource(getActivity());
         if (getArguments() != null) {
             long currentEventId = getArguments().getLong(EVENT_ID);
-            EventDataSource eventDataSource = new EventDataSource(getActivity());
             currentEvent = eventDataSource.getEventById(currentEventId);
         }
 
@@ -83,13 +96,16 @@ public class FragmentHistory extends Fragment implements SwipeRefreshLayout.OnRe
         }
     }
 
+    public void onEvent(EventUpdated eventUpdated) {
+        if (eventUpdated.isSuccessful()) {
+            currentEvent = eventDataSource.getEventById(eventUpdated.getEventId());
+            getHistory();
+        }
+        swipeLayout.setRefreshing(false);
+    }
+
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeLayout.setRefreshing(false);
-            }
-        }, 5000);
+        ((MainActivity) getActivity()).updateEvent(currentEvent.getId());
     }
 }
