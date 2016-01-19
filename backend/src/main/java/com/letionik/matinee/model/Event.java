@@ -1,6 +1,7 @@
 package com.letionik.matinee.model;
 
 import com.letionik.matinee.EventStatus;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.accessibility.AccessibleRelationSet;
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long id;
-    @NotNull
+    @NotEmpty
     @Column(name = "event_name")
     private String name;
     @Column(name = "event_creation_date_time")

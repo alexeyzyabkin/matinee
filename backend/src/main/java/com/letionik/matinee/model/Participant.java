@@ -32,7 +32,7 @@ public class Participant {
     private Event event;
     @Enumerated(EnumType.STRING)
     @Column(name = "participant_status")
-    private ParticipantType status;
+    private ParticipantType type;
 
     public Participant(){}
 
@@ -77,12 +77,12 @@ public class Participant {
         this.event = event;
     }
 
-    public ParticipantType getStatus() {
-        return status;
+    public ParticipantType getType() {
+        return type;
     }
 
-    public void setStatus(ParticipantType status) {
-        this.status = status;
+    public void setType(ParticipantType type) {
+        this.type = type;
     }
 
     public String getEmail() {

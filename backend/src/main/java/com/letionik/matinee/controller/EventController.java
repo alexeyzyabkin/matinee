@@ -36,7 +36,7 @@ public class EventController {
         return eventService.getEvents(userId);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.POST)
     public EventDto create(@RequestBody CreateEventRequestDto createEventRequest, HttpSession session) {
         return eventService.createEvent(createEventRequest, (Long) session.getAttribute("user"));
     }

@@ -1,6 +1,9 @@
 package com.letionik.matinee.service;
 
-import com.letionik.matinee.*;
+import com.letionik.matinee.CreateEventRequestDto;
+import com.letionik.matinee.EventDto;
+import com.letionik.matinee.EventStatus;
+import com.letionik.matinee.ParticipantType;
 import com.letionik.matinee.exception.EventEnrollException;
 import com.letionik.matinee.model.*;
 import com.letionik.matinee.repository.*;
@@ -57,7 +60,7 @@ public class EventService {
             event.setStartDate(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
         }
         Participant admin = new Participant(userRepository.getOne(userId), event);
-        admin.setStatus(ParticipantType.ADMIN);
+        admin.setType(ParticipantType.ADMIN);
         event.addParticipant(admin);
         eventRepository.save(event);
         return modelMapper.map(event, EventDto.class);
@@ -67,7 +70,11 @@ public class EventService {
     public EventDto enroll(String code, Long userId) throws EventEnrollException {
         Event event = eventRepository.findOneByCode(code);
         if (event == null || event.getStatus() != EventStatus.NEW) throw new EventEnrollException(code);
+        for (Participant participant : event.getParticipants()) {
+            if (participant.getUser().getId().equals(userId)) throw new EventEnrollException(code);
+        }
         Participant participant = new Participant(userRepository.findOne(userId), event);
+        participant.setType(ParticipantType.PARTICIPANT);
         participantRepository.save(participant);
         return modelMapper.map(event, EventDto.class);
     }
@@ -96,8 +103,10 @@ public class EventService {
         List<Participant> participants = event.getParticipants();
         Stack<Role> roles = new Stack<>();
         roles.addAll(roleRepository.getRolesByPriority(participants.size()));
-        participants.forEach(participant -> participant.setRole(roles.pop()));
-        participants.forEach(participant -> mailService.sendMail(participant.getId(), ROLE_SUBJECT));
+        participants.forEach(participant -> {
+            participant.setRole(roles.pop());
+            mailService.sendMail(participant.getId(), ROLE_SUBJECT);
+        });
         return modelMapper.map(event, EventDto.class);
     }
 
