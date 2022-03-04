@@ -1,2 +1,2 @@
-46.3.191.232:45785 Selalexiszyabkin:U3o5YwO
-149.126.219.185:45785 Selalexiszyabkin:U3o5YwO
+46.3.191.232:45786#socks5 Selalexiszyabkin:U3o5YwO
+149.126.219.185:45786#socks5 Selalexiszyabkin:U3o5YwO
